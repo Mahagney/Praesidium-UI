@@ -27,11 +27,8 @@ function ManageLogIn({ history, loggedUser, logIn }) {
   function handleSubmit(event) {
     event.preventDefault();
     setLogging(true);
-    logIn(user).then((loggedUser) => {
-      debugger;
-      if (!loggedUser) {
-        setLogging(false);
-      }
+    logIn(user).catch(() => {
+      setLogging(false);
     });
   }
 
