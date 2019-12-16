@@ -16,7 +16,14 @@ import LockIcon from '@material-ui/icons/Lock';
 import useStylesLogInForm from './log-in-form-style';
 //#endregion
 
-function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging }) {
+function LogInForm({
+  onSubmit,
+  onChange,
+  emailValue,
+  passwordValue,
+  logging,
+  errors
+}) {
   const classes = useStylesLogInForm();
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
@@ -33,18 +40,18 @@ function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging }) {
           <TextField
             variant='outlined'
             margin='normal'
-            required
             fullWidth
             label='Email'
             name='email'
             autoFocus
             value={emailValue || ''}
             onChange={onChange}
+            error={errors.email ? true : false}
+            helperText={errors.email}
           />
           <TextField
             variant='outlined'
             margin='normal'
-            required
             fullWidth
             name='password'
             label='Parola'
@@ -53,6 +60,8 @@ function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging }) {
             autoComplete='new-password'
             value={passwordValue || ''}
             onChange={onChange}
+            error={errors.password ? true : false}
+            helperText={errors.password}
           />
           <FormControlLabel
             control={<Checkbox value='remember' color='secondary' />}
@@ -82,7 +91,8 @@ LogInForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   emailValue: PropTypes.string.isRequired,
   passwordValue: PropTypes.string.isRequired,
-  logging: PropTypes.bool.isRequired
+  logging: PropTypes.bool.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 LogInForm.defaultProps = {

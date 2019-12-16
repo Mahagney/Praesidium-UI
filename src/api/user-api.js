@@ -13,6 +13,12 @@ export function logIn(user) {
       return null;
     })
     .catch((error) => {
-      throw error;
+      let err = new Error(error);
+      if (error.response && error.response.status === 401) {
+        err.customMessage = 'Credentiale gresite.';
+      } else {
+        err.customMessage = 'Eroare la retea';
+      }
+      throw err;
     });
 }
