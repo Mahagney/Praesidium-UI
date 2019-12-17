@@ -16,7 +16,6 @@ export function logIn(user) {
       .logIn(user)
       .then((loggedUser) => {
         dispatch(logInSuccess(loggedUser));
-        return loggedUser;
       })
       .catch((error) => {
         throw error;
