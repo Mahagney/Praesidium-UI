@@ -14,7 +14,7 @@ const CoursesCards = ({ courses, handleCardClick }) => {
     <div className={classes.container}>
       <Grid container spacing={4} justify='center'>
         {courses.map((course) => (
-          <Grid item key={course.title}>
+          <Grid item key={course.ID}>
             <CourseCard name={course.NAME} onCardClick={handleCardClick} />
           </Grid>
         ))}
