@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
+import setAuthorizationToken from './api/apiUtils';
 
 //#endregion
 
@@ -13,6 +14,7 @@ import configureStore from './redux/configure-store';
 //#endregion
 
 const store = configureStore();
+setAuthorizationToken(localStorage.getItem('token'));
 
 render(
   <ReduxProvider store={store}>
