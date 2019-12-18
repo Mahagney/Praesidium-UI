@@ -1,5 +1,6 @@
 //#region 'NPM DEP'
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AppBarMui from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,13 +11,17 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 //#region 'LOCAL DEP'
 import useStylesAppBar from './app-bar-style';
+import { logOutUser } from '../../../redux/actions/user-action';
+import { emptyCourses } from '../../../redux/actions/course-action';
 //#endregion
 
-function AppBar({ history }) {
+function AppBar({ logOutUser, emptyCourses }) {
   const classes = useStylesAppBar();
 
   function handleLogOut() {
-    console.log('logOut');
+    localStorage.removeItem('token');
+    logOutUser();
+    emptyCourses();
   }
   return (
     <div className={classes.root}>
@@ -38,7 +43,13 @@ function AppBar({ history }) {
 }
 
 AppBar.propTypes = {
-  history: PropTypes.object.isRequired
+  logOutUser: PropTypes.func.isRequired,
+  emptyCourses: PropTypes.func.isRequired
 };
 
-export default AppBar;
+const mapDispatchToProps = {
+  logOutUser,
+  emptyCourses
+};
+
+export default connect(null, mapDispatchToProps)(AppBar);

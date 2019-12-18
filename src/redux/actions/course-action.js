@@ -4,8 +4,14 @@ import { beginApiCall } from './api-status-action';
 
 function loadCoursesSuccess(courses) {
   return {
-    type: actionTypes.LOAD_COURSES,
+    type: actionTypes.LOAD_COURSES_SUCCESS,
     courses
+  };
+}
+
+export function emptyCourses() {
+  return {
+    type: actionTypes.EMPTY_COURSES
   };
 }
 

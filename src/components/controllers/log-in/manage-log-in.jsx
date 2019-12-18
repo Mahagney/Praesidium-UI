@@ -12,7 +12,7 @@ import LogInForm from '../../views/log-in';
 import * as userActions from '../../../redux/actions/user-action';
 //#endregion
 
-function ManageLogIn({ loggedUser, logIn }) {
+function ManageLogIn({ isAuth, loggedUser, logIn }) {
   const [user, setUser] = useState({});
   const [logging, setLogging] = useState(false);
   const [validations, setValidations] = useState({});
@@ -66,7 +66,7 @@ function ManageLogIn({ loggedUser, logIn }) {
     ></LogInForm>
   );
 
-  return loggedUser.id ? (
+  return isAuth ? (
     <Redirect to={'/users/' + loggedUser.id + '/courses'} />
   ) : (
     logInForm
@@ -74,14 +74,15 @@ function ManageLogIn({ loggedUser, logIn }) {
 }
 
 ManageLogIn.propTypes = {
-  history: PropTypes.object.isRequired,
+  isAuth: PropTypes.bool.isRequired,
   loggedUser: PropTypes.object.isRequired,
   logIn: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    loggedUser: state.user
+    loggedUser: state.user,
+    isAuth: state.user.id ? true : false
   };
 }
 
