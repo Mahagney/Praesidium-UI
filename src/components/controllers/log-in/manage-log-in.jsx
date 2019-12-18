@@ -20,7 +20,6 @@ function ManageLogIn({ loggedUser, logIn }) {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    console.log(value);
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value
