@@ -9,6 +9,19 @@ function logInSuccess(user) {
   };
 }
 
+export function setCurrentUser(user) {
+  return {
+    type: actionTypes.SET_CURRENT_USER,
+    user
+  };
+}
+
+export function logOutUser() {
+  return {
+    type: actionTypes.LOG_OUT_USER
+  };
+}
+
 export function logIn(user) {
   return function(dispatch) {
     dispatch(beginApiCall());

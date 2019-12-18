@@ -75,7 +75,7 @@ function LogInForm({
             className={classes.submitBtn}
             disabled={logging}
           >
-            {logging ? 'Logare...' : 'Logare'}
+            {logging ? 'Autentificare...' : 'Autentificare'}
           </Button>
           <LinkMaterial href='#' variant='body2'>
             {'Ati uitat parola?'}
