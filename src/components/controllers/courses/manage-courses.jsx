@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 //#region 'LOCAL DEP'
 import * as courseActions from '../../../redux/actions/course-action';
 import CoursesCards from '../../views/courses/courses-cards';
+import Spinner from '../../common/spinner';
 //#endregion
 
 function ManageCourses({ history, courses, loggedUser, loadCourses }) {
@@ -21,7 +22,11 @@ function ManageCourses({ history, courses, loggedUser, loadCourses }) {
   function handleCardClick() {
     console.log('click pe card');
   }
-  return <CoursesCards courses={courses} handleCardClick={handleCardClick} />;
+  return courses.length ? (
+    <CoursesCards courses={courses} handleCardClick={handleCardClick} />
+  ) : (
+    <Spinner />
+  );
 }
 
 ManageCourses.propTypes = {
