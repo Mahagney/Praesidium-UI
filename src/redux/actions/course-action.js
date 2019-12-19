@@ -1,6 +1,7 @@
 import * as actionTypes from './action-types';
 import * as courseApi from '../../api/course-api';
-import { beginApiCall } from './api-status-action';
+import { beginApiCall, apiCallError } from './api-status-action';
+import { logOutUser } from './user-action';
 
 function loadCoursesSuccess(courses) {
   return {
@@ -24,6 +25,13 @@ export function loadCourses(loggedUser) {
         dispatch(loadCoursesSuccess(courses));
       })
       .catch((error) => {
+        debugger;
+        if (error.response && error.response.status === 403) {
+          dispatch(emptyCourses());
+          dispatch(logOutUser());
+          localStorage.removeItem('token');
+        }
+        dispatch(apiCallError());
         throw error;
       });
   };

@@ -29,7 +29,7 @@ function AppBar({ logOutUser, emptyCourses }) {
         <Toolbar>
           <div className={classes.logo}>Logo</div>
           <span className={classes.logOut}>
-            <Tooltip title='Delogare'>
+            <Tooltip title='Deconectare'>
               <IconButton color='inherit' onClick={handleLogOut}>
                 <LockOpenIcon />
               </IconButton>

@@ -6,14 +6,13 @@ export function getCourses(loggedUser) {
   return wait(2000)
     .then(() => axios.get('/users/' + loggedUser.id + '/courses'))
     .then((response) => {
+      debugger;
       if (response.status === 200) {
         return response.data;
       }
       return null;
     })
     .catch((error) => {
-      let err = new Error(error);
-      err.customMessage = 'Error at fetching courses.';
-      throw err;
+      throw error;
     });
 }
