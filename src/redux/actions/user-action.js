@@ -1,6 +1,6 @@
 import * as actionTypes from './action-types';
 import * as userApi from '../../api/user-api';
-import { beginApiCall } from './api-status-action';
+import { beginApiCall, apiCallError } from './api-status-action';
 
 function logInSuccess(user) {
   return {
@@ -31,6 +31,7 @@ export function logIn(user) {
         dispatch(logInSuccess(loggedUser));
       })
       .catch((error) => {
+        dispatch(apiCallError());
         throw error;
       });
   };

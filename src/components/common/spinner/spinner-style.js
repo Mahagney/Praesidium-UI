@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useSpinnerStyles = makeStyles((theme) => ({
   spinnerContainer: {
-    marginTop: '100px',
+    marginTop: theme.spacing(14),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
