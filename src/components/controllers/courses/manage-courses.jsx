@@ -19,8 +19,8 @@ function ManageCourses({ history, courses, loggedUser, loadCourses }) {
     }
   }, []);
 
-  function handleCardClick() {
-    console.log('click pe card');
+  function handleCardClick(courseId) {
+    history.push('/courses/' + courseId);
   }
   return courses.length ? (
     <CoursesCards courses={courses} handleCardClick={handleCardClick} />

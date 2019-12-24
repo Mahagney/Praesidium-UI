@@ -10,12 +10,6 @@ function loadCoursesSuccess(courses) {
   };
 }
 
-export function emptyCourses() {
-  return {
-    type: actionTypes.EMPTY_COURSES
-  };
-}
-
 export function loadCourses(loggedUser) {
   return function(dispatch) {
     dispatch(beginApiCall());
@@ -25,9 +19,7 @@ export function loadCourses(loggedUser) {
         dispatch(loadCoursesSuccess(courses));
       })
       .catch((error) => {
-        debugger;
         if (error.response && error.response.status === 403) {
-          dispatch(emptyCourses());
           dispatch(logOutUser());
           localStorage.removeItem('token');
         }

@@ -12,10 +12,13 @@ const CoursesCards = ({ courses, handleCardClick }) => {
   const classes = useStylesCoursesCards();
   return (
     <div className={classes.container}>
-      <Grid container spacing={4} justify='center'>
+      <Grid container spacing={4}>
         {courses.map((course) => (
           <Grid item key={course.ID}>
-            <CourseCard name={course.NAME} onCardClick={handleCardClick} />
+            <CourseCard
+              name={course.NAME}
+              onCardClick={() => handleCardClick(course.ID)}
+            />
           </Grid>
         ))}
       </Grid>
