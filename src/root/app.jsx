@@ -13,6 +13,7 @@ import AppBar from '../components/common/app-bar';
 import ManageLogIn from '../components/controllers/log-in';
 import ManageCourses from '../components/controllers/courses';
 import PageNotFound from '../components/views/page-not-found';
+import ManageCourse from '../components/controllers/course';
 //#endregion
 
 function App({ isAuth }) {
@@ -30,6 +31,7 @@ function App({ isAuth }) {
         <Switch>
           <Route exact path='/' component={ManageLogIn} />
           <Route path='/users/:userId/courses' component={ManageCourses} />
+          <Route path='/courses/:courseId' component={ManageCourse} />
           <Route component={PageNotFound} />
         </Switch>
       </>

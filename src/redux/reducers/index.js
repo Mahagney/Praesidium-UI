@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import user from './user-reducer';
 import apiCallsInProgress from './api-status-reducer';
-import courses from './course-reducer';
+import courses from './courses-reducer';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   user,
   courses,
   apiCallsInProgress
 });
 
-export default rootReducer;
+export default appReducer;

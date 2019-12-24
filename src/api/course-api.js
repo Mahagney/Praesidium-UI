@@ -6,7 +6,6 @@ export function getCourses(loggedUser) {
   return wait(2000)
     .then(() => axios.get('/users/' + loggedUser.id + '/courses'))
     .then((response) => {
-      debugger;
       if (response.status === 200) {
         return response.data;
       }
