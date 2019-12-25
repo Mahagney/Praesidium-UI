@@ -6,8 +6,13 @@ import Tab from '@material-ui/core/Tab';
 
 const useStyles = makeStyles({
   root: {
-    position: 'absolute',
-    bottom: '0'
+    minHeight: '22px'
+  },
+  scroller: {
+    height: '31px'
+  },
+  flexContainer: {
+    marginTop: '-8px'
   }
 });
 
@@ -20,18 +25,21 @@ export default function CenteredTabs() {
   };
 
   return (
-    <Paper className={classes.root}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor='primary'
-        textColor='primary'
-        centered
-      >
-        <Tab label='Item One' />
-        <Tab label='Item Two' />
-        <Tab label='Item Three' />
-      </Tabs>
-    </Paper>
+    <Tabs
+      className={classes.root}
+      classes={{
+        scroller: classes.scroller,
+        flexContainer: classes.flexContainer
+      }}
+      value={value}
+      onChange={handleChange}
+      indicatorColor='primary'
+      textColor='primary'
+      centered
+    >
+      <Tab label='Video' className={classes.root} />
+      <Tab label='Pdf' />
+      <Tab label='Quiz' />
+    </Tabs>
   );
 }
