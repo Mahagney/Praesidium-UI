@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 //#endregion
@@ -10,6 +10,9 @@ import Course from '../../views/course';
 import Spinner from '../../common/spinner';
 //#endregion
 function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
+  const [pdfNumPages, setPdfNumPages] = useState(null);
+  const [pdfPageNumber, setPdfPageNumber] = useState(1);
+
   useEffect(() => {
     if (!courses.length) {
       loadCourses(loggedUser).catch((error) => {
@@ -18,7 +21,30 @@ function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
     }
   }, []);
 
-  return courses.length ? <Course course={course} /> : <Spinner />;
+  function onDocumentLoadSuccess({ numPages }) {
+    setPdfNumPages(numPages);
+  }
+
+  function goToPrevPage() {
+    setPdfPageNumber((prevNumPages) => prevNumPages - 1);
+  }
+
+  function goToNextPage() {
+    setPdfPageNumber((prevNumPages) => prevNumPages + 1);
+  }
+
+  return courses.length ? (
+    <Course
+      course={course}
+      onDocumentLoadSuccess={onDocumentLoadSuccess}
+      goToPrevPage={goToPrevPage}
+      goToNextPage={goToNextPage}
+      pdfNumPages={pdfNumPages}
+      pdfPageNumber={pdfPageNumber}
+    />
+  ) : (
+    <Spinner />
+  );
 }
 
 ManageCourse.propTypes = {
