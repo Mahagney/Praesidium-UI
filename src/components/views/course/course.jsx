@@ -11,17 +11,36 @@ import Paper from '@material-ui/core/Paper';
 import useStylesCourse from './course-style';
 import CenteredTabs from '../../common/tab/tab';
 import PdfViewer from '../../views/pdf';
+import VideoPlayer from '../../views/video';
 //#endregion
 
 function Course({
   course,
   onDocumentLoadSuccess,
+  onTabButtonClick,
   goToPrevPage,
   goToNextPage,
   pdfPageNumber,
-  pdfNumPages
+  pdfNumPages,
+  showSection
 }) {
   const classes = useStylesCourse();
+  let section = null;
+  if (showSection === 0) {
+    section = <VideoPlayer />;
+  } else if (showSection === 1) {
+    section = (
+      <PdfViewer
+        onDocumentLoadSuccess={onDocumentLoadSuccess}
+        goToPrevPage={goToPrevPage}
+        goToNextPage={goToNextPage}
+        pageNumber={pdfPageNumber}
+        numPages={pdfNumPages}
+      />
+    );
+  } else {
+    section = <p>QUIZZZZ</p>;
+  }
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
       <Grid container spacing={3}>
@@ -34,28 +53,24 @@ function Course({
         </Grid>
         <Grid item xs={6}>
           <Paper className={classes.paper}>
-            <CenteredTabs />
+            <CenteredTabs onTabButtonClick={onTabButtonClick} />
           </Paper>
         </Grid>
       </Grid>
-      <PdfViewer
-        onDocumentLoadSuccess={onDocumentLoadSuccess}
-        goToPrevPage={goToPrevPage}
-        goToNextPage={goToNextPage}
-        pageNumber={pdfPageNumber}
-        numPages={pdfNumPages}
-      />
+      {section}
     </Container>
   );
 }
 
 Course.propTypes = {
   course: PropTypes.object.isRequired,
+  onTabButtonClick: PropTypes.func.isRequired,
   onDocumentLoadSuccess: PropTypes.func.isRequired,
   goToPrevPage: PropTypes.func.isRequired,
   goToNextPage: PropTypes.func.isRequired,
   pdfPageNumber: PropTypes.number.isRequired,
-  pdfNumPages: PropTypes.object.isRequired
+  pdfNumPages: PropTypes.object.isRequired,
+  showSection: PropTypes.string.isRequired
 };
 
 /*

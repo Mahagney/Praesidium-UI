@@ -12,6 +12,7 @@ import Spinner from '../../common/spinner';
 function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
   const [pdfNumPages, setPdfNumPages] = useState(null);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
+  const [showSection, setShowSection] = useState(0);
 
   useEffect(() => {
     if (!courses.length) {
@@ -21,26 +22,32 @@ function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
     }
   }, []);
 
-  function onDocumentLoadSuccess({ numPages }) {
+  function handleDocumentLoadSuccess({ numPages }) {
     setPdfNumPages(numPages);
   }
 
-  function goToPrevPage() {
+  function handlePrevPage() {
     setPdfPageNumber((prevNumPages) => prevNumPages - 1);
   }
 
-  function goToNextPage() {
+  function handleNextPage() {
     setPdfPageNumber((prevNumPages) => prevNumPages + 1);
+  }
+
+  function handleTabButtonClick(section) {
+    setShowSection(section);
   }
 
   return courses.length ? (
     <Course
       course={course}
-      onDocumentLoadSuccess={onDocumentLoadSuccess}
-      goToPrevPage={goToPrevPage}
-      goToNextPage={goToNextPage}
+      onDocumentLoadSuccess={handleDocumentLoadSuccess}
+      onTabButtonClick={handleTabButtonClick}
+      goToPrevPage={handlePrevPage}
+      goToNextPage={handleNextPage}
       pdfNumPages={pdfNumPages}
       pdfPageNumber={pdfPageNumber}
+      showSection={showSection}
     />
   ) : (
     <Spinner />
