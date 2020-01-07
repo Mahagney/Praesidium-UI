@@ -16,12 +16,13 @@ const useStyles = makeStyles({
   }
 });
 
-export default function CenteredTabs() {
+export default function CenteredTabs({ onTabButtonClick }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    onTabButtonClick(newValue);
   };
 
   return (
