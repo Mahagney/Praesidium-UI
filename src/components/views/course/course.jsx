@@ -10,9 +10,17 @@ import Paper from '@material-ui/core/Paper';
 //#region 'LOCAL DEP'
 import useStylesCourse from './course-style';
 import CenteredTabs from '../../common/tab/tab';
+import PdfViewer from '../../views/pdf';
 //#endregion
 
-function Course({ course }) {
+function Course({
+  course,
+  onDocumentLoadSuccess,
+  goToPrevPage,
+  goToNextPage,
+  pdfPageNumber,
+  pdfNumPages
+}) {
   const classes = useStylesCourse();
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
@@ -30,12 +38,24 @@ function Course({ course }) {
           </Paper>
         </Grid>
       </Grid>
+      <PdfViewer
+        onDocumentLoadSuccess={onDocumentLoadSuccess}
+        goToPrevPage={goToPrevPage}
+        goToNextPage={goToNextPage}
+        pageNumber={pdfPageNumber}
+        numPages={pdfNumPages}
+      />
     </Container>
   );
 }
 
 Course.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
+  onDocumentLoadSuccess: PropTypes.func.isRequired,
+  goToPrevPage: PropTypes.func.isRequired,
+  goToNextPage: PropTypes.func.isRequired,
+  pdfPageNumber: PropTypes.number.isRequired,
+  pdfNumPages: PropTypes.object.isRequired
 };
 
 /*
