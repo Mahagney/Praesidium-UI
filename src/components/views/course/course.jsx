@@ -12,6 +12,7 @@ import useStylesCourse from './course-style';
 import CenteredTabs from '../../common/tab/tab';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
+import Quiz from '../../views/quiz';
 //#endregion
 
 function Course({
@@ -39,7 +40,7 @@ function Course({
       />
     );
   } else {
-    section = <p>QUIZZZZ</p>;
+    section = <Quiz />;
   }
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
