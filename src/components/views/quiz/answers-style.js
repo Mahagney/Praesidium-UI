@@ -7,8 +7,7 @@ const useStylesAnswers = makeStyles((theme) => ({
     },
     formControlLabel: {
         borderTop: '1px solid #eee',
-        padding: '8px 0px 8px 0px'
-
+        padding: '8px 0px 8px 0px',
     }
 }));
 

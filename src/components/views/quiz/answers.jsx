@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React from 'react';
+import React,{useState} from 'react';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -14,43 +14,43 @@ import Radio from '@material-ui/core/Radio';
 import useStylesAnswer from './answers-style';
 //#endregion
 
-function Answers() {
+function Answers({answers, response, answerQuestion}) {
+  const [currentResponse, setCurrentResponse] = useState(0);
   const classes = useStylesAnswer();
-  const value=2;
-  const handleChange = () => 3;
+
+
+  const handleChange = ( event ) => {
+    let res=false;
+    if(event.target.value == response) 
+      res=true; 
+      console.log(response);
+      setCurrentResponse(event.target.value);
+      setTimeout(function(){
+        answerQuestion(res);
+        console.log(res);
+        setCurrentResponse(0);
+    }, 500);
+      //answerQuestion(event.target.value == response);
+    };
+
+  function generateAnswerOption(answer){
+    return (
+        <FormControlLabel
+        className={classes.formControlLabel}
+        key={answer.value}
+        value={answer.value}
+        control={<Radio color="primary" />}
+        label={answer.content}
+        labelPlacement="end"
+      />
+    );
+  }
+
   return (
     <Container component='div' maxWidth='md' style={{align: 'left', textAlign: 'left'}}>
         <FormControl component="fieldset" className={classes.formControl}>
-        <RadioGroup aria-label="gender" name="gender2" value={value} onChange={handleChange}>
-          <FormControlLabel
-            className={classes.formControlLabel}
-            value="female"
-            control={<Radio color="primary" />}
-            label="Female"
-            labelPlacement="end"
-          />
-          <FormControlLabel
-                      className={classes.formControlLabel}
-            value="male"
-            control={<Radio color="primary" />}
-            label="Male"
-            labelPlacement="end"
-          />
-          <FormControlLabel
-            className={classes.formControlLabel}
-            value="other"
-            control={<Radio color="primary" />}
-            label="Other"
-            labelPlacement="end"
-          />
-          <FormControlLabel
-            className={classes.formControlLabel}
-            value="disabled"
-            disabled
-            control={<Radio />}
-            label="(Disabled option)"
-            labelPlacement="end"
-          />
+        <RadioGroup aria-label="gender" name="gender2" value={currentResponse} onChange={(event)=>handleChange(event)}>
+          {answers.map(current => generateAnswerOption(current))}
         </RadioGroup>
       </FormControl>
     </Container>
