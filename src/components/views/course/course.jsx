@@ -27,7 +27,7 @@ function Course({
 }) {
   const classes = useStylesCourse();
   let section = null;
-  if (showSection === 0) {
+  if (showSection === 2) {
     section = <VideoPlayer />;
   } else if (showSection === 1) {
     section = (

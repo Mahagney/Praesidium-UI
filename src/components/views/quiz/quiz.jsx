@@ -6,13 +6,19 @@ import Container from '@material-ui/core/Container';
 
 //#region 'LOCAL DEP'
 import useStylesQuiz from './quiz-style';
+import QuestionCount from './question-count';
+import Question from './question';
+import Answers from './answers';
 //#endregion
 
 function Quiz() {
   const classes = useStylesQuiz();
+
   return (
     <Container component='div' maxWidth='md' className={classes.quizContainer}>
-      <p>QUIZZ</p>
+      <QuestionCount counter={0} total={0}/>
+      <Question content={"Which of these racing franchises would you prefer to play a game from?"}/>
+      <Answers/>
     </Container>
   );
 }

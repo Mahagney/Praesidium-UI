@@ -38,7 +38,7 @@ function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
     setShowSection(section);
   }
 
-  return courses.length ? (
+  return (
     <Course
       course={course}
       onDocumentLoadSuccess={handleDocumentLoadSuccess}
@@ -49,9 +49,7 @@ function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
       pdfPageNumber={pdfPageNumber}
       showSection={showSection}
     />
-  ) : (
-    <Spinner />
-  );
+  ) 
 }
 
 ManageCourse.propTypes = {
