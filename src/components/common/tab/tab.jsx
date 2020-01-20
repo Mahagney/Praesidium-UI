@@ -1,29 +1,22 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+//#region 'NPM DEP'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+//#endregion
 
-const useStyles = makeStyles({
-  root: {
-    minHeight: '22px'
-  },
-  scroller: {
-    height: '31px'
-  },
-  flexContainer: {
-    marginTop: '-8px'
+//#region 'LOCAL DEP'
+import useTabStyles from './tab-style';
+//#endregion
+
+function CenteredTabs({ onTabChange }) {
+  const classes = useTabStyles();
+  const [tabValue, setTabValue] = useState(0);
+
+  function handleTabChange(event, newValue) {
+    setTabValue(newValue);
+    onTabChange(newValue);
   }
-});
-
-export default function CenteredTabs({ onTabButtonClick }) {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    onTabButtonClick(newValue);
-  };
 
   return (
     <Tabs
@@ -32,8 +25,8 @@ export default function CenteredTabs({ onTabButtonClick }) {
         scroller: classes.scroller,
         flexContainer: classes.flexContainer
       }}
-      value={value}
-      onChange={handleChange}
+      value={tabValue}
+      onChange={handleTabChange}
       indicatorColor='primary'
       textColor='primary'
       centered
@@ -44,3 +37,9 @@ export default function CenteredTabs({ onTabButtonClick }) {
     </Tabs>
   );
 }
+
+CenteredTabs.propTypes = {
+  onTabChange: PropTypes.func.isRequired
+};
+
+export default CenteredTabs;

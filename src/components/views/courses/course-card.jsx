@@ -22,8 +22,9 @@ const CourseCard = ({ name, description, onCardClick }) => {
         <CardMedia
           component='img'
           className={classes.media}
-          image='/static/images/cards/contemplative-reptile.jpg'
-          title='Contemplative Reptile'
+          // image='https://png.pngtree.com/png-vector/20190530/ourlarge/pngtree-book-logo-icon-vector-png-image_1127352.jpg'
+          image='/src/assets/images/book.jpg'
+          title='Course'
           height='400'
         />
         <CardContent>

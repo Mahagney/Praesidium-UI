@@ -9,39 +9,12 @@ import Paper from '@material-ui/core/Paper';
 
 //#region 'LOCAL DEP'
 import useStylesCourse from './course-style';
-import CenteredTabs from '../../common/tab/tab';
-import PdfViewer from '../../views/pdf';
-import VideoPlayer from '../../views/video';
-import Quiz from '../../views/quiz';
+import CenteredTabs from '../../common/tab';
 //#endregion
 
-function Course({
-  course,
-  onDocumentLoadSuccess,
-  onTabButtonClick,
-  goToPrevPage,
-  goToNextPage,
-  pdfPageNumber,
-  pdfNumPages,
-  showSection
-}) {
+function Course({ course, section, onTabChange }) {
   const classes = useStylesCourse();
-  let section = null;
-  if (showSection === 2) {
-    section = <VideoPlayer />;
-  } else if (showSection === 1) {
-    section = (
-      <PdfViewer
-        onDocumentLoadSuccess={onDocumentLoadSuccess}
-        goToPrevPage={goToPrevPage}
-        goToNextPage={goToNextPage}
-        pageNumber={pdfPageNumber}
-        numPages={pdfNumPages}
-      />
-    );
-  } else {
-    section = <Quiz />;
-  }
+
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
       <Grid container spacing={3}>
@@ -54,7 +27,7 @@ function Course({
         </Grid>
         <Grid item xs={6}>
           <Paper className={classes.paper}>
-            <CenteredTabs onTabButtonClick={onTabButtonClick} />
+            <CenteredTabs onTabChange={onTabChange} />
           </Paper>
         </Grid>
       </Grid>
@@ -66,19 +39,7 @@ function Course({
 Course.propTypes = {
   course: PropTypes.object.isRequired,
   onTabButtonClick: PropTypes.func.isRequired,
-  onDocumentLoadSuccess: PropTypes.func.isRequired,
-  goToPrevPage: PropTypes.func.isRequired,
-  goToNextPage: PropTypes.func.isRequired,
-  pdfPageNumber: PropTypes.number.isRequired,
-  pdfNumPages: PropTypes.object.isRequired,
-  showSection: PropTypes.string.isRequired
+  onTabChange: PropTypes.func.isRequired
 };
-
-/*
-<Typography variant='h4' className={classes.title}>
-        {course.NAME ? course.NAME : ''}
-      </Typography>
-      <CenteredTabs /> 
-*/
 
 export default Course;

@@ -14,6 +14,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 //#region 'LOCAL DEP'
 import useStylesAppBar from './app-bar-style';
 import { logOutUser } from '../../../redux/actions/user-action';
+import AlfaLogo from '../logo';
 //#endregion
 
 function AppBar({ loggedUser, logOutUser }) {
@@ -30,7 +31,11 @@ function AppBar({ loggedUser, logOutUser }) {
         <Toolbar>
           <div className={classes.logo}>
             <Link to={'/users/' + loggedUser.id + '/courses'}>
-              <button type='button'>Logo</button>
+              <AlfaLogo
+                width={'45px'}
+                height={'45px'}
+                style={{ marginTop: '10px' }}
+              />
             </Link>
           </div>
           <span className={classes.logOut}>

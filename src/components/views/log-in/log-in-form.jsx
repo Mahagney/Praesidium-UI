@@ -14,6 +14,7 @@ import LockIcon from '@material-ui/icons/Lock';
 
 //#region 'LOCAL DEP'
 import useStylesLogInForm from './log-in-form-style';
+import AlfaLogo from '../../common/logo-with-name';
 //#endregion
 
 function LogInForm({
@@ -32,7 +33,12 @@ function LogInForm({
         maxWidth='xs'
         className={classes.smallContainer}
       >
-        <LockIcon className={classes.logo} color='secondary' />
+        {/* <LockIcon className={classes.logo} color='secondary' /> */}
+        <AlfaLogo
+          width={'120px'}
+          height={'120px'}
+          style={{ marginTop: '50px', marginBottom: '15px' }}
+        />
         <Typography component='h1' variant='h5'>
           Autentificare
         </Typography>
