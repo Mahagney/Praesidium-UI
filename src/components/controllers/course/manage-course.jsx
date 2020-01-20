@@ -8,12 +8,14 @@ import { connect } from 'react-redux';
 import { loadCourses } from '../../../redux/actions/course-action';
 import Course from '../../views/course';
 import Spinner from '../../common/spinner';
+import PdfViewer from '../../views/pdf';
+import VideoPlayer from '../../views/video';
+import Quiz from '../../views/quiz';
 //#endregion
 function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
   const [pdfNumPages, setPdfNumPages] = useState(null);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
-  const [showSection, setShowSection] = useState(0);
-
+  const [tabValue, setTabValue] = useState(0);
   useEffect(() => {
     if (!courses.length) {
       loadCourses(loggedUser).catch((error) => {
@@ -34,21 +36,28 @@ function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
     setPdfPageNumber((prevNumPages) => prevNumPages + 1);
   }
 
-  function handleTabButtonClick(section) {
-    setShowSection(section);
+  function handleTabChange(value) {
+    setTabValue(value);
+  }
+  let section = null;
+  if (tabValue === 0) {
+    section = <VideoPlayer />;
+  } else if (tabValue === 1) {
+    section = (
+      <PdfViewer
+        onDocumentLoadSuccess={handleDocumentLoadSuccess}
+        goToPrevPage={handlePrevPage}
+        goToNextPage={handleNextPage}
+        pageNumber={pdfPageNumber}
+        numPages={pdfNumPages}
+      />
+    );
+  } else {
+    section = <Quiz />;
   }
 
   return courses.length ? (
-    <Course
-      course={course}
-      onDocumentLoadSuccess={handleDocumentLoadSuccess}
-      onTabButtonClick={handleTabButtonClick}
-      goToPrevPage={handlePrevPage}
-      goToNextPage={handleNextPage}
-      pdfNumPages={pdfNumPages}
-      pdfPageNumber={pdfPageNumber}
-      showSection={showSection}
-    />
+    <Course course={course} section={section} onTabChange={handleTabChange} />
   ) : (
     <Spinner />
   );

@@ -1,4 +1,12 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
 body {
-  margin: 0px;
   background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+  box-sizing: border-box;
 }

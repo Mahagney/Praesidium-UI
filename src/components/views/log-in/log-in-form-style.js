@@ -18,10 +18,6 @@ const useStylesLogInForm = makeStyles((theme) => ({
     height: '40px',
     width: '40px'
   },
-  alfaLogo: {
-    height: '100%',
-    paddingTop: '20px'
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1)

@@ -7,6 +7,7 @@ const useStylesCourseCard = makeStyles({
     minWidth: 370
   },
   media: {
+    marginTop: '8px',
     height: 140
   }
 });
