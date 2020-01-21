@@ -10,7 +10,7 @@ import Course from '../../views/course';
 import Spinner from '../../common/spinner';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
-import Quiz from '../../views/quiz';
+import Quiz from '../quiz/manage-quiz';
 //#endregion
 function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
   const [pdfNumPages, setPdfNumPages] = useState(null);

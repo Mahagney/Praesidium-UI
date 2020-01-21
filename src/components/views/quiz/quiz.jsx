@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 //#endregion
@@ -9,32 +9,28 @@ import useStylesQuiz from './quiz-style';
 import QuestionCount from './question-count';
 import Question from './question';
 import Answers from './answers';
-import quizQuestions from './questions';
 //#endregion
 
-function Quiz() {
+function Quiz({ counter, answerQuestion, quizQuestions }) {
   const classes = useStylesQuiz();
-  const [counter, setCounter] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0);
 
-  const answerQuestion = (correct) => {
-    if (correct) setCorrectCount(correctCount + 1);
-    if (counter == quizQuestions.length - 1) setCounter(0);
-    else setCounter(counter + 1);
-  };
   return (
     <Container component='div' maxWidth='md' className={classes.quizContainer}>
-      <QuestionCount counter={counter + 1} total={quizQuestions.length} />
-      <Question content={quizQuestions[counter].content} />
+      <QuestionCount counter={counter} total={quizQuestions.length} />
+      <Question content={quizQuestions[counter - 1].content} />
       <Answers
         answerQuestion={answerQuestion}
-        answers={quizQuestions[counter].answers}
-        response={quizQuestions[counter].answer}
+        answers={quizQuestions[counter - 1].answers}
+        response={quizQuestions[counter - 1].answer}
       />
     </Container>
   );
 }
 
-Quiz.propTypes = {};
+Quiz.propTypes = {
+  counter: PropTypes.number.isRequired,
+  quizQuestions: PropTypes.array.isRequired,
+  answerQuestion: PropTypes.func.isRequired
+};
 
 export default Quiz;
