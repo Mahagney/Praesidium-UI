@@ -4,6 +4,8 @@ export const API_CALL_ERROR = 'API_CALL_ERROR';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOAD_COURSES_SUCCESS = 'LOAD_COURSES_SUCCESS';
+
+export const LOAD_COURSE_BY_ID_SUCCESS = 'LOAD_COURSE_BY_ID_SUCCESS';
 //#endregion
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';

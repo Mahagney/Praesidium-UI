@@ -38,7 +38,7 @@ function Course({ course, section, onTabChange }) {
 
 Course.propTypes = {
   course: PropTypes.object.isRequired,
-  onTabButtonClick: PropTypes.func.isRequired,
+  //onTabButtonClick: PropTypes.func.isRequired,
   onTabChange: PropTypes.func.isRequired
 };
 
