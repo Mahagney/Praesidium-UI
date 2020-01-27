@@ -27,7 +27,7 @@ function VideoPlayer({ videoUrl }) {
 }
 
 VideoPlayer.propTypes = {
-  videoUrl: PropTypes.string.isRequired
+  //videoUrl: PropTypes.string.isRequired
   //   onDocumentLoadSuccess: PropTypes.func.isRequired,
   //   goToPrevPage: PropTypes.func.isRequired,
   //   goToNextPage: PropTypes.func.isRequired,

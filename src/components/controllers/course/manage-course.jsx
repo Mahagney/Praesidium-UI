@@ -11,7 +11,6 @@ import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
 import * as courseActions from '../../../redux/actions/course-action';
-import * as currentCourseAction from '../../../redux/actions/current-course-action';
 //#endregion
 function ManageCourse({
   match,
@@ -59,6 +58,7 @@ function ManageCourse({
         goToNextPage={handleNextPage}
         pageNumber={pdfPageNumber}
         numPages={pdfNumPages}
+        url={currentCourse.PDF_URL}
       />
     );
   } else {
@@ -105,7 +105,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   loadCourses: courseActions.loadCourses,
-  loadCourseById: currentCourseAction.loadCourseById
+  loadCourseById: courseActions.loadCourseById
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCourse);

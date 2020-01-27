@@ -28,3 +28,29 @@ export function loadCourses(loggedUser) {
       });
   };
 }
+
+function loadCourseByIdSuccess(currentCourse) {
+  return {
+    type: actionTypes.LOAD_COURSE_BY_ID_SUCCESS,
+    currentCourse: currentCourse
+  };
+}
+
+export function loadCourseById(courseId) {
+  return function(dispatch) {
+    dispatch(beginApiCall());
+    return courseApi
+      .getCourseById(courseId)
+      .then((currentCourse) => {
+        dispatch(loadCourseByIdSuccess(currentCourse));
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 403) {
+          dispatch(logOutUser());
+          localStorage.removeItem('token');
+        }
+        dispatch(apiCallError());
+        throw error;
+      });
+  };
+}

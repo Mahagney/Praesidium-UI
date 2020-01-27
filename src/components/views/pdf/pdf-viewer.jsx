@@ -16,7 +16,8 @@ function PdfViewer({
   goToPrevPage,
   goToNextPage,
   pageNumber,
-  numPages
+  numPages,
+  url
 }) {
   const classes = useStylesPdfViewer();
   return (
@@ -34,7 +35,7 @@ function PdfViewer({
       </Typography>
 
       <Document
-        file={pdfFile}
+        file={url}
         onLoadSuccess={onDocumentLoadSuccess}
         className={classes.pdfFileContainer}
       >
@@ -53,7 +54,8 @@ PdfViewer.propTypes = {
   goToPrevPage: PropTypes.func.isRequired,
   goToNextPage: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,
-  numPages: PropTypes.object.isRequired
+  numPages: PropTypes.object.isRequired,
+  url: PropTypes.string.isRequired
 };
 
 export default PdfViewer;
