@@ -17,11 +17,11 @@ function Quiz({ counter, answerQuestion, quizQuestions }) {
   return (
     <Container component='div' maxWidth='md' className={classes.quizContainer}>
       <QuestionCount counter={counter} total={quizQuestions.length} />
-      <Question content={quizQuestions[counter - 1].content} />
+      <Question content={quizQuestions[counter - 1].TEXT} />
       <Answers
         answerQuestion={answerQuestion}
-        answers={quizQuestions[counter - 1].answers}
-        response={quizQuestions[counter - 1].answer}
+        answers={quizQuestions[counter - 1].ANSWERs}
+        response={quizQuestions[counter - 1].ID}
       />
     </Container>
   );

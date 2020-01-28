@@ -11,6 +11,7 @@ import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
 import * as courseActions from '../../../redux/actions/course-action';
+import * as courseApi from '../../../api/course-api';
 //#endregion
 function ManageCourse({
   match,
@@ -25,11 +26,16 @@ function ManageCourse({
   const [pdfNumPages, setPdfNumPages] = useState(null);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
+  const [quiz, setQuiz] = useState(null);
+
   useEffect(() => {
     if (!courses.length) {
       loadCourses(loggedUser).catch((error) => {});
     }
     loadCourseById(match.params.courseId);
+    courseApi
+      .getQuizByCourseId(match.params.courseId)
+      .then((quiz) => setQuiz(quiz));
   }, []);
 
   function handleDocumentLoadSuccess({ numPages }) {
@@ -62,7 +68,7 @@ function ManageCourse({
       />
     );
   } else {
-    section = <Quiz />;
+    section = <Quiz quizData={quiz} />;
   }
 
   return courses.length ? (

@@ -5,16 +5,15 @@ import PropTypes from 'prop-types';
 
 //#region 'LOCAL DEP'
 import Quiz from '../../views/quiz';
-import quizQuestions from './questions';
 //#endregion
 
-function ManageQuiz() {
+function ManageQuiz({ quizData }) {
   const [counter, setCounter] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
 
   const answerQuestion = (correct) => {
     if (correct) setCorrectCount(correctCount + 1);
-    if (counter == quizQuestions.length - 1) setCounter(0);
+    if (counter == quizData.length - 1) setCounter(0);
     else setCounter(counter + 1);
   };
 
@@ -22,9 +21,9 @@ function ManageQuiz() {
     <Quiz
       counter={counter + 1}
       answerQuestion={answerQuestion}
-      answers={quizQuestions[counter].answers}
-      response={quizQuestions[counter].answer}
-      quizQuestions={quizQuestions}
+      answers={quizData[counter].answers}
+      response={quizData[counter].answer}
+      quizQuestions={quizData}
     />
   );
 }
