@@ -10,8 +10,11 @@ import Spinner from '../../common/spinner';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
-import * as courseActions from '../../../redux/actions/course-action';
-import * as courseApi from '../../../api/course-api';
+import {
+  loadCourseById,
+  loadCourses
+} from '../../../redux/actions/course-action';
+import { getQuizByCourseId } from '../../../api/course-api';
 //#endregion
 function ManageCourse({
   match,
@@ -33,9 +36,7 @@ function ManageCourse({
       loadCourses(loggedUser).catch((error) => {});
     }
     loadCourseById(match.params.courseId);
-    courseApi
-      .getQuizByCourseId(match.params.courseId)
-      .then((quiz) => setQuiz(quiz));
+    getQuizByCourseId(match.params.courseId).then((quiz) => setQuiz(quiz));
   }, []);
 
   function handleDocumentLoadSuccess({ numPages }) {
@@ -67,7 +68,8 @@ function ManageCourse({
         url={currentCourse.PDF_URL}
       />
     );
-  } else {
+  } else if (quiz && quiz.length) {
+    console.log('quiz', quiz);
     section = <Quiz quizData={quiz} />;
   }
 
@@ -110,8 +112,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  loadCourses: courseActions.loadCourses,
-  loadCourseById: courseActions.loadCourseById
+  loadCourses: loadCourses,
+  loadCourseById: loadCourseById
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCourse);
