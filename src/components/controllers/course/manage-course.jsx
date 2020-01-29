@@ -10,32 +10,29 @@ import Spinner from '../../common/spinner';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
-import {
-  loadCourseById,
-  loadCourses
-} from '../../../redux/actions/course-action';
-import { getQuizByCourseId } from '../../../api/course-api';
+import { loadCourses } from '../../../redux/actions/course-action';
+import { getQuizByCourseId, getCourseById } from '../../../api/course-api';
 //#endregion
 function ManageCourse({
   match,
-  history,
   loadCourses,
-  loadCourseById,
   loggedUser,
   courses,
-  course,
-  currentCourse
+  currCourseName
 }) {
   const [pdfNumPages, setPdfNumPages] = useState(null);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
   const [quiz, setQuiz] = useState({});
+  const [currentCourse, setCurrentCourse] = useState({});
 
   useEffect(() => {
     if (!courses.length) {
       loadCourses(loggedUser).catch((error) => {});
     }
-    loadCourseById(match.params.courseId);
+    getCourseById(match.params.courseId).then((course) =>
+      setCurrentCourse(course)
+    );
     getQuizByCourseId(match.params.courseId).then((quiz) => setQuiz(quiz));
   }, []);
 
@@ -77,46 +74,38 @@ function ManageCourse({
   } else section = quiz.length ? <Quiz quizData={quiz} /> : <Spinner />;
 
   return courses.length ? (
-    <Course course={course} section={section} onTabChange={handleTabChange} />
+    <Course
+      courseName={currCourseName}
+      section={section}
+      onTabChange={handleTabChange}
+    />
   ) : (
     <Spinner />
   );
 }
 
 ManageCourse.propTypes = {
-  history: PropTypes.object.isRequired,
   loggedUser: PropTypes.object.isRequired,
   courses: PropTypes.array.isRequired,
-  course: PropTypes.object.isRequired,
   loadCourses: PropTypes.func.isRequired,
-  loadCourseById: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  currentCourse: PropTypes.object.isRequired
+  currCourseName: PropTypes.string.isRequired
 };
 
-function getCourseById(courses, courseId) {
-  return courses.find((c) => c.ID === courseId) || null;
-}
-
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps);
   const courseId = ownProps.match.params.courseId;
-  const course =
-    courseId && state.courses.length > 0
-      ? getCourseById(state.courses, courseId)
-      : {};
-
+  const courseName = state.courses.length
+    ? state.courses.find((c) => c.ID === courseId).NAME
+    : '';
   return {
-    course,
-    currentCourse: state.currentCourse,
     courses: state.courses,
+    currCourseName: courseName,
     loggedUser: state.user
   };
 }
 
 const mapDispatchToProps = {
-  loadCourses: loadCourses,
-  loadCourseById: loadCourseById
+  loadCourses: loadCourses
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCourse);
