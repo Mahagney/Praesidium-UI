@@ -29,7 +29,7 @@ function ManageCourse({
   const [pdfNumPages, setPdfNumPages] = useState(null);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
-  const [quiz, setQuiz] = useState(null);
+  const [quiz, setQuiz] = useState({});
 
   useEffect(() => {
     if (!courses.length) {
@@ -56,9 +56,13 @@ function ManageCourse({
   }
   let section = null;
   if (tabValue === 0) {
-    section = <VideoPlayer videoUrl={currentCourse.VIDEO_URL} />;
+    section = currentCourse.VIDEO_URL ? (
+      <VideoPlayer videoUrl={currentCourse.VIDEO_URL} />
+    ) : (
+      <Spinner />
+    );
   } else if (tabValue === 1) {
-    section = (
+    section = currentCourse.PDF_URL ? (
       <PdfViewer
         onDocumentLoadSuccess={handleDocumentLoadSuccess}
         goToPrevPage={handlePrevPage}
@@ -67,11 +71,10 @@ function ManageCourse({
         numPages={pdfNumPages}
         url={currentCourse.PDF_URL}
       />
+    ) : (
+      <Spinner />
     );
-  } else if (quiz && quiz.length) {
-    console.log('quiz', quiz);
-    section = <Quiz quizData={quiz} />;
-  }
+  } else section = quiz.length ? <Quiz quizData={quiz} /> : <Spinner />;
 
   return courses.length ? (
     <Course course={course} section={section} onTabChange={handleTabChange} />
