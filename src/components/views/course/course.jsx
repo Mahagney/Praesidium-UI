@@ -12,7 +12,7 @@ import useStylesCourse from './course-style';
 import CenteredTabs from '../../common/tab';
 //#endregion
 
-function Course({ course, section, onTabChange }) {
+function Course({ courseName, section, onTabChange }) {
   const classes = useStylesCourse();
 
   return (
@@ -20,9 +20,7 @@ function Course({ course, section, onTabChange }) {
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <Paper className={classes.paper}>
-            <Typography variant='h6'>
-              {course.NAME ? course.NAME : ''}
-            </Typography>
+            <Typography variant='h6'>{courseName ? courseName : ''}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={6}>
@@ -37,8 +35,7 @@ function Course({ course, section, onTabChange }) {
 }
 
 Course.propTypes = {
-  course: PropTypes.object.isRequired,
-  onTabButtonClick: PropTypes.func.isRequired,
+  courseName: PropTypes.string.isRequired,
   onTabChange: PropTypes.func.isRequired
 };
 

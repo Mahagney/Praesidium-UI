@@ -7,7 +7,7 @@ function QuestionCount({ total, counter }) {
   const classes = useStylesQuestionCount();
   return (
     <div className={classes.questionCount}>
-      Question <span>{counter}</span> of <span>{total}</span>
+      Intrebarea <span>{counter}</span> din <span>{total}</span>
     </div>
   );
 }

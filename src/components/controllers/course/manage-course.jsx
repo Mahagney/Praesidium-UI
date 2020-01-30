@@ -5,23 +5,35 @@ import { connect } from 'react-redux';
 //#endregion
 
 //#region 'LOCAL DEP'
-import { loadCourses } from '../../../redux/actions/course-action';
 import Course from '../../views/course';
 import Spinner from '../../common/spinner';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
-import Quiz from '../../views/quiz';
+import Quiz from '../quiz/manage-quiz';
+import { loadCourses } from '../../../redux/actions/course-action';
+import { getQuizByCourseId, getCourseById } from '../../../api/course-api';
 //#endregion
-function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
+function ManageCourse({
+  match,
+  loadCourses,
+  loggedUser,
+  courses,
+  currCourseName
+}) {
   const [pdfNumPages, setPdfNumPages] = useState(null);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
+  const [quiz, setQuiz] = useState({});
+  const [currentCourse, setCurrentCourse] = useState({});
+
   useEffect(() => {
     if (!courses.length) {
-      loadCourses(loggedUser).catch((error) => {
-        console.log(error.customMessage);
-      });
+      loadCourses(loggedUser).catch((error) => {});
     }
+    getCourseById(match.params.courseId).then((course) =>
+      setCurrentCourse(course)
+    );
+    getQuizByCourseId(match.params.courseId).then((quiz) => setQuiz(quiz));
   }, []);
 
   function handleDocumentLoadSuccess({ numPages }) {
@@ -41,55 +53,59 @@ function ManageCourse({ history, loadCourses, loggedUser, courses, course }) {
   }
   let section = null;
   if (tabValue === 0) {
-    section = <VideoPlayer />;
+    section = currentCourse.VIDEO_URL ? (
+      <VideoPlayer videoUrl={currentCourse.VIDEO_URL} />
+    ) : (
+      <Spinner />
+    );
   } else if (tabValue === 1) {
-    section = (
+    section = currentCourse.PDF_URL ? (
       <PdfViewer
         onDocumentLoadSuccess={handleDocumentLoadSuccess}
         goToPrevPage={handlePrevPage}
         goToNextPage={handleNextPage}
         pageNumber={pdfPageNumber}
         numPages={pdfNumPages}
+        url={currentCourse.PDF_URL}
       />
+    ) : (
+      <Spinner />
     );
-  } else {
-    section = <Quiz />;
-  }
+  } else section = quiz.length ? <Quiz quizData={quiz} /> : <Spinner />;
 
   return courses.length ? (
-    <Course course={course} section={section} onTabChange={handleTabChange} />
+    <Course
+      courseName={currCourseName}
+      section={section}
+      onTabChange={handleTabChange}
+    />
   ) : (
     <Spinner />
   );
 }
 
 ManageCourse.propTypes = {
-  history: PropTypes.object.isRequired,
   loggedUser: PropTypes.object.isRequired,
   courses: PropTypes.array.isRequired,
-  course: PropTypes.object.isRequired
+  loadCourses: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  currCourseName: PropTypes.string.isRequired
 };
 
-function getCourseById(courses, courseId) {
-  return courses.find((c) => c.ID === courseId) || null;
-}
-
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps);
   const courseId = ownProps.match.params.courseId;
-  const course =
-    courseId && state.courses.length > 0
-      ? getCourseById(state.courses, courseId)
-      : {};
+  const courseName = state.courses.length
+    ? state.courses.find((c) => c.ID === courseId).NAME
+    : '';
   return {
-    course,
     courses: state.courses,
+    currCourseName: courseName,
     loggedUser: state.user
   };
 }
 
 const mapDispatchToProps = {
-  loadCourses
+  loadCourses: loadCourses
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCourse);

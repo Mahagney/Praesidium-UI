@@ -15,3 +15,31 @@ export function getCourses(loggedUser) {
       throw error;
     });
 }
+
+export function getCourseById(courseId) {
+  return wait(2000)
+    .then(() => axios.get('/courses/' + courseId))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function getQuizByCourseId(courseId) {
+  return wait(2000)
+    .then(() => axios.get('/courses/' + courseId + '/quiz'))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
