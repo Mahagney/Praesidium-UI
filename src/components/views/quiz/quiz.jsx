@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 //#endregion
@@ -9,20 +9,31 @@ import useStylesQuiz from './quiz-style';
 import QuestionCount from './question-count';
 import Question from './question';
 import Answers from './answers';
+import Results from './results';
 //#endregion
 
 function Quiz({ counter, answerQuestion, quizQuestions }) {
   const classes = useStylesQuiz();
+  let quizContent = null;
 
+  if (counter > quizQuestions.length) {
+    quizContent = (
+      <Fragment>
+        <QuestionCount counter={counter} total={quizQuestions.length} />
+        <Question content={quizQuestions[counter - 1].TEXT} />
+        <Answers
+          answerQuestion={answerQuestion}
+          answers={quizQuestions[counter - 1].ANSWERs}
+          response={quizQuestions[counter - 1].ID}
+        />
+      </Fragment>
+    );
+  } else {
+    quizContent = <Results />;
+  }
   return (
     <Container component='div' maxWidth='md' className={classes.quizContainer}>
-      <QuestionCount counter={counter} total={quizQuestions.length} />
-      <Question content={quizQuestions[counter - 1].TEXT} />
-      <Answers
-        answerQuestion={answerQuestion}
-        answers={quizQuestions[counter - 1].ANSWERs}
-        response={quizQuestions[counter - 1].ID}
-      />
+      {quizContent}
     </Container>
   );
 }

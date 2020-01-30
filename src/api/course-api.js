@@ -3,7 +3,7 @@ import axios from './axios';
 const wait = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms));
 
 export function getCourses(loggedUser) {
-  return wait(2000)
+  return wait(1)
     .then(() => axios.get('/users/' + loggedUser.id + '/courses'))
     .then((response) => {
       if (response.status === 200) {
@@ -17,7 +17,7 @@ export function getCourses(loggedUser) {
 }
 
 export function getCourseById(courseId) {
-  return wait(2000)
+  return wait(1)
     .then(() => axios.get('/courses/' + courseId))
     .then((response) => {
       if (response.status === 200) {
@@ -31,7 +31,7 @@ export function getCourseById(courseId) {
 }
 
 export function getQuizByCourseId(courseId) {
-  return wait(2000)
+  return wait(1)
     .then(() => axios.get('/courses/' + courseId + '/quiz'))
     .then((response) => {
       if (response.status === 200) {
