@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import useStylesQuiz from './quiz-style';
 import resultsStyle from './results-style';
+import Progress from './progress';
 
 export default function Result({ retryQuiz, quizResult }) {
   const classes = resultsStyle();
@@ -40,7 +41,11 @@ export default function Result({ retryQuiz, quizResult }) {
   }
 
   return (
-    <Container className={containerClass.quizContainer}>
+    <Container
+      component='div'
+      maxWidth='md'
+      className={containerClass.quizContainer}
+    >
       <div className={classes.root}>
         <div className={classes.backButton}>{linkButton}</div>
         <h1>{message}</h1>
@@ -52,12 +57,7 @@ export default function Result({ retryQuiz, quizResult }) {
         ></div>
 
         <div className={classes.result} style={{ color: redColor }}>
-          <CircularProgress
-            variant='static'
-            value={quizResult}
-            color='primary'
-            size='250px'
-          />
+          <Progress quizResult={quizResult} />
           <div style={{ position: 'absolute', top: '28%', left: left }}>
             <p>{quizResult + '%'}</p>
           </div>
