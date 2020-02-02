@@ -66,11 +66,7 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
     ></LogInForm>
   );
 
-  return isAuth ? (
-    <Redirect to={'/users/' + loggedUser.id + '/courses'} />
-  ) : (
-    logInForm
-  );
+  return isAuth ? <Redirect to='/courses' /> : logInForm;
 }
 
 ManageLogIn.propTypes = {

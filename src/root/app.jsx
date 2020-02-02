@@ -30,8 +30,8 @@ function App({ isAuth }) {
         <AppBar />
         <Switch>
           <Route exact path='/' component={ManageLogIn} />
-          <Route path='/users/:userId/courses' component={ManageCourses} />
           <Route path='/courses/:courseId' component={ManageCourse} />
+          <Route path='/courses' component={ManageCourses} />
           <Route component={PageNotFound} />
         </Switch>
       </>
