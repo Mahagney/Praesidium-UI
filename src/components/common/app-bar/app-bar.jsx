@@ -30,7 +30,7 @@ function AppBar({ loggedUser, logOutUser }) {
       <AppBarMui color='primary'>
         <Toolbar>
           <div className={classes.logo}>
-            <Link to={'/users/' + loggedUser.id + '/courses'}>
+            <Link to='/courses'>
               <AlfaLogo
                 width={'45px'}
                 height={'45px'}
