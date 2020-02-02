@@ -23,10 +23,20 @@ function PdfViewer({
   return (
     <div className={classes.pdfContainer}>
       <nav>
-        <Button variant='contained' color='primary' onClick={goToPrevPage}>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={goToPrevPage}
+          disabled={pageNumber == 1 || !numPages}
+        >
           <span className={classes.arrowChar}>&#8592;</span>
         </Button>
-        <Button variant='contained' color='primary' onClick={goToNextPage}>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={goToNextPage}
+          disabled={pageNumber == numPages || !numPages}
+        >
           <span className={classes.arrowChar}>&#8594;</span>
         </Button>
       </nav>
@@ -39,11 +49,7 @@ function PdfViewer({
         onLoadSuccess={onDocumentLoadSuccess}
         className={classes.pdfFileContainer}
       >
-        <Page
-          pageNumber={pageNumber}
-          width={1000}
-          //className={classes.pageDiv}
-        />
+        <Page pageNumber={pageNumber} width={1000} />
       </Document>
     </div>
   );

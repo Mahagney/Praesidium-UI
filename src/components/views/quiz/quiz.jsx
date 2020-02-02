@@ -13,6 +13,10 @@ import Answers from './answers';
 
 function Quiz({ counter, answerQuestion, quizQuestions }) {
   const classes = useStylesQuiz();
+  let resultId = 0;
+  quizQuestions[counter - 1].ANSWERs.forEach((element) => {
+    if (element.IS_CORRECT) resultId = element.ID;
+  });
 
   return (
     <Container component='div' maxWidth='md' className={classes.quizContainer}>
@@ -21,7 +25,7 @@ function Quiz({ counter, answerQuestion, quizQuestions }) {
       <Answers
         answerQuestion={answerQuestion}
         answers={quizQuestions[counter - 1].ANSWERs}
-        response={quizQuestions[counter - 1].ID}
+        response={resultId}
       />
     </Container>
   );
