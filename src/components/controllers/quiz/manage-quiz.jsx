@@ -1,8 +1,6 @@
 //#region 'NPM DEP'
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Container from '@material-ui/core/Container';
-
 //#endregion
 
 //#region 'LOCAL DEP'
@@ -38,12 +36,14 @@ function ManageQuiz({ quizData }) {
     );
   } else {
     const quizResult = (correctCount / quizData.length) * 100;
-    quizContent = <Results retryQuiz={retryQuiz} quizResult={quizResult} />;
+    quizContent = <Results retryQuiz={retryQuiz} results={quizResult} />;
   }
 
   return quizContent;
 }
 
-Quiz.propTypes = {};
+Quiz.propTypes = {
+  quizData: PropTypes.object.isRequired
+};
 
 export default ManageQuiz;

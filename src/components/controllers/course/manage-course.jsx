@@ -20,19 +20,20 @@ function ManageCourse({
   courses,
   currCourseName
 }) {
-  const [pdfNumPages, setPdfNumPages] = useState(null);
+  const [currentCourse, setCurrentCourse] = useState({});
+  const [pdfNumPages, setPdfNumPages] = useState(1);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
   const [quiz, setQuiz] = useState({});
-  const [currentCourse, setCurrentCourse] = useState({});
 
   useEffect(() => {
     if (!courses.length) {
-      loadCourses(loggedUser).catch((error) => {});
+      loadCourses(loggedUser).catch(() => {});
     }
-    getCourseById(match.params.courseId).then((course) =>
-      setCurrentCourse(course)
-    );
+    getCourseById(match.params.courseId).then((course) => {
+      setCurrentCourse(course);
+      setTabValue(course.VIDEO_URL ? 0 : 1);
+    });
     getQuizByCourseId(match.params.courseId).then((quiz) => setQuiz(quiz));
   }, []);
 
@@ -51,6 +52,7 @@ function ManageCourse({
   function handleTabChange(value) {
     setTabValue(value);
   }
+
   let section = null;
   if (tabValue === 0) {
     section = currentCourse.VIDEO_URL ? (
@@ -72,12 +74,14 @@ function ManageCourse({
       <Spinner />
     );
   } else section = quiz.length ? <Quiz quizData={quiz} /> : <Spinner />;
-
   return courses.length ? (
     <Course
       courseName={currCourseName}
       section={section}
       onTabChange={handleTabChange}
+      showQuiz={quiz && quiz.length != 0}
+      showVideo={currentCourse.VIDEO_URL ? true : false}
+      tabValue={tabValue}
     />
   ) : (
     <Spinner />

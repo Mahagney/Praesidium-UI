@@ -2,7 +2,7 @@ import axios from './axios';
 import setAuthorizationToken from './apiUtils';
 import jwt from 'jsonwebtoken';
 
-const wait = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function logIn(user) {
   return wait(2000)

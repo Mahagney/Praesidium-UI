@@ -1,6 +1,6 @@
 import axios from './axios';
 
-const wait = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function getCourses(loggedUser) {
   return wait(1)
