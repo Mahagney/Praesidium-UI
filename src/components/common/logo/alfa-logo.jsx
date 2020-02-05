@@ -22,7 +22,8 @@ const AlfaLogo = ({ width, height, style }) => (
 
 AlfaLogo.propTypes = {
   width: PropTypes.string.isRequired,
-  height: PropTypes.string.isRequired
+  height: PropTypes.string.isRequired,
+  style: PropTypes.object.isRequired
 };
 
 export default AlfaLogo;

@@ -11,7 +11,11 @@ import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
 import { loadCourses } from '../../../redux/actions/course-action';
-import { getQuizByCourseId, getCourseById } from '../../../api/course-api';
+import {
+  getQuizByCourseId,
+  getCourseById,
+  sendUserCompletion
+} from '../../../api/course-api';
 //#endregion
 function ManageCourse({
   match,
@@ -73,7 +77,17 @@ function ManageCourse({
     ) : (
       <Spinner />
     );
-  } else section = quiz.length ? <Quiz quizData={quiz} /> : <Spinner />;
+  } else
+    section = quiz.length ? (
+      <Quiz
+        quizData={quiz}
+        onCompletion={(score) =>
+          sendUserCompletion(match.params.courseId, loggedUser.id, score)
+        }
+      />
+    ) : (
+      <Spinner />
+    );
   return courses.length ? (
     <Course
       courseName={currCourseName}

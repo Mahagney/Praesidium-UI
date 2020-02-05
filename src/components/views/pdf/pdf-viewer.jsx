@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 //#region 'LOCAL DEP'
 import useStylesPdfViewer from './pdf-viewer-style';
-import pdfFile from './sample1.pdf';
+//import pdfFile from './sample1.pdf';
 //#endregion
 
 function PdfViewer({

@@ -43,3 +43,19 @@ export function getQuizByCourseId(courseId) {
       throw error;
     });
 }
+
+export function sendUserCompletion(courseId, userId, score) {
+  return wait(1)
+    .then(() =>
+      axios.post('/courses/' + courseId + '/user/' + userId, { score: score })
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}

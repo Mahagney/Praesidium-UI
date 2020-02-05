@@ -16,7 +16,7 @@ import { logOutUser } from '../../../redux/actions/user-action';
 import AlfaLogo from '../logo';
 //#endregion
 
-function AppBar({ loggedUser, logOutUser }) {
+function AppBar({ logOutUser }) {
   const classes = useStylesAppBar();
 
   function handleLogOut() {

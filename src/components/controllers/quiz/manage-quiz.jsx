@@ -8,7 +8,7 @@ import Quiz from '../../views/quiz';
 import Results from '../../views/quiz/results';
 //#endregion
 
-function ManageQuiz({ quizData }) {
+function ManageQuiz({ quizData, onCompletion }) {
   const [counter, setCounter] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
 
@@ -35,7 +35,10 @@ function ManageQuiz({ quizData }) {
       />
     );
   } else {
-    const quizResult = (correctCount / quizData.length) * 100;
+    const quizResult = Math.round((correctCount / quizData.length) * 100);
+    if (quizResult >= 50) {
+      onCompletion(quizResult);
+    }
     quizContent = <Results retryQuiz={retryQuiz} results={quizResult} />;
   }
 
