@@ -10,6 +10,7 @@ import Spinner from '../../common/spinner';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
+import CourseEnd from '../../views/quiz/courseEnd';
 import { loadCourses } from '../../../redux/actions/course-action';
 import {
   getQuizByCourseId,
@@ -18,6 +19,7 @@ import {
 } from '../../../api/course-api';
 //#endregion
 function ManageCourse({
+  history,
   match,
   loadCourses,
   loggedUser,
@@ -28,7 +30,7 @@ function ManageCourse({
   const [pdfNumPages, setPdfNumPages] = useState(1);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
-  const [quiz, setQuiz] = useState({});
+  const [quiz, setQuiz] = useState(null);
 
   useEffect(() => {
     if (!courses.length) {
@@ -77,23 +79,35 @@ function ManageCourse({
     ) : (
       <Spinner />
     );
-  } else
+  } else if (currentCourse && quiz !== null && quiz.length === 0) {
+    section = (
+      <CourseEnd
+        sendResponse={() => {
+          sendUserCompletion(match.params.courseId, loggedUser.id, 0).then(
+            history.push('/courses')
+          );
+        }}
+      />
+    );
+  } else {
     section = quiz.length ? (
       <Quiz
         quizData={quiz}
-        onCompletion={(score) =>
-          sendUserCompletion(match.params.courseId, loggedUser.id, score)
-        }
+        onCompletion={(score) => {
+          sendUserCompletion(match.params.courseId, loggedUser.id, score);
+        }}
       />
     ) : (
       <Spinner />
     );
+  }
+
   return courses.length ? (
     <Course
       courseName={currCourseName}
       section={section}
       onTabChange={handleTabChange}
-      showQuiz={quiz && quiz.length != 0}
+      showQuiz={true}
       showVideo={currentCourse.VIDEO_URL ? true : false}
       tabValue={tabValue}
     />
@@ -107,7 +121,8 @@ ManageCourse.propTypes = {
   courses: PropTypes.array.isRequired,
   loadCourses: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  currCourseName: PropTypes.string.isRequired
+  currCourseName: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
