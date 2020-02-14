@@ -4,7 +4,7 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function getCourses(loggedUser) {
   return wait(1)
-    .then(() => axios.get('/users/' + loggedUser.id + '/courses'))
+    .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
     .then((response) => {
       if (response.status === 200) {
         return response.data;
