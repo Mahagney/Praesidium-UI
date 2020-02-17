@@ -11,12 +11,11 @@ import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
 import CourseEnd from '../../views/quiz/courseEnd';
-import { loadCourses } from '../../../redux/actions/course-action';
 import {
-  getQuizByCourseId,
-  getCourseById,
-  sendUserCompletion
-} from '../../../api/course-api';
+  loadCourses,
+  completeCourse
+} from '../../../redux/actions/course-action';
+import { getQuizByCourseId, getCourseById } from '../../../api/course-api';
 //#endregion
 function ManageCourse({
   history,
@@ -24,7 +23,8 @@ function ManageCourse({
   loadCourses,
   loggedUser,
   courses,
-  currCourseName
+  currCourseName,
+  completeCourse
 }) {
   const [currentCourse, setCurrentCourse] = useState({});
   const [pdfNumPages, setPdfNumPages] = useState(1);
@@ -83,7 +83,7 @@ function ManageCourse({
     section = (
       <CourseEnd
         sendResponse={() => {
-          sendUserCompletion(match.params.courseId, loggedUser.id, 0).then(
+          completeCourse(match.params.courseId, loggedUser.id, 0).then(
             history.push('/courses')
           );
         }}
@@ -94,7 +94,7 @@ function ManageCourse({
       <Quiz
         quizData={quiz}
         onCompletion={(score) => {
-          sendUserCompletion(match.params.courseId, loggedUser.id, score);
+          completeCourse(match.params.courseId, loggedUser.id, score);
         }}
       />
     ) : (
@@ -104,7 +104,11 @@ function ManageCourse({
 
   return courses.length ? (
     <Course
-      courseName={currCourseName}
+      courseName={
+        currentCourse && currentCourse.NAME
+          ? currentCourse.NAME
+          : currCourseName
+      }
       section={section}
       onTabChange={handleTabChange}
       showQuiz={true}
@@ -122,14 +126,16 @@ ManageCourse.propTypes = {
   loadCourses: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   currCourseName: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  completeCourse: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   const courseId = ownProps.match.params.courseId;
-  const courseName = state.courses.length
-    ? state.courses.find((c) => c.ID === courseId).NAME
-    : '';
+  const course = state.courses.length
+    ? state.courses.find((c) => c.ID === courseId)
+    : undefined;
+  const courseName = course ? course.NAME : '';
   return {
     courses: state.courses,
     currCourseName: courseName,
@@ -138,7 +144,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  loadCourses: loadCourses
+  loadCourses: loadCourses,
+  completeCourse: completeCourse
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCourse);

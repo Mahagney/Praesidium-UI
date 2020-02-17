@@ -47,7 +47,9 @@ export function getQuizByCourseId(courseId) {
 export function sendUserCompletion(courseId, userId, score) {
   return wait(1)
     .then(() =>
-      axios.post('/courses/' + courseId + '/user/' + userId, { score: score })
+      axios.put('/courses/' + courseId + '/user/' + userId + '/complete', {
+        score: score
+      })
     )
     .then((response) => {
       if (response.status === 200) {

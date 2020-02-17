@@ -3,6 +3,22 @@ import * as courseApi from '../../api/course-api';
 import { beginApiCall, apiCallError } from './api-status-action';
 import { logOutUser } from './user-action';
 
+function completeCourseSuccess(courseId) {
+  return {
+    type: actionTypes.COMPLETE_COURSE,
+    courseId
+  };
+}
+
+export function completeCourse(courseId, userId, score) {
+  return function(dispatch) {
+    dispatch(beginApiCall());
+    return courseApi.sendUserCompletion(courseId, userId, score).then(() => {
+      dispatch(completeCourseSuccess(courseId));
+    });
+  };
+}
+
 function loadCoursesSuccess(courses) {
   return {
     type: actionTypes.LOAD_COURSES_SUCCESS,

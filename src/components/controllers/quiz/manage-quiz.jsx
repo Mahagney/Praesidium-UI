@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //#endregion
 
@@ -11,9 +11,22 @@ import Results from '../../views/quiz/results';
 function ManageQuiz({ quizData, onCompletion }) {
   const [counter, setCounter] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
+  const [quizResult, setQuizResult] = useState(0);
 
-  const answerQuestion = (correct) => {
-    if (correct) setCorrectCount(correctCount + 1);
+  const answerQuestion = (isCorrect) => {
+    let correct = correctCount;
+    if (isCorrect) {
+      setCorrectCount(correctCount + 1);
+      correct++;
+    }
+
+    if (counter + 1 >= quizData.length) {
+      const result = Math.round((correct / quizData.length) * 100);
+      if (result >= 50) {
+        onCompletion(result);
+      }
+      setQuizResult(result);
+    }
     if (counter == quizData.length) setCounter(0);
     else setCounter(counter + 1);
   };
@@ -35,10 +48,6 @@ function ManageQuiz({ quizData, onCompletion }) {
       />
     );
   } else {
-    const quizResult = Math.round((correctCount / quizData.length) * 100);
-    if (quizResult >= 50) {
-      onCompletion(quizResult);
-    }
     quizContent = <Results retryQuiz={retryQuiz} results={quizResult} />;
   }
 
