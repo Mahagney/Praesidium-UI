@@ -1,17 +1,18 @@
-import React, { useState, Fragment } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React from 'react';
 import Replay from '@material-ui/icons/Replay';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Link } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 
 import Container from '@material-ui/core/Container';
 import useStylesQuiz from './quiz-style';
 import resultsStyle from './results-style';
 import Progress from './progress';
 
-export default function Result({ retryQuiz, quizResult }) {
+export default function Result({ retryQuiz, results }) {
   const classes = resultsStyle();
   const containerClass = useStylesQuiz();
+  const quizResult = Math.round(results);
 
   const message =
     quizResult > 50
@@ -25,7 +26,7 @@ export default function Result({ retryQuiz, quizResult }) {
 
   if (quizResult > 50) {
     linkButton = (
-      <Link className={classes.linkToCourses} to={'/users/3/courses'}>
+      <Link className={classes.linkToCourses} to={'/courses'}>
         <ArrowBackIos></ArrowBackIos>
         <p>Cursurile mele</p>
       </Link>
@@ -66,3 +67,8 @@ export default function Result({ retryQuiz, quizResult }) {
     </Container>
   );
 }
+
+Result.propTypes = {
+  retryQuiz: PropTypes.func.isRequired,
+  results: PropTypes.number.isRequired
+};

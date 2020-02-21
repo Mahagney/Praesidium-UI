@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -21,13 +20,11 @@ function Answers({ answers, response, answerQuestion }) {
   const handleChange = (event) => {
     let res = false;
     if (event.target.value == response) res = true;
-    console.log(response);
     setCurrentResponse(event.target.value);
     setTimeout(function() {
       answerQuestion(res);
       setCurrentResponse(0);
     }, 500);
-    //answerQuestion(event.target.value == response);
   };
 
   function generateAnswerOption(answer) {
@@ -63,6 +60,10 @@ function Answers({ answers, response, answerQuestion }) {
   );
 }
 
-Answers.propTypes = {};
+Answers.propTypes = {
+  answers: PropTypes.array.isRequired,
+  response: PropTypes.string.isRequired,
+  answerQuestion: PropTypes.func.isRequired
+};
 
 export default Answers;

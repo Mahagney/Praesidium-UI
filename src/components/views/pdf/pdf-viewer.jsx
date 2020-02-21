@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 //#region 'LOCAL DEP'
 import useStylesPdfViewer from './pdf-viewer-style';
-import pdfFile from './sample1.pdf';
+//import pdfFile from './sample1.pdf';
 //#endregion
 
 function PdfViewer({
@@ -60,7 +60,7 @@ PdfViewer.propTypes = {
   goToPrevPage: PropTypes.func.isRequired,
   goToNextPage: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,
-  numPages: PropTypes.object.isRequired,
+  numPages: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired
 };
 

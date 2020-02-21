@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -9,12 +9,9 @@ import Tab from '@material-ui/core/Tab';
 import useTabStyles from './tab-style';
 //#endregion
 
-function CenteredTabs({ onTabChange }) {
+function CenteredTabs({ onTabChange, tabValue, showQuiz, showVideo }) {
   const classes = useTabStyles();
-  const [tabValue, setTabValue] = useState(0);
-
   function handleTabChange(event, newValue) {
-    setTabValue(newValue);
     onTabChange(newValue);
   }
 
@@ -31,15 +28,18 @@ function CenteredTabs({ onTabChange }) {
       textColor='primary'
       centered
     >
-      <Tab label='Video' className={classes.root} />
+      <Tab label='Video' className={classes.root} disabled={!showVideo} />
       <Tab label='Pdf' />
-      <Tab label='Quiz' />
+      <Tab label='Quiz' disabled={!showQuiz} />
     </Tabs>
   );
 }
 
 CenteredTabs.propTypes = {
-  onTabChange: PropTypes.func.isRequired
+  onTabChange: PropTypes.func.isRequired,
+  tabValue: PropTypes.number.isRequired,
+  showQuiz: PropTypes.bool.isRequired,
+  showVideo: PropTypes.bool.isRequired
 };
 
 export default CenteredTabs;
