@@ -9,7 +9,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import LinkMaterial from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import LockIcon from '@material-ui/icons/Lock';
 //#endregion
 
 //#region 'LOCAL DEP'

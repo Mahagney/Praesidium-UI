@@ -10,29 +10,36 @@ import Spinner from '../../common/spinner';
 import PdfViewer from '../../views/pdf';
 import VideoPlayer from '../../views/video';
 import Quiz from '../quiz/manage-quiz';
-import { loadCourses } from '../../../redux/actions/course-action';
+import CourseEnd from '../../views/quiz/courseEnd';
+import {
+  loadCourses,
+  completeCourse
+} from '../../../redux/actions/course-action';
 import { getQuizByCourseId, getCourseById } from '../../../api/course-api';
 //#endregion
 function ManageCourse({
+  history,
   match,
   loadCourses,
   loggedUser,
   courses,
-  currCourseName
+  currCourseName,
+  completeCourse
 }) {
-  const [pdfNumPages, setPdfNumPages] = useState(null);
+  const [currentCourse, setCurrentCourse] = useState({});
+  const [pdfNumPages, setPdfNumPages] = useState(1);
   const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [tabValue, setTabValue] = useState(0);
-  const [quiz, setQuiz] = useState({});
-  const [currentCourse, setCurrentCourse] = useState({});
+  const [quiz, setQuiz] = useState(null);
 
   useEffect(() => {
     if (!courses.length) {
-      loadCourses(loggedUser).catch((error) => {});
+      loadCourses(loggedUser).catch(() => {});
     }
-    getCourseById(match.params.courseId).then((course) =>
-      setCurrentCourse(course)
-    );
+    getCourseById(match.params.courseId).then((course) => {
+      setCurrentCourse(course);
+      setTabValue(course.VIDEO_URL ? 0 : 1);
+    });
     getQuizByCourseId(match.params.courseId).then((quiz) => setQuiz(quiz));
   }, []);
 
@@ -51,6 +58,7 @@ function ManageCourse({
   function handleTabChange(value) {
     setTabValue(value);
   }
+
   let section = null;
   if (tabValue === 0) {
     section = currentCourse.VIDEO_URL ? (
@@ -71,13 +79,41 @@ function ManageCourse({
     ) : (
       <Spinner />
     );
-  } else section = quiz.length ? <Quiz quizData={quiz} /> : <Spinner />;
+  } else if (currentCourse && quiz !== null && quiz.length === 0) {
+    section = (
+      <CourseEnd
+        onCourseCompletion={() => {
+          completeCourse(match.params.courseId, loggedUser.id, 0).then(
+            history.push('/courses')
+          );
+        }}
+      />
+    );
+  } else {
+    section = quiz.length ? (
+      <Quiz
+        quizData={quiz}
+        onCompletion={(score) => {
+          completeCourse(match.params.courseId, loggedUser.id, score);
+        }}
+      />
+    ) : (
+      <Spinner />
+    );
+  }
 
   return courses.length ? (
     <Course
-      courseName={currCourseName}
+      courseName={
+        currentCourse && currentCourse.NAME
+          ? currentCourse.NAME
+          : currCourseName
+      }
       section={section}
       onTabChange={handleTabChange}
+      showQuiz={true}
+      showVideo={currentCourse.VIDEO_URL ? true : false}
+      tabValue={tabValue}
     />
   ) : (
     <Spinner />
@@ -89,14 +125,17 @@ ManageCourse.propTypes = {
   courses: PropTypes.array.isRequired,
   loadCourses: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  currCourseName: PropTypes.string.isRequired
+  currCourseName: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+  completeCourse: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   const courseId = ownProps.match.params.courseId;
-  const courseName = state.courses.length
-    ? state.courses.find((c) => c.ID === courseId).NAME
-    : '';
+  const course = state.courses.length
+    ? state.courses.find((c) => c.ID === courseId)
+    : undefined;
+  const courseName = course ? course.NAME : '';
   return {
     courses: state.courses,
     currCourseName: courseName,
@@ -105,7 +144,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  loadCourses: loadCourses
+  loadCourses: loadCourses,
+  completeCourse: completeCourse
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCourse);

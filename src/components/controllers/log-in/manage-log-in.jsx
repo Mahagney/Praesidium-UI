@@ -12,11 +12,11 @@ import LogInForm from '../../views/log-in';
 import * as userActions from '../../../redux/actions/user-action';
 //#endregion
 
-function ManageLogIn({ isAuth, loggedUser, logIn }) {
+function ManageLogIn({ isAuth, logIn }) {
   const [user, setUser] = useState({});
   const [logging, setLogging] = useState(false);
   const [validations, setValidations] = useState({});
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleChange(event) {
     const { name, value } = event.target;
