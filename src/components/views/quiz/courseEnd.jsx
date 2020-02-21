@@ -12,7 +12,7 @@ import useStylesQuiz from './quiz-style';
 import useStylesCourseEnd from './courseEnd-style';
 //#endregion
 
-function CourseEnd({ sendResponse }) {
+function CourseEnd({ onCourseCompletion }) {
   const classes = { ...useStylesQuiz(), ...useStylesCourseEnd() };
   const [accept, setAccept] = useState(false);
 
@@ -35,9 +35,7 @@ function CourseEnd({ sendResponse }) {
           variant='contained'
           color='primary'
           disabled={accept ? false : true}
-          onClick={() => {
-            sendResponse();
-          }}
+          onClick={onCourseCompletion}
         >
           Trimite
         </Button>
@@ -47,7 +45,7 @@ function CourseEnd({ sendResponse }) {
 }
 
 CourseEnd.propTypes = {
-  sendResponse: PropTypes.func.isRequired
+  onCourseCompletion: PropTypes.func.isRequired
 };
 
 export default CourseEnd;

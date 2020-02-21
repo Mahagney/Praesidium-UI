@@ -82,7 +82,7 @@ function ManageCourse({
   } else if (currentCourse && quiz !== null && quiz.length === 0) {
     section = (
       <CourseEnd
-        sendResponse={() => {
+        onCourseCompletion={() => {
           completeCourse(match.params.courseId, loggedUser.id, 0).then(
             history.push('/courses')
           );
