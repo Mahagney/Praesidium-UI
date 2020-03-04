@@ -1,14 +1,19 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   target: 'web',
   entry: './src/index.js',
   devtool: 'cheap-module-source-map',
+  optimization: {
+    minimize: true,
+    minimizer: [new UglifyJsPlugin({ include: /\/includes/ })]
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
-    publicPath: '/',
+    publicPath: '',
     filename: 'bundlePraesidium.js'
   },
   devServer: {
