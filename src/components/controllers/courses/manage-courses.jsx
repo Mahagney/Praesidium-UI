@@ -21,7 +21,11 @@ function ManageCourses({ history, courses, loggedUser, loadCourses }) {
     history.push('/courses/' + courseId);
   }
   return courses.length ? (
-    <CoursesCards courses={courses} handleCardClick={handleCardClick} />
+    <CoursesCards
+      courses={courses}
+      handleCardClick={handleCardClick}
+      history={history}
+    />
   ) : (
     <Spinner />
   );

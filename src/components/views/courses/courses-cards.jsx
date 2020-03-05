@@ -11,7 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CourseCard from './course-card';
 import useStylesCoursesCards from './courses-cards-style';
 
-const CoursesCards = ({ courses, handleCardClick }) => {
+const CoursesCards = ({ history, courses, handleCardClick }) => {
   const classes = useStylesCoursesCards();
   return (
     <>
@@ -33,7 +33,12 @@ const CoursesCards = ({ courses, handleCardClick }) => {
           ))}
         </Grid>
       </div>
-      <Fab color='primary' aria-label='add' className={classes.fab}>
+      <Fab
+        color='primary'
+        aria-label='add'
+        onClick={() => history.push('courses/new')}
+        className={classes.fab}
+      >
         <AddIcon />
       </Fab>
     </>
@@ -41,6 +46,7 @@ const CoursesCards = ({ courses, handleCardClick }) => {
 };
 
 CoursesCards.propTypes = {
+  history: PropTypes.object.isRequired,
   courses: PropTypes.array.isRequired,
   handleCardClick: PropTypes.func.isRequired
 };

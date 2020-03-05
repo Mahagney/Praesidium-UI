@@ -19,7 +19,7 @@ import { logOutUser } from '../../../redux/actions/user-action';
 import AlfaLogo from '../logo';
 //#endregion
 
-function AppBar({ history, loggedUser, logOutUser }) {
+function AppBar({ history, logOutUser }) {
   const classes = useStylesAppBar();
   const [value, setValue] = useState(0);
 
@@ -57,7 +57,6 @@ function AppBar({ history, loggedUser, logOutUser }) {
             TabIndicatorProps={{ style: { background: 'white' } }}
             value={value}
             onChange={handleChange}
-            textColor='white'
             aria-label='simple tabs example'
           >
             <Tab label='Courses' {...a11yProps(0)} />
@@ -81,7 +80,8 @@ function AppBar({ history, loggedUser, logOutUser }) {
 
 AppBar.propTypes = {
   loggedUser: PropTypes.object.isRequired,
-  logOutUser: PropTypes.func.isRequired
+  logOutUser: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {

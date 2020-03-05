@@ -32,6 +32,7 @@ function App({ isAuth, userId }) {
           <AppBarAdmin />
           <Switch>
             <Route exact path='/' component={ManageLogIn} />
+            <Route exact path='/courses/new' component={PageNotFound} />
             <Route path='/courses/:courseId' component={ManageCourse} />
             <Route path='/courses' component={ManageCourses} />
             <Route component={PageNotFound} />
@@ -61,7 +62,7 @@ function App({ isAuth, userId }) {
 
 App.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  userId: PropTypes.number.isRequired
+  userId: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {
