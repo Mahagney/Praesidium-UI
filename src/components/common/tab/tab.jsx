@@ -25,7 +25,7 @@ function CenteredTabs({ onTabChange, tabValue, showQuiz, showVideo }) {
       value={tabValue}
       onChange={handleTabChange}
       indicatorColor='primary'
-      textColor='primary'
+      textColor='white'
       centered
     >
       <Tab label='Video' className={classes.root} disabled={!showVideo} />

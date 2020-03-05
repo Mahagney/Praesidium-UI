@@ -10,13 +10,14 @@ import { SnackbarProvider } from 'notistack';
 //#region 'LOCAL DEP'
 import theme from './app-style';
 import AppBar from '../components/common/app-bar';
+import AppBarAdmin from '../components/common/app-bar-admin';
 import ManageLogIn from '../components/controllers/log-in';
 import ManageCourses from '../components/controllers/courses';
 import PageNotFound from '../components/views/page-not-found';
 import ManageCourse from '../components/controllers/course';
 //#endregion
 
-function App({ isAuth }) {
+function App({ isAuth, userId }) {
   let routes = (
     <Switch>
       <Route exact path='/' component={ManageLogIn} />
@@ -25,17 +26,31 @@ function App({ isAuth }) {
   );
 
   if (isAuth) {
-    routes = (
-      <>
-        <AppBar />
-        <Switch>
-          <Route exact path='/' component={ManageLogIn} />
-          <Route path='/courses/:courseId' component={ManageCourse} />
-          <Route path='/courses' component={ManageCourses} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </>
-    );
+    if (userId == 3) {
+      routes = (
+        <>
+          <AppBarAdmin />
+          <Switch>
+            <Route exact path='/' component={ManageLogIn} />
+            <Route path='/courses/:courseId' component={ManageCourse} />
+            <Route path='/courses' component={ManageCourses} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </>
+      );
+    } else {
+      routes = (
+        <>
+          <AppBar />
+          <Switch>
+            <Route exact path='/' component={ManageLogIn} />
+            <Route path='/courses/:courseId' component={ManageCourse} />
+            <Route path='/courses' component={ManageCourses} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </>
+      );
+    }
   }
   return (
     <MuiThemeProvider theme={theme}>
@@ -45,12 +60,14 @@ function App({ isAuth }) {
 }
 
 App.propTypes = {
-  isAuth: PropTypes.bool.isRequired
+  isAuth: PropTypes.bool.isRequired,
+  userId: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    isAuth: state.user.id ? true : false
+    isAuth: state.user.id ? true : false,
+    userId: state.user.id
   };
 }
 
