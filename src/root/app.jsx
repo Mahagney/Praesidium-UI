@@ -15,6 +15,7 @@ import ManageLogIn from '../components/controllers/log-in';
 import ManageCourses from '../components/controllers/courses';
 import PageNotFound from '../components/views/page-not-found';
 import ManageCourse from '../components/controllers/course';
+import AddCourse from '../components/views/add-course';
 //#endregion
 
 function App({ isAuth, userId }) {
@@ -32,7 +33,7 @@ function App({ isAuth, userId }) {
           <AppBarAdmin />
           <Switch>
             <Route exact path='/' component={ManageLogIn} />
-            <Route exact path='/courses/new' component={PageNotFound} />
+            <Route exact path='/courses/new' component={AddCourse} />
             <Route path='/courses/:courseId' component={ManageCourse} />
             <Route path='/courses' component={ManageCourses} />
             <Route component={PageNotFound} />
