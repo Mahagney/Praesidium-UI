@@ -7,36 +7,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { DropzoneArea } from 'material-ui-dropzone';
+import Question from './question';
 //#endregion
 
 //#region 'LOCAL DEP'
 import useStylesCourse from './add-course-style';
-import Answers from './answers';
 //#endregion
 
 function AddCourse() {
   const classes = useStylesCourse();
-
-  const generateQuestion = (number) => {
-    return (
-      <div className={classes.smallContainer}>
-        <h2>{'Question ' + number}</h2>
-        <TextField
-          //variant='outlined'
-          margin='normal'
-          fullWidth
-          label='Question text'
-          name='title'
-          autoFocus
-          //value={emailValue || ''}
-          //onChange={onChange}
-          //error={errors.email ? true : false}
-          //helperText={errors.email}
-        />
-        <Answers></Answers>
-      </div>
-    );
-  };
 
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
@@ -71,7 +50,7 @@ function AddCourse() {
             <MenuItem value={30}>Anual</MenuItem>
           </Select>
         </FormControl>
-        {generateQuestion(1)}
+        <Question />
       </Container>
       <Container
         component='div'

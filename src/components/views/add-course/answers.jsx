@@ -1,33 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import useStylesAnswers from './answers-style';
+import AnswersList from './answers-list';
 
 function Answers() {
   const classes = useStylesAnswers();
+  const [answers, setAnswers] = useState([]);
+  const [questionText, setQuestionText] = useState('');
+
+  const addAnswer = (value) => {
+    setAnswers([...answers, value]);
+    setQuestionText('');
+  };
 
   return (
     <Container style={{ marginTop: '8px' }}>
-      <h3 style={{ textAlign: 'left' }}>Answers</h3>
       <div className={classes.answerDiv}>
         <TextField
           //variant='outlined'
           margin='normal'
           fullWidth
-          label='Question text'
-          name='title'
+          label='Answer text'
+          name='answer'
           autoFocus
-          //value={emailValue || ''}
-          //onChange={onChange}
+          value={questionText}
+          onChange={(event) => setQuestionText(event.target.value)}
           //error={errors.email ? true : false}
           //helperText={errors.email}
         />
-        <IconButton aria-label='Delete'>
-          <DeleteIcon fontSize='medium' color='primary' />
+        <IconButton aria-label='Add' onClick={() => addAnswer(questionText)}>
+          <AddCircleIcon color='primary' />
         </IconButton>{' '}
       </div>
+      <AnswersList answers={answers} />
     </Container>
   );
 }
