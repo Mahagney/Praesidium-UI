@@ -14,12 +14,12 @@ import useStylesAnswer from './answers-style';
 //#endregion
 
 function Answers({ answers, selectCorrectAnswer }) {
-  const [currentResponse, setCurrentResponse] = useState(0);
+  const [currentResponse, setCurrentResponse] = useState(50);
   const classes = useStylesAnswer();
 
   const handleChange = (event) => {
     setCurrentResponse(parseInt(event.target.value));
-    //selectCorrectAnswer(event.target.value);
+    selectCorrectAnswer(parseInt(event.target.value));
   };
 
   function generateAnswerOption(answer) {
@@ -49,7 +49,7 @@ function Answers({ answers, selectCorrectAnswer }) {
           onChange={(event) => handleChange(event)}
         >
           {answers.map((current, index) =>
-            generateAnswerOption({ ID: index, TEXT: current })
+            generateAnswerOption({ ID: index, TEXT: current.TEXT })
           )}
         </RadioGroup>
       </FormControl>
@@ -58,8 +58,8 @@ function Answers({ answers, selectCorrectAnswer }) {
 }
 
 Answers.propTypes = {
-  answers: PropTypes.array.isRequired
-  //selectCorrectAnswer: PropTypes.func.isRequired
+  answers: PropTypes.array.isRequired,
+  selectCorrectAnswer: PropTypes.func.isRequired
 };
 
 export default Answers;

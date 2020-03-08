@@ -11,13 +11,25 @@ function Question() {
   const [questionText, setQuestionText] = useState('');
 
   const generateQuestion = (question, index) => {
-    index++;
+    console.log(question);
     return (
       <div key={index}>
         <h3 style={{ textAlign: 'left', marginTop: '0.8rem' }}>
-          {index + '.' + question.TEXT}
+          {index + 1 + '.' + question.TEXT}
         </h3>
-        <Answers />
+        <Answers
+          answers={question.ANSWERS}
+          setAnswers={(answers) => {
+            console.log('answers', answers);
+            setQuestions(
+              questions.map((question, currentIndex) =>
+                currentIndex != index
+                  ? question
+                  : { ...question, ANSWERS: answers }
+              )
+            );
+          }}
+        />
       </div>
     );
   };
@@ -41,7 +53,7 @@ function Question() {
         <IconButton
           aria-label='Add'
           onClick={() => {
-            setQuestions([{ TEXT: questionText, ANSWERS: {} }, ...questions]);
+            setQuestions([{ TEXT: questionText, ANSWERS: [] }, ...questions]);
             setQuestionText('');
           }}
         >

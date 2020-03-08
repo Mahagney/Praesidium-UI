@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -6,14 +7,23 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import useStylesAnswers from './answers-style';
 import AnswersList from './answers-list';
 
-function Answers() {
+function Answers({ answers, setAnswers }) {
   const classes = useStylesAnswers();
-  const [answers, setAnswers] = useState([]);
-  const [questionText, setQuestionText] = useState('');
+  const [answerText, setAnswerText] = useState('');
 
   const addAnswer = (value) => {
-    setAnswers([...answers, value]);
-    setQuestionText('');
+    setAnswers([...answers, { TEXT: value, IS_CORRECT: false }]);
+    setAnswerText('');
+  };
+
+  const selectCorrectAnswer = (index) => {
+    setAnswers(
+      answers.map((v, i) =>
+        i != index
+          ? { TEXT: v.TEXT, IS_CORRECT: false }
+          : { TEXT: v.TEXT, IS_CORRECT: true }
+      )
+    );
   };
 
   return (
@@ -26,20 +36,25 @@ function Answers() {
           label='Answer text'
           name='answer'
           autoFocus
-          value={questionText}
-          onChange={(event) => setQuestionText(event.target.value)}
+          value={answerText}
+          onChange={(event) => setAnswerText(event.target.value)}
           //error={errors.email ? true : false}
           //helperText={errors.email}
         />
-        <IconButton aria-label='Add' onClick={() => addAnswer(questionText)}>
+        <IconButton aria-label='Add' onClick={() => addAnswer(answerText)}>
           <AddCircleIcon color='primary' />
         </IconButton>{' '}
       </div>
-      <AnswersList answers={answers} />
+      <AnswersList
+        answers={answers}
+        selectCorrectAnswer={selectCorrectAnswer}
+      />
     </Container>
   );
 }
 
-Answers.propTypes = {};
+Answers.propTypes = {
+  answers: PropTypes.array.isRequired
+};
 
 export default Answers;
