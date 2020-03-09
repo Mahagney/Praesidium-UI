@@ -61,3 +61,16 @@ export function sendUserCompletion(courseId, userId, score) {
       throw error;
     });
 }
+export function getCourseTypes() {
+  return wait(1)
+    .then(() => axios.get('/courses/types'))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data.courseTypes;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}

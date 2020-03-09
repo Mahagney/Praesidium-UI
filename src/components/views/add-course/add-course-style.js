@@ -9,13 +9,22 @@ const useStylesCourse = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
     position: 'relative',
     textAlign: 'center',
-    paddingTop: '20px',
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(4),
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'column'
+  },
+  flexRowContainer: {
+    paddingBottom: theme.spacing(6),
+    display: 'flex',
+    padding: '0',
+    flexDirection: 'row',
+    alignItems: 'flex-start'
   },
   smallContainer: {
     marginTop: '40px',
     display: 'flex',
+    margin: '5%',
     flexDirection: 'column',
     alignItems: 'flex-start'
   },
@@ -26,7 +35,7 @@ const useStylesCourse = makeStyles((theme) => ({
   formControl: {
     marginTop: theme.spacing(2),
     textAlign: 'left',
-    minWidth: 120
+    minWidth: 140
   },
   dropZone: {
     marginTop: theme.spacing(2),

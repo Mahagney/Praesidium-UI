@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import useStylesCourse from './add-course-style';
 import Answers from './answers';
 
-function Question() {
+function Question({ questions, setQuestions }) {
   const classes = useStylesCourse();
-  const [questions, setQuestions] = useState([]);
   const [questionText, setQuestionText] = useState('');
 
+  const removeQuestion = (index) => {
+    var tempQuestions = [...questions];
+    tempQuestions.splice(index, 1);
+    setQuestions(tempQuestions);
+  };
+
   const generateQuestion = (question, index) => {
-    console.log(question);
     return (
       <div key={index}>
-        <h3 style={{ textAlign: 'left', marginTop: '0.8rem' }}>
-          {index + 1 + '.' + question.TEXT}
-        </h3>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <h3 style={{ textAlign: 'left', marginTop: '0.8rem' }}>
+            {index + 1 + '.' + question.TEXT}
+          </h3>
+          <IconButton aria-label='Add' onClick={() => removeQuestion(index)}>
+            <RemoveCircleIcon color='red' />
+          </IconButton>{' '}
+        </div>
         <Answers
           answers={question.ANSWERS}
           setAnswers={(answers) => {
-            console.log('answers', answers);
             setQuestions(
               questions.map((question, currentIndex) =>
                 currentIndex != index
@@ -36,13 +46,13 @@ function Question() {
 
   return (
     <div className={classes.smallContainer}>
-      <h2>Quiz</h2>
+      <h2>Chestionar</h2>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <TextField
           //variant='outlined'
           margin='normal'
           fullWidth
-          label='Question text'
+          label='Text intrebare'
           name='title'
           autoFocus
           value={questionText || ''}
@@ -65,6 +75,9 @@ function Question() {
   );
 }
 
-Question.propTypes = {};
+Question.propTypes = {
+  questions: PropTypes.array.isRequired,
+  setQuestions: PropTypes.func.isRequired
+};
 
 export default Question;

@@ -33,7 +33,7 @@ function Answers({ answers, setAnswers }) {
           //variant='outlined'
           margin='normal'
           fullWidth
-          label='Answer text'
+          label='Text Raspuns'
           name='answer'
           autoFocus
           value={answerText}
@@ -54,7 +54,8 @@ function Answers({ answers, setAnswers }) {
 }
 
 Answers.propTypes = {
-  answers: PropTypes.array.isRequired
+  answers: PropTypes.array.isRequired,
+  setAnswers: PropTypes.array.isRequired
 };
 
 export default Answers;
