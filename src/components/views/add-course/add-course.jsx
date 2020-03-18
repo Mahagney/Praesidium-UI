@@ -12,7 +12,11 @@ import Button from '@material-ui/core/Button';
 //#endregion
 
 //#region 'LOCAL DEP'
-import { getCourseTypes } from '../../../api/course-api';
+import {
+  getCourseTypes,
+  addCourse,
+  setQuizToCourse
+} from '../../../api/course-api';
 import Question from './question';
 import useStylesCourse from './add-course-style';
 //#endregion
@@ -23,7 +27,6 @@ function AddCourse() {
   const [course, setCourse] = useState({ type: '' });
   const [courseTypes, setCourseTypes] = useState([]);
   const [videoCourse, setVideoCourse] = useState();
-  //const [pdfCourse, setPdfCourse] = useState([]);
 
   useEffect(() => {
     getCourseTypes().then((types) => {
@@ -38,6 +41,14 @@ function AddCourse() {
       [name]: value
     }));
   }
+
+  const submitForm = () => {
+    addCourse(course.title, course.type, course.pdfCourse[0]).then(
+      (response) => {
+        setQuizToCourse(response.data.ID, quiz);
+      }
+    );
+  };
 
   const createSelectItems = () => {
     return courseTypes.map((el) => {
@@ -102,7 +113,7 @@ function AddCourse() {
               }
               acceptedFiles={['application/pdf']}
               fullWidth={true}
-              dropzoneText={'Drag and drop pdf !'}
+              dropzoneText={'Adauga document PDF !'}
               filesLimit={1}
             />
           </div>
@@ -111,7 +122,7 @@ function AddCourse() {
               onChange={(value) => setVideoCourse(value)}
               acceptedFiles={['video/*']}
               fullWidth={true}
-              dropzoneText={'Drag and drop video !'}
+              dropzoneText={'Adauga document video !'}
               maxFileSize={20000000}
               filesLimit={1}
             />
@@ -124,6 +135,7 @@ function AddCourse() {
         color='primary'
         size='medium'
         className={classes.button}
+        onClick={submitForm}
         startIcon={<SaveIcon />}
       >
         Salveaza

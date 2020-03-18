@@ -16,6 +16,19 @@ export function getCourses(loggedUser) {
     });
 }
 
+export function addCourse(courseName, idCourseType, pdfFile) {
+  var formData = new FormData();
+  formData.append('name', courseName);
+  formData.append('idCourseType', idCourseType);
+  formData.append('pdf', pdfFile);
+
+  return axios.post('/courses/', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 export function getCourseById(courseId) {
   return wait(1)
     .then(() => axios.get('/courses/' + courseId))
@@ -42,6 +55,10 @@ export function getQuizByCourseId(courseId) {
     .catch((error) => {
       throw error;
     });
+}
+
+export function setQuizToCourse(courseId, quiz) {
+  return axios.post('/courses/' + courseId + '/quiz', { quiz: quiz });
 }
 
 export function sendUserCompletion(courseId, userId, score) {
