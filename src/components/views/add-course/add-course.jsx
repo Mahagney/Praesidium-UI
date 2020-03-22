@@ -10,6 +10,7 @@ import { DropzoneArea } from 'material-ui-dropzone';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 //#endregion
 
 //#region 'LOCAL DEP'
@@ -21,14 +22,17 @@ import {
 } from '../../../api/course-api';
 import Question from './question';
 import useStylesCourse from './add-course-style';
+import { loadCourses } from '../../../redux/actions/course-action';
 //#endregion
 
-function AddCourse({ history }) {
+function AddCourse({ history, loadCourses }) {
+  const requiredFields = ['title', 'type', 'pdfCourse'];
   const classes = useStylesCourse();
   const [quiz, setQuiz] = useState([]);
   const [course, setCourse] = useState({ type: '' });
   const [courseTypes, setCourseTypes] = useState([]);
   const [videoCourse, setVideoCourse] = useState();
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     getCourseTypes().then((types) => {
@@ -38,6 +42,9 @@ function AddCourse({ history }) {
 
   function handleChange(target) {
     const { name, value } = target;
+    let err = { ...errors };
+    delete err[name];
+    setErrors(err);
     setCourse((prevCourse) => ({
       ...prevCourse,
       [name]: value
@@ -45,19 +52,30 @@ function AddCourse({ history }) {
   }
 
   const submitForm = () => {
-    addCourse(course.title, course.type, course.pdfCourse[0]).then(
-      (response) => {
-        let promises = [];
-
-        if (quiz && quiz.length > 0) promises.push(quiz);
-        if (videoCourse && videoCourse[0]) promises.push(videoCourse[0]);
-
-        Promise.all([promises]).then((result) => {
-          console.log(result);
-          history.push('/courses');
-        });
+    let err = { ...errors };
+    requiredFields.forEach((key) => {
+      if (!course[key]) {
+        err[key] = 'Trebuie completat';
       }
-    );
+    });
+
+    setErrors(err);
+    if (Object.keys(err).length === 0) {
+      addCourse(course.title, course.type, course.pdfCourse[0]).then(
+        ({ data }) => {
+          let promises = [];
+
+          if (quiz && quiz.length > 0)
+            promises.push(setQuizToCourse(data.ID, quiz));
+          if (videoCourse && videoCourse[0])
+            promises.push(setVideoToCourse(data.ID, videoCourse[0]));
+
+          Promise.all(promises).then(() => {
+            loadCourses.then(history.push('/courses'));
+          });
+        }
+      );
+    }
   };
 
   const createSelectItems = () => {
@@ -92,10 +110,15 @@ function AddCourse({ history }) {
             autoFocus
             value={course.title || ''}
             onChange={(event) => handleChange(event.target)}
-            //error={errors.email ? true : false}
-            //helperText={errors.email}
+            required
+            error={errors.title ? true : false}
+            helperText={errors.title}
           />
-          <FormControl className={classes.formControl}>
+          <FormControl
+            required
+            error={errors.type ? true : false}
+            className={classes.formControl}
+          >
             <InputLabel id='demo-simple-select-label'>
               Tipul cursului
             </InputLabel>
@@ -116,7 +139,10 @@ function AddCourse({ history }) {
           maxWidth='sm'
           className={classes.smallContainer}
         >
-          <div className={classes.dropZone}>
+          <div
+            className={classes.dropZone}
+            style={errors['pdfCourse'] ? { borderBottom: '3px solid red' } : {}}
+          >
             <DropzoneArea
               onChange={(value) =>
                 handleChange({ value: value, name: 'pdfCourse' })
@@ -154,8 +180,13 @@ function AddCourse({ history }) {
   );
 }
 
+const mapDispatchToProps = {
+  loadCourses: loadCourses
+};
+
 AddCourse.propTypes = {
+  loadCourses: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 };
 
-export default AddCourse;
+export default connect(null, mapDispatchToProps)(AddCourse);

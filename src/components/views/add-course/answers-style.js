@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStylesCourse = makeStyles((theme) => ({
+const useStylesCourse = makeStyles(() => ({
   answerDiv: { display: 'flex', flexDirection: 'row' }
 }));
 

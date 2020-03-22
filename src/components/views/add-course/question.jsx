@@ -25,7 +25,7 @@ function Question({ questions, setQuestions }) {
             {index + 1 + '.' + question.TEXT}
           </h3>
           <IconButton aria-label='Add' onClick={() => removeQuestion(index)}>
-            <RemoveCircleIcon color='red' />
+            <RemoveCircleIcon />
           </IconButton>{' '}
         </div>
         <Answers
@@ -63,8 +63,10 @@ function Question({ questions, setQuestions }) {
         <IconButton
           aria-label='Add'
           onClick={() => {
-            setQuestions([{ TEXT: questionText, ANSWERS: [] }, ...questions]);
-            setQuestionText('');
+            if (questionText) {
+              setQuestions([...questions, { TEXT: questionText, ANSWERS: [] }]);
+              setQuestionText('');
+            }
           }}
         >
           <AddCircleIcon color='primary' />

@@ -12,8 +12,10 @@ function Answers({ answers, setAnswers }) {
   const [answerText, setAnswerText] = useState('');
 
   const addAnswer = (value) => {
-    setAnswers([...answers, { TEXT: value, IS_CORRECT: false }]);
-    setAnswerText('');
+    if (value) {
+      setAnswers([...answers, { TEXT: value, IS_CORRECT: false }]);
+      setAnswerText('');
+    }
   };
 
   const selectCorrectAnswer = (index) => {
@@ -55,7 +57,7 @@ function Answers({ answers, setAnswers }) {
 
 Answers.propTypes = {
   answers: PropTypes.array.isRequired,
-  setAnswers: PropTypes.array.isRequired
+  setAnswers: PropTypes.func.isRequired
 };
 
 export default Answers;
