@@ -9,19 +9,21 @@ import Select from '@material-ui/core/Select';
 import { DropzoneArea } from 'material-ui-dropzone';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 //#endregion
 
 //#region 'LOCAL DEP'
 import {
   getCourseTypes,
   addCourse,
-  setQuizToCourse
+  setQuizToCourse,
+  setVideoToCourse
 } from '../../../api/course-api';
 import Question from './question';
 import useStylesCourse from './add-course-style';
 //#endregion
 
-function AddCourse() {
+function AddCourse({ history }) {
   const classes = useStylesCourse();
   const [quiz, setQuiz] = useState([]);
   const [course, setCourse] = useState({ type: '' });
@@ -45,7 +47,15 @@ function AddCourse() {
   const submitForm = () => {
     addCourse(course.title, course.type, course.pdfCourse[0]).then(
       (response) => {
-        setQuizToCourse(response.data.ID, quiz);
+        let promises = [];
+
+        if (quiz && quiz.length > 0) promises.push(quiz);
+        if (videoCourse && videoCourse[0]) promises.push(videoCourse[0]);
+
+        Promise.all([promises]).then((result) => {
+          console.log(result);
+          history.push('/courses');
+        });
       }
     );
   };
@@ -144,6 +154,8 @@ function AddCourse() {
   );
 }
 
-AddCourse.propTypes = {};
+AddCourse.propTypes = {
+  history: PropTypes.object.isRequired
+};
 
 export default AddCourse;

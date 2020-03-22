@@ -6,7 +6,7 @@ const useStylesCoursesCards = makeStyles({
     padding: 20
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: '40px',
     right: '40px'
   }

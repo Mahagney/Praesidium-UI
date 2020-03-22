@@ -61,6 +61,17 @@ export function setQuizToCourse(courseId, quiz) {
   return axios.post('/courses/' + courseId + '/quiz', { quiz: quiz });
 }
 
+export function setVideoToCourse(courseId, videoFile) {
+  var formData = new FormData();
+  formData.append('video', videoFile);
+
+  return axios.post('/courses/' + courseId + '/video', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 export function sendUserCompletion(courseId, userId, score) {
   return wait(1)
     .then(() =>
