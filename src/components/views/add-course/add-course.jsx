@@ -33,12 +33,28 @@ function AddCourse({ history, loadCourses }) {
   const [courseTypes, setCourseTypes] = useState([]);
   const [videoCourse, setVideoCourse] = useState();
   const [errors, setErrors] = useState({});
-
+  const [questionErrors, setQuestionErrors] = useState({});
   useEffect(() => {
     getCourseTypes().then((types) => {
       setCourseTypes(types);
     });
   }, []);
+
+  const validateQuiz = () => {
+    let err = {};
+    quiz.forEach((currentQuestion, index) => {
+      let answered = false;
+      currentQuestion.ANSWERS.forEach((answer) => {
+        if (answer.IS_CORRECT) answered = true;
+      });
+      if (answered == false) err[index] = 'Selecteaza cel putin un raspuns';
+
+      if (currentQuestion.ANSWERS.length <= 1)
+        err[index] = 'Adauga cel putin doua raspunsuri';
+    });
+    setQuestionErrors(err);
+    return err;
+  };
 
   function handleChange(target) {
     const { name, value } = target;
@@ -60,7 +76,10 @@ function AddCourse({ history, loadCourses }) {
     });
 
     setErrors(err);
-    if (Object.keys(err).length === 0) {
+
+    const qErrors = validateQuiz();
+    console.log(qErrors);
+    if (Object.keys(err).length === 0 && Object.keys(qErrors).length === 0) {
       addCourse(course.title, course.type, course.pdfCourse[0]).then(
         ({ data }) => {
           let promises = [];
@@ -132,7 +151,11 @@ function AddCourse({ history, loadCourses }) {
               {createSelectItems()}
             </Select>
           </FormControl>
-          <Question questions={quiz} setQuestions={setQuiz} />
+          <Question
+            questions={quiz}
+            setQuestions={setQuiz}
+            questionErrors={questionErrors}
+          />
         </Container>
         <Container
           component='div'

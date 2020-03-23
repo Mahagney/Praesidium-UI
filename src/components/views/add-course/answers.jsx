@@ -7,7 +7,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import useStylesAnswers from './answers-style';
 import AnswersList from './answers-list';
 
-function Answers({ answers, setAnswers }) {
+function Answers({ answers, setAnswers, error }) {
   const classes = useStylesAnswers();
   const [answerText, setAnswerText] = useState('');
 
@@ -40,8 +40,8 @@ function Answers({ answers, setAnswers }) {
           autoFocus
           value={answerText}
           onChange={(event) => setAnswerText(event.target.value)}
-          //error={errors.email ? true : false}
-          //helperText={errors.email}
+          error={error ? true : false}
+          helperText={error}
         />
         <IconButton aria-label='Add' onClick={() => addAnswer(answerText)}>
           <AddCircleIcon color='primary' />
@@ -57,6 +57,7 @@ function Answers({ answers, setAnswers }) {
 
 Answers.propTypes = {
   answers: PropTypes.array.isRequired,
+  error: PropTypes.string.isRequired,
   setAnswers: PropTypes.func.isRequired
 };
 

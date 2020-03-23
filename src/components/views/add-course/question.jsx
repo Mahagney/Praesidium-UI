@@ -7,7 +7,7 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import useStylesCourse from './add-course-style';
 import Answers from './answers';
 
-function Question({ questions, setQuestions }) {
+function Question({ questions, setQuestions, questionErrors }) {
   const classes = useStylesCourse();
   const [questionText, setQuestionText] = useState('');
 
@@ -29,6 +29,7 @@ function Question({ questions, setQuestions }) {
           </IconButton>{' '}
         </div>
         <Answers
+          error={questionErrors[index]}
           answers={question.ANSWERS}
           setAnswers={(answers) => {
             setQuestions(
@@ -79,6 +80,7 @@ function Question({ questions, setQuestions }) {
 
 Question.propTypes = {
   questions: PropTypes.array.isRequired,
+  questionErrors: PropTypes.object.isRequired,
   setQuestions: PropTypes.func.isRequired
 };
 
