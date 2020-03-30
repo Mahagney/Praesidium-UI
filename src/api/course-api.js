@@ -16,6 +16,19 @@ export function getCourses(loggedUser) {
     });
 }
 
+export function addCourse(courseName, idCourseType, pdfFile) {
+  var formData = new FormData();
+  formData.append('name', courseName);
+  formData.append('idCourseType', idCourseType);
+  formData.append('pdf', pdfFile);
+
+  return axios.post('/courses/', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 export function getCourseById(courseId) {
   return wait(1)
     .then(() => axios.get('/courses/' + courseId))
@@ -44,6 +57,21 @@ export function getQuizByCourseId(courseId) {
     });
 }
 
+export function setQuizToCourse(courseId, quiz) {
+  return axios.post('/courses/' + courseId + '/quiz', { quiz: quiz });
+}
+
+export function setVideoToCourse(courseId, videoFile) {
+  var formData = new FormData();
+  formData.append('video', videoFile);
+
+  return axios.post('/courses/' + courseId + '/video', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 export function sendUserCompletion(courseId, userId, score) {
   return wait(1)
     .then(() =>
@@ -54,6 +82,19 @@ export function sendUserCompletion(courseId, userId, score) {
     .then((response) => {
       if (response.status === 200) {
         return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+export function getCourseTypes() {
+  return wait(1)
+    .then(() => axios.get('/courses/types'))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data.courseTypes;
       }
       return null;
     })
