@@ -13,7 +13,7 @@ import Spinner from '../../common/spinner';
 function ManageCourses({ history, courses, loggedUser, loadCourses }) {
   useEffect(() => {
     if (!courses.length) {
-      loadCourses(loggedUser).catch(() => {});
+      loadCourses(loggedUser).catch(() => { });
     }
   }, []);
 
@@ -27,8 +27,8 @@ function ManageCourses({ history, courses, loggedUser, loadCourses }) {
       history={history}
     />
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 }
 
 ManageCourses.propTypes = {

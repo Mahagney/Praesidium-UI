@@ -35,8 +35,9 @@ function AppBar({ history, logOutUser }) {
     };
   }
 
+  const adminTabs = ['/courses', '/companies', '/reports'];
   const handleChange = (event, newValue) => {
-    history.push('/courses');
+    history.push(adminTabs[newValue]);
     setValue(newValue);
   };
 
@@ -44,14 +45,14 @@ function AppBar({ history, logOutUser }) {
     <span className={classes.root}>
       <AppBarMui color='primary'>
         <Toolbar>
-          <div className={classes.logo}>
-            <Link to='/courses'>
-              <AlfaLogo
-                width={'45px'}
-                height={'45px'}
-                style={{ marginTop: '10px' }}
-              />
-            </Link>
+          <div className={classes.logo} onClick={() => handleChange(null, 0)} style={{
+            cursor: "pointer"
+          }}>
+            <AlfaLogo
+              width={'45px'}
+              height={'45px'}
+              style={{ marginTop: '10px' }}
+            />
           </div>
           <Tabs
             TabIndicatorProps={{ style: { background: 'white' } }}
@@ -59,9 +60,9 @@ function AppBar({ history, logOutUser }) {
             onChange={handleChange}
             aria-label='simple tabs example'
           >
-            <Tab label='Courses' {...a11yProps(0)} />
-            <Tab label='Item Two' {...a11yProps(1)} />
-            <Tab label='Item Three' {...a11yProps(2)} />
+            <Tab label='Cursuri' onChange={handleChange} {...a11yProps(0)} />
+            <Tab label='Firme' onChange={handleChange} {...a11yProps(1)} />
+            <Tab label='Rapoarte' onChange={handleChange} {...a11yProps(2)} />
           </Tabs>
 
           <span className={classes.logOut}>
