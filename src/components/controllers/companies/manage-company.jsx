@@ -2,10 +2,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Container from '@material-ui/core/Container';
 //#endregion
 
 //#region 'LOCAL DEP'
-
+import Companies from './../../views/companies/index';
 //#endregion
 
 function ManageCompany({ history, courses, loggedUser, loadCourses }) {
@@ -14,20 +15,11 @@ function ManageCompany({ history, courses, loggedUser, loadCourses }) {
       //loadCourses(loggedUser).catch(() => { });
     }
   }, []);
-
-  function handleCardClick(courseId) {
-    history.push('/courses/' + courseId);
-  }
-  return <div />
-  // return courses.length ? (
-  //   <CoursesCards
-  //     courses={courses}
-  //     handleCardClick={handleCardClick}
-  //     history={history}
-  //   />
-  // ) : (
-  //     <Spinner />
-  //   );
+  return (
+    <Container component="div" maxWidth="xl" style={{ marginTop: "30px" }}>
+      <Companies />
+    </Container>
+  );
 }
 
 ManageCompany.propTypes = {
