@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 
 //#region 'LOCAL DEP'
 import Companies from './../../views/companies/index';
-import { getCompanies, addCompany } from './../../../api/company-api';
+import { getCompanies, addCompany, deleteCompany, updateCompany } from './../../../api/company-api';
 //#endregion
 
 function ManageCompany({ history, courses, loggedUser, loadCourses }) {
@@ -28,10 +28,28 @@ function ManageCompany({ history, courses, loggedUser, loadCourses }) {
     })
   }
 
+  const removeCompany = (companyId) => {
+    deleteCompany(companyId).then(result => {
+      if (result.status == 200) {
+        const tempCompanies = companies.filter(comp => comp.ID !== companyId)
+        setCompanies(tempCompanies);
+      }
+    });
+  }
+
+  const editCompany = (company) => {
+    updateCompany(company).then(result => {
+      if (result.status == 200) {
+        const newCompanies = companies.map(comp => comp.ID == company.ID ? company : comp);
+        setCompanies(newCompanies);
+      }
+    });
+  }
+
 
   return (
     <Container component="div" maxWidth="xl" style={{ marginTop: "30px" }}>
-      <Companies companies={companies} addCompany={appendCompany} />
+      <Companies companies={companies} addCompany={appendCompany} deleteCompany={removeCompany} updateCompany={editCompany} />
     </Container>
   );
 }

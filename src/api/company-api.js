@@ -33,3 +33,23 @@ export function addCompany({ NAME, CUI, EMAIL, PHONE_NUMBER, DOMAIN }) {
         }
     });
 }
+
+export function updateCompany({ ID, NAME, CUI, EMAIL, PHONE_NUMBER, DOMAIN }) {
+    const form = new FormData();
+
+    form.append("NAME", NAME);
+    form.append("CUI", CUI);
+    form.append("EMAIL", EMAIL);
+    form.append("PHONE_NUMBER", PHONE_NUMBER);
+    form.append("DOMAIN", DOMAIN);
+
+    return axios.put('/companies/' + ID, form, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
+
+export function deleteCompany(companyId) {
+    return axios.delete('/companies/' + companyId);
+}

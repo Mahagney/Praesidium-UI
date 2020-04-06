@@ -6,9 +6,10 @@ import MaterialTable from 'material-table';
 
 //#region 'LOCAL DEP'
 import tableIcons from './icons'
+import { updateCompany } from '../../../api/company-api';
 //#endregion
 
-function Companies({ companies, addCompany }) {
+function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
 
     const columns = [
         { title: 'Name', field: 'NAME' },
@@ -38,24 +39,14 @@ function Companies({ companies, addCompany }) {
                     new Promise((resolve) => {
                         setTimeout(() => {
                             resolve();
-                            // if (oldData) {
-                            //     setState((prevState) => {
-                            //         const data = [...prevState.data];
-                            //         data[data.indexOf(oldData)] = newData;
-                            //         return { ...prevState, data };
-                            //     });
-                            // }
+                            updateCompany(newData);
                         }, 600);
                     }),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
                             resolve();
-                            // setState((prevState) => {
-                            //     const data = [...prevState.data];
-                            //     data.splice(data.indexOf(oldData), 1);
-                            //     return { ...prevState, data };
-                            // });
+                            deleteCompany(oldData.ID);
                         }, 600);
                     }),
             }}
