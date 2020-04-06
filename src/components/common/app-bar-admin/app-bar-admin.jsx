@@ -1,7 +1,7 @@
 //#region 'NPM DEP'
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBarMui from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
