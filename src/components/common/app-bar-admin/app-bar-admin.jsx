@@ -1,7 +1,7 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBarMui from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,9 +19,17 @@ import { logOutUser } from '../../../redux/actions/user-action';
 import AlfaLogo from '../logo';
 //#endregion
 
-function AppBar({ history, logOutUser }) {
+function AppBar({ history, location, logOutUser }) {
   const classes = useStylesAppBar();
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let currentTabName = location.pathname.split('/')[1];
+    const tabNumber = adminTabs.indexOf("/" + currentTabName);
+    if (tabNumber != value && tabNumber > -1) {
+      setValue(tabNumber);
+    }
+  }, []);
 
   function handleLogOut() {
     localStorage.removeItem('token');
@@ -35,8 +43,9 @@ function AppBar({ history, logOutUser }) {
     };
   }
 
+  const adminTabs = ['/courses', '/companies', '/reports'];
   const handleChange = (event, newValue) => {
-    history.push('/courses');
+    history.push(adminTabs[newValue]);
     setValue(newValue);
   };
 
@@ -44,14 +53,14 @@ function AppBar({ history, logOutUser }) {
     <span className={classes.root}>
       <AppBarMui color='primary'>
         <Toolbar>
-          <div className={classes.logo}>
-            <Link to='/courses'>
-              <AlfaLogo
-                width={'45px'}
-                height={'45px'}
-                style={{ marginTop: '10px' }}
-              />
-            </Link>
+          <div className={classes.logo} onClick={() => handleChange(null, 0)} style={{
+            cursor: "pointer"
+          }}>
+            <AlfaLogo
+              width={'45px'}
+              height={'45px'}
+              style={{ marginTop: '10px' }}
+            />
           </div>
           <Tabs
             TabIndicatorProps={{ style: { background: 'white' } }}
@@ -59,9 +68,9 @@ function AppBar({ history, logOutUser }) {
             onChange={handleChange}
             aria-label='simple tabs example'
           >
-            <Tab label='Courses' {...a11yProps(0)} />
-            <Tab label='Item Two' {...a11yProps(1)} />
-            <Tab label='Item Three' {...a11yProps(2)} />
+            <Tab label='Cursuri' onChange={handleChange} {...a11yProps(0)} />
+            <Tab label='Firme' onChange={handleChange} {...a11yProps(1)} />
+            <Tab label='Rapoarte' onChange={handleChange} {...a11yProps(2)} />
           </Tabs>
 
           <span className={classes.logOut}>
@@ -81,7 +90,8 @@ function AppBar({ history, logOutUser }) {
 AppBar.propTypes = {
   loggedUser: PropTypes.object.isRequired,
   logOutUser: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
