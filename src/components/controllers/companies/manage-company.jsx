@@ -1,7 +1,5 @@
 //#region 'NPM DEP'
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 //#endregion
 
@@ -10,7 +8,7 @@ import Companies from './../../views/companies/index';
 import { getCompanies, addCompany, deleteCompany, updateCompany } from './../../../api/company-api';
 //#endregion
 
-function ManageCompany({ history, courses, loggedUser, loadCourses }) {
+function ManageCompany() {
   useEffect(() => {
     if (!companies.length) {
       getCompanies().then(result => setCompanies(result));
@@ -54,21 +52,4 @@ function ManageCompany({ history, courses, loggedUser, loadCourses }) {
   );
 }
 
-ManageCompany.propTypes = {
-  // history: PropTypes.object.isRequired,
-  // courses: PropTypes.array.isRequired,
-  // loggedUser: PropTypes.object.isRequired,
-  // loadCourses: PropTypes.func.isRequired
-};
-
-function mapStateToProps(state) {
-  return {
-    loggedUser: state.user,
-  };
-}
-
-const mapDispatchToProps = {
-  //loadCourses: courseActions.loadCourses
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCompany);
+export default ManageCompany;

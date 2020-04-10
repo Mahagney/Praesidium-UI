@@ -1,12 +1,11 @@
 //#region 'NPM DEP'
-import React, { forwardRef } from 'react';
+import React from 'react';
 import propTypes from 'prop-types';
 import MaterialTable from 'material-table';
 //#endregion
 
 //#region 'LOCAL DEP'
 import tableIcons from './icons'
-import { updateCompany } from '../../../api/company-api';
 //#endregion
 
 function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
@@ -24,7 +23,7 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
     return (
         <MaterialTable
             icons={tableIcons}
-            title="Editable Example"
+            title="Vizualizare firme"
             columns={columns}
             data={companies}
             editable={{
@@ -35,7 +34,7 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
                             addCompany(newData);
                         }, 600);
                     }),
-                onRowUpdate: (newData, oldData) =>
+                onRowUpdate: (newData/*, oldData*/) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
                             resolve();
@@ -54,6 +53,11 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
     );
 }
 
-Companies.propTypes = {};
+Companies.propTypes = {
+    companies: propTypes.array.isRequired,
+    addCompany: propTypes.func.isRequired,
+    deleteCompany: propTypes.func.isRequired,
+    updateCompany: propTypes.func.isRequired
+};
 
 export default Companies;

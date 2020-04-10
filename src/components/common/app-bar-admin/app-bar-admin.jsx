@@ -1,5 +1,5 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -19,9 +19,17 @@ import { logOutUser } from '../../../redux/actions/user-action';
 import AlfaLogo from '../logo';
 //#endregion
 
-function AppBar({ history, logOutUser }) {
+function AppBar({ history, location, logOutUser }) {
   const classes = useStylesAppBar();
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let currentTabName = location.pathname.split('/')[1];
+    const tabNumber = adminTabs.indexOf("/" + currentTabName);
+    if (tabNumber != value && tabNumber > -1) {
+      setValue(tabNumber);
+    }
+  }, []);
 
   function handleLogOut() {
     localStorage.removeItem('token');
@@ -82,7 +90,8 @@ function AppBar({ history, logOutUser }) {
 AppBar.propTypes = {
   loggedUser: PropTypes.object.isRequired,
   logOutUser: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
