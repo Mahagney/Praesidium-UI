@@ -3,7 +3,6 @@ import axios from './axios.js';
 export function getCompanyById(companyId) {
     axios.get('/companies/' + companyId).then(response => {
         if (response.status == 200) {
-            console.log(response.data);
             return response.data
         }
     });
@@ -12,7 +11,6 @@ export function getCompanyById(companyId) {
 export function getCompanies() {
     return axios.get('/companies').then(response => {
         if (response.status == 200) {
-            console.log(response.data);
             return response.data
         }
     });

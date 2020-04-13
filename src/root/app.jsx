@@ -14,6 +14,7 @@ import AppBarAdmin from '../components/common/app-bar-admin';
 import ManageLogIn from '../components/controllers/log-in';
 import ManageCourses from '../components/controllers/courses';
 import ManageCompanies from '../components/controllers/companies';
+import ManageUsers from '../components/controllers/users';
 import PageNotFound from '../components/views/page-not-found';
 import ManageCourse from '../components/controllers/course';
 import AddCourse from '../components/views/add-course';
@@ -37,6 +38,7 @@ function App({ isAuth, userId }) {
             <Route exact path='/courses/new' component={AddCourse} />
             <Route path='/courses/:courseId' component={ManageCourse} />
             <Route path='/courses' component={ManageCourses} />
+            <Route path='/employees' component={ManageUsers} />
             <Route path='/companies' component={ManageCompanies} />
             <Route component={PageNotFound} />
           </Switch>

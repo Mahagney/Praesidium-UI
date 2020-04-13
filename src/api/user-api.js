@@ -4,6 +4,18 @@ import jwt from 'jsonwebtoken';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export function getUsers() {
+  return axios.get('/users').then((response) => {
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  })
+    .catch((error) => {
+      throw error;
+    });
+}
+
 export function logIn(user) {
   return wait(2000)
     .then(() => axios.post('/auth/login', user))
