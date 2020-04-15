@@ -8,13 +8,14 @@ import MaterialTable from 'material-table';
 import tableIcons from './icons'
 //#endregion
 
-function Users({ users }) {
+function Users({ users, deleteUser, updateUser }) {
 
     const columns = [
         { title: 'Nume', field: 'LAST_NAME' },
         { title: 'Prenume', field: 'FIRST_NAME' },
         { title: 'Email', field: 'EMAIL' },
-        { title: 'CNP', field: 'CNP' }
+        { title: 'CNP', field: 'CNP' },
+        { title: 'Firma', field: 'COMPANY.NAME', editable: 'never' }
     ]
 
     return (
@@ -24,25 +25,25 @@ function Users({ users }) {
             columns={columns}
             data={users}
             editable={{
-                onRowAdd: (newData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve();
-                            //addCompany(newData);
-                        }, 600);
-                    }),
+                // onRowAdd: (newData) =>
+                //     new Promise((resolve) => {
+                //         setTimeout(() => {
+                //             resolve();
+                //             //addCompany(newData);
+                //         }, 600);
+                //     }),
                 onRowUpdate: (newData/*, oldData*/) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
                             resolve();
-                            //updateUser(newData);
+                            updateUser(newData);
                         }, 600);
                     }),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
                             resolve();
-                            //deleteCompany(oldData.ID);
+                            deleteUser(oldData.ID);
                         }, 600);
                     }),
             }}
@@ -51,7 +52,8 @@ function Users({ users }) {
 }
 
 Users.propTypes = {
-    users: propTypes.array.isRequired
+    users: propTypes.array.isRequired,
+    deleteUser: propTypes.func.isRequired
 };
 
 export default Users;
