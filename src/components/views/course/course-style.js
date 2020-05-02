@@ -13,6 +13,16 @@ const useStylesCourse = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(1.5),
     textAlign: 'center'
+  },
+  fab: {
+    position: 'fixed',
+    bottom: '40px',
+    right: '40px'
+  },
+  fabDelete: {
+    position: 'fixed',
+    bottom: '40px',
+    right: '120px'
   }
 }));
 
