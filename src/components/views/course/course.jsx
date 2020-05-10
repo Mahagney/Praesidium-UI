@@ -10,9 +10,13 @@ import Paper from '@material-ui/core/Paper';
 //#region 'LOCAL DEP'
 import useStylesCourse from './course-style';
 import CenteredTabs from '../../common/tab';
+import Fab from '@material-ui/core/Fab';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DeleteIcon from '@material-ui/icons/Delete';
 //#endregion
 
 function Course({
+  redirectToAssignCourse,
   courseName,
   section,
   onTabChange,
@@ -42,6 +46,22 @@ function Course({
         </Grid>
       </Grid>
       {section}
+      <Fab
+        color='primary'
+        aria-label='Assign'
+        onClick={redirectToAssignCourse}
+        className={classes.fab}
+      >
+        <SettingsIcon />
+      </Fab>
+      <Fab
+        //color='secondary'
+        aria-label='Delete'
+        onClick={() => history.push('courses/new')}
+        className={classes.fabDelete}
+      >
+        <DeleteIcon />
+      </Fab>
     </Container>
   );
 }
@@ -52,7 +72,8 @@ Course.propTypes = {
   tabValue: PropTypes.number.isRequired,
   showQuiz: PropTypes.bool.isRequired,
   showVideo: PropTypes.bool.isRequired,
-  section: PropTypes.object.isRequired
+  section: PropTypes.object.isRequired,
+  redirectToAssignCourse: PropTypes.func.isRequired
 };
 
 export default Course;

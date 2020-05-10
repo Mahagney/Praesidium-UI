@@ -43,7 +43,7 @@ function AppBar({ history, location, logOutUser }) {
     };
   }
 
-  const adminTabs = ['/courses', '/companies', '/reports'];
+  const adminTabs = ['/courses', '/companies', '/employees', '/reports'];
   const handleChange = (event, newValue) => {
     history.push(adminTabs[newValue]);
     setValue(newValue);
@@ -70,6 +70,7 @@ function AppBar({ history, location, logOutUser }) {
           >
             <Tab label='Cursuri' onChange={handleChange} {...a11yProps(0)} />
             <Tab label='Firme' onChange={handleChange} {...a11yProps(1)} />
+            <Tab label='Angajati' onChange={handleChange} {...a11yProps(2)} />
             <Tab label='Rapoarte' onChange={handleChange} {...a11yProps(2)} />
           </Tabs>
 

@@ -34,7 +34,7 @@ function ManageCourse({
 
   useEffect(() => {
     if (!courses.length) {
-      loadCourses(loggedUser).catch(() => {});
+      loadCourses(loggedUser).catch(() => { });
     }
     getCourseById(match.params.courseId).then((course) => {
       setCurrentCourse(course);
@@ -42,6 +42,10 @@ function ManageCourse({
     });
     getQuizByCourseId(match.params.courseId).then((quiz) => setQuiz(quiz));
   }, []);
+
+  const redirectToAssignCourse = () => {
+    history.push('/courses/' + match.params.courseId + '/assign')
+  }
 
   function handleDocumentLoadSuccess({ numPages }) {
     setPdfNumPages(numPages);
@@ -64,8 +68,8 @@ function ManageCourse({
     section = currentCourse.VIDEO_URL ? (
       <VideoPlayer videoUrl={currentCourse.VIDEO_URL} />
     ) : (
-      <Spinner />
-    );
+        <Spinner />
+      );
   } else if (tabValue === 1) {
     section = currentCourse.PDF_URL ? (
       <PdfViewer
@@ -77,8 +81,8 @@ function ManageCourse({
         url={currentCourse.PDF_URL}
       />
     ) : (
-      <Spinner />
-    );
+        <Spinner />
+      );
   } else if (currentCourse && quiz !== null && quiz.length === 0) {
     section = (
       <CourseEnd
@@ -98,12 +102,13 @@ function ManageCourse({
         }}
       />
     ) : (
-      <Spinner />
-    );
+        <Spinner />
+      );
   }
 
   return courses.length ? (
     <Course
+      redirectToAssignCourse={redirectToAssignCourse}
       courseName={
         currentCourse && currentCourse.NAME
           ? currentCourse.NAME
@@ -116,8 +121,8 @@ function ManageCourse({
       tabValue={tabValue}
     />
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 }
 
 ManageCourse.propTypes = {

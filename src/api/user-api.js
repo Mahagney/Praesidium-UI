@@ -4,6 +4,22 @@ import jwt from 'jsonwebtoken';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export function getUsers() {
+  return axios.get('/users').then((response) => {
+    if (response.status === 200) {
+      return response.data;
+    }
+    return null;
+  })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function deleteUser(userId) {
+  return axios.delete('/users/' + userId);
+}
+
 export function logIn(user) {
   return wait(2000)
     .then(() => axios.post('/auth/login', user))
@@ -25,4 +41,19 @@ export function logIn(user) {
       }
       throw err;
     });
+}
+
+export function updateUser({ ID, FIRST_NAME, LAST_NAME, EMAIL, CNP }) {
+  const form = new FormData();
+
+  form.append("FIRST_NAME", FIRST_NAME);
+  form.append("LAST_NAME", LAST_NAME);
+  form.append("EMAIL", EMAIL);
+  form.append("CNP", CNP);
+
+  return axios.put('/users/' + ID, form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 }
