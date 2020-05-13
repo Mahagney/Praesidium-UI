@@ -30,7 +30,11 @@ test:
   stage: test
   script:
     - echo "Running react test suite......"
+  only:
+    - master
 deploy:
   stage: deploy
   script:
     - echo "Running deploy"
+  only:
+    - master
