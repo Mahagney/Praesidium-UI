@@ -20,7 +20,7 @@ build:
     - npm config set prefix /usr/local
     - apt-get update
     - apt-get -y install python3-pip
-    - pip3 install awscli --upgrade --user
+    - pip3 install --user awscli --upgrade
     - npm install
     - npm run-script build
 test:
