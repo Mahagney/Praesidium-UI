@@ -1,0 +1,40 @@
+# https://hub.docker.com/r/library/node/tags/
+image: node:latest
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+#AWS access keys stored as secret variables 
+variables:
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID 
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+#This declares the pipeline stages  
+stages:
+  - build
+  - test
+  - deploy
+cache:
+  paths:
+  - node_modules/
+build:
+  stage: build
+  script:
+    - apt-get update
+    - apt-get -y install python3-pip
+    - pip3 install awscli --upgrade
+    - npm install
+    - npm run-script build
+    - aws s3 rm s3://praesidium --recursive
+    - aws s3 cp --recursive ./build s3://praesidium
+  only:
+    - master
+test:
+  stage: test
+  script:
+    - echo "Running react test suite......"
+  only:
+    - master
+deploy:
+  stage: deploy
+  script:
+    - echo "Running deploy"
+  only:
+    - master
