@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/library/node/tags/
-image: node:latest
+  image: python:latest
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 #AWS access keys stored as secret variables 
@@ -17,9 +17,9 @@ cache:
 build:
   stage: build
   script:
-    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    - unzip awscliv2.zip
-    - sudo ./aws/install
+    - pip install awscli
+    - node -v
+    - npm -v
     - npm install
     - npm run-script build
 test:
