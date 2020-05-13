@@ -23,7 +23,8 @@ build:
   script:
     - npm install
     - npm run-script build
-    - npm run-script deploy
+    - aws s3 rm s3://praesidium --recursive
+    - aws s3 cp --recursive ./build s3://praesidium
 test:
   stage: test
   script:
