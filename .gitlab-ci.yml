@@ -17,7 +17,7 @@ cache:
 build:
   stage: build
   script:
-    - pip install awscli
+    - npm install aws-cli
     - npm install
     - npm run-script build
 test:
