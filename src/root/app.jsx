@@ -19,9 +19,10 @@ import PageNotFound from '../components/views/page-not-found';
 import ManageCourse from '../components/controllers/course';
 import ManageAssignCourse from '../components/controllers/assign-course';
 import AddCourse from '../components/views/add-course';
+import ManageUpdatePassword from '../components/controllers/update-password';
 //#endregion
 
-function App({ isAuth, userId }) {
+function App({ isAuth, userId, oneTimeAuth }) {
   let routes = (
     <Switch>
       <Route exact path='/' component={ManageLogIn} />
@@ -30,7 +31,7 @@ function App({ isAuth, userId }) {
   );
 
   if (isAuth) {
-    if (userId == 3) {
+    if (userId === '3') {
       routes = (
         <>
           <AppBarAdmin />
@@ -46,7 +47,7 @@ function App({ isAuth, userId }) {
           </Switch>
         </>
       );
-    } else {
+    } else if(oneTimeAuth) {
       routes = (
         <>
           <AppBar />
@@ -57,7 +58,19 @@ function App({ isAuth, userId }) {
             <Route component={PageNotFound} />
           </Switch>
         </>
-      );
+      )
+    }
+    else
+    {
+      routes = (
+        <>
+        <Switch>
+          <Route exact path='/' component={ManageLogIn} />
+          <Route path='/update-password' component={ManageUpdatePassword} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </>
+      )
     }
   }
   return (
@@ -75,7 +88,8 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     isAuth: state.user.id ? true : false,
-    userId: state.user.id
+    userId: state.user.id,
+    oneTimeAuth: state.user.one_time_auth
   };
 }
 

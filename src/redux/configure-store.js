@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === LOG_OUT_USER) {
+    localStorage.removeItem('token');
     state = undefined;
   }
 
