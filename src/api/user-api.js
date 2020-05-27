@@ -38,6 +38,7 @@ export function logIn(user) {
             if (error.response && error.response.status === 401) {
                 err.customMessage = 'Credentiale gresite.';
             } else {
+                console.log(error);
                 err.customMessage = 'Eroare la retea';
             }
             throw err;
