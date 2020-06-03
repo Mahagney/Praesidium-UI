@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 //#region 'LOCAL DEP'
 import useStylesCourseCard from './course-card-style';
+import book from '../../../assets/images/book.jpg';
 //#endregion
 
 const CourseCard = ({ name, description, onCardClick }) => {
@@ -23,7 +24,7 @@ const CourseCard = ({ name, description, onCardClick }) => {
           component='img'
           className={classes.media}
           // image='https://png.pngtree.com/png-vector/20190530/ourlarge/pngtree-book-logo-icon-vector-png-image_1127352.jpg'
-          image='/src/assets/images/book.jpg'
+          image={book}
           title='Course'
           height='400'
         />
