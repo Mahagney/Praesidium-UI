@@ -23,8 +23,8 @@ build:
     - npm install
     - npm run-script build
     - mkdir ./build/courses
-    - mv vendors~pdfjsWorker.bundlePraesidium.js ./build/courses
-    - mv vendors~pdfjsWorker.bundlePraesidium.js.map ./build/courses
+    - mv ./build/vendors~pdfjsWorker.bundlePraesidium.js ./build/courses
+    - mv ./build/vendors~pdfjsWorker.bundlePraesidium.js.map ./build/courses
     - aws s3 rm s3://praesidium --recursive
     - aws s3 cp --recursive ./build s3://praesidium
   only:
