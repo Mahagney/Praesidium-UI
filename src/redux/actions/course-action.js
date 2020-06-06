@@ -29,19 +29,34 @@ function loadCoursesSuccess(courses) {
 export function loadCourses(loggedUser) {
   return function(dispatch) {
     dispatch(beginApiCall());
-    return courseApi
-      .getCourses(loggedUser)
-      .then((courses) => {
-        dispatch(loadCoursesSuccess(courses));
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          dispatch(logOutUser());
-          localStorage.removeItem('token');
-        }
-        dispatch(apiCallError());
-        throw error;
-      });
+    if(loggedUser.id==3)
+      return courseApi
+        .getCoursesList()
+        .then((courses) => {
+          dispatch(loadCoursesSuccess(courses));
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 403) {
+            dispatch(logOutUser());
+            localStorage.removeItem('token');
+          }
+          dispatch(apiCallError());
+          throw error;
+        });
+    else
+      return courseApi
+        .getCoursesForUser(loggedUser)
+        .then((courses) => {
+          dispatch(loadCoursesSuccess(courses));
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 403) {
+            dispatch(logOutUser());
+            localStorage.removeItem('token');
+          }
+          dispatch(apiCallError());
+          throw error;
+        });
   };
 }
 
