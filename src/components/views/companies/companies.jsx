@@ -12,11 +12,12 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
 
     const columns = [
         { title: 'Name', field: 'NAME' },
-        { title: 'CUI', field: 'CUI' },
+        { title: 'CUI', field: 'CUI'  },
         { title: 'Email', field: 'EMAIL' },
         {
             title: 'Phone Number',
-            field: 'PHONE_NUMBER'
+            field: 'PHONE_NUMBER',
+            type: 'numeric'
         },
         { title: 'Domain', field: 'DOMAIN' }
     ]

@@ -67,7 +67,7 @@ PdfViewer.propTypes = {
   goToNextPage: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,
   numPages: PropTypes.number.isRequired,
-  url: PropTypes.string.isRequired
+  url: PropTypes.string.isRequired,
 };
 
 export default useWindowWidth(PdfViewer);
