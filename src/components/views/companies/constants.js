@@ -1,0 +1,12 @@
+export const NAME = "NAME"
+export const PHONE_NUMBER = "PHONE_NUMBER"
+export const CUI = "CUI"
+export const DOMAIN = "DOMAIN"
+export const EMAIL = "EMAIL"
+let ERRORS = {};
+ERRORS[NAME] = false;
+ERRORS[PHONE_NUMBER] = false;
+ERRORS[CUI] = false;
+ERRORS[DOMAIN] = false;
+ERRORS[EMAIL] = false;
+export const INPUT_ERRORS = ERRORS;
