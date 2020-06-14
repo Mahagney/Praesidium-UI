@@ -98,6 +98,7 @@ function AddCourse({ history, loadCourses }) {
   };
 
   const createSelectItems = () => {
+    console.log('===>COURSE TYPES',courseTypes)
     return courseTypes.map((el) => {
       return (
         <MenuItem key={el.ID} value={el.ID}>

@@ -5,6 +5,7 @@ import {setError} from '../helpers/errorHelper';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+//#region 'USER specific data'
 export function getUsers() {
   return axios.get('/users').then((response) => {
     if (response.status === 200) {
@@ -71,3 +72,25 @@ export function updatePassword(formData) {
         throw setError(err)
     });
 }
+//#endregion
+
+//#region 'USER course data'
+export function APIgetCoursesForUser(loggedUser) {
+  return wait(1)
+    .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export async function APIgetCourseByIdForUser(courseId, loggedUser) {
+    const course = await axios.get('/users/' + loggedUser.id +'/course/' + courseId)
+    return course.data
+}
+//#endregion

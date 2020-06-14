@@ -1,18 +1,18 @@
 //#region 'NPM DEP'
-import React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 //#endregion
 
 //#region 'LOCAL DEP'
-import useTabStyles from './tab-style';
+import useTabStyles from './tab-style'
 //#endregion
 
 function CenteredTabs({ onTabChange, tabValue, showQuiz, showVideo }) {
-  const classes = useTabStyles();
+  const classes = useTabStyles()
   function handleTabChange(event, newValue) {
-    onTabChange(newValue);
+    onTabChange(newValue)
   }
 
   return (
@@ -20,7 +20,7 @@ function CenteredTabs({ onTabChange, tabValue, showQuiz, showVideo }) {
       className={classes.root}
       classes={{
         scroller: classes.scroller,
-        flexContainer: classes.flexContainer
+        flexContainer: classes.flexContainer,
       }}
       value={tabValue}
       onChange={handleTabChange}
@@ -31,14 +31,20 @@ function CenteredTabs({ onTabChange, tabValue, showQuiz, showVideo }) {
       <Tab label='Pdf' />
       <Tab label='Quiz' disabled={!showQuiz} />
     </Tabs>
-  );
+  )
 }
 
 CenteredTabs.propTypes = {
   onTabChange: PropTypes.func.isRequired,
   tabValue: PropTypes.number.isRequired,
   showQuiz: PropTypes.bool.isRequired,
-  showVideo: PropTypes.bool.isRequired
-};
+  showVideo: PropTypes.bool.isRequired,
+}
 
-export default CenteredTabs;
+const tabIndex = Object.freeze({
+  VIDEO: 0,
+  PDF: 1,
+  QUIZ: 2,
+})
+
+export { CenteredTabs, tabIndex }

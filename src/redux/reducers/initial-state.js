@@ -1,6 +1,6 @@
 export default {
   user: {},
-  courses: [],
+  courses: null,
   course: {},
   currentCourse: {},
   apiCallsInProgress: 0

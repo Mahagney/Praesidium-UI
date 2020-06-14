@@ -2,9 +2,23 @@ import axios from './axios';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function getCoursesForUser(loggedUser) {
+// export function getCoursesForUser(loggedUser) {
+//   return wait(1)
+//     .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
+//     .then((response) => {
+//       if (response.status === 200) {
+//         return response.data;
+//       }
+//       return null;
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// }
+
+export function getCoursesForAdmin() {
   return wait(1)
-    .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
+    .then(() => axios.get('/courses/'))
     .then((response) => {
       if (response.status === 200) {
         return response.data;
@@ -16,9 +30,9 @@ export function getCoursesForUser(loggedUser) {
     });
 }
 
-export function getCoursesList() {
+export function APIgetCourseByIdForAdmin(courseId) {
   return wait(1)
-    .then(() => axios.get('/courses/'))
+    .then(() => axios.get('/courses/' + courseId))
     .then((response) => {
       if (response.status === 200) {
         return response.data;
@@ -41,20 +55,6 @@ export function addCourse(courseName, idCourseType, pdfFile) {
       'Content-Type': 'multipart/form-data'
     }
   });
-}
-
-export function getCourseById(courseId) {
-  return wait(1)
-    .then(() => axios.get('/courses/' + courseId))
-    .then((response) => {
-      if (response.status === 200) {
-        return response.data;
-      }
-      return null;
-    })
-    .catch((error) => {
-      throw error;
-    });
 }
 
 export function getQuizByCourseId(courseId) {
@@ -107,7 +107,7 @@ export function getCourseTypes() {
   return wait(1)
     .then(() => axios.get('/courses/types'))
     .then((response) => {
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 304) {
         return response.data.courseTypes;
       }
       return null;
