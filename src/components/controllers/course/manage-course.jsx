@@ -34,7 +34,11 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
       if (loggedUser.role === role.ADMIN) {
         course = await APIgetCourseByIdForAdmin(match.params.courseId)
       } else {
-        course = await APIgetCourseByIdForUser(match.params.courseId, loggedUser)
+        try {
+          course = await APIgetCourseByIdForUser(match.params.courseId, loggedUser)
+        } catch (error) {
+          history.push('/courses/')
+        }
       }
       if (course != null) {
         setCurrentCourse(course)
