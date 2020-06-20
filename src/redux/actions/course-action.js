@@ -31,8 +31,8 @@ export function completeCourse(courseId, loggedUser, score) {
   return async function (dispatch) {
     dispatch(beginApiCall())
     if (loggedUser.role !== role.ADMIN) {
-      const response = courseApi.sendUserCompletion(courseId, loggedUser.id, score)
-      if (response.status === 200 && response.data === 'done') {
+      const response = await courseApi.sendUserCompletion(courseId, loggedUser.id, score)
+      if (response === 'done') {
         dispatch(completeCourseSuccess(courseId))
       }
     }

@@ -105,7 +105,9 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
           section = (
             <CourseEnd
               onCourseCompletion={() => {
-                completeCourse(match.params.courseId, loggedUser, 0).then(history.push('/courses'))
+                completeCourse(match.params.courseId, loggedUser, 100).then(
+                  history.push('/courses')
+                )
               }}
             />
           )

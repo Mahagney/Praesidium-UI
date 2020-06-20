@@ -72,7 +72,9 @@ export function getQuizByCourseId(courseId) {
 }
 
 export function setQuizToCourse(courseId, quiz) {
-  return axios.post('/courses/' + courseId + '/quiz', { quiz: quiz });
+  return axios.post('/courses/' + courseId + '/quiz', {
+    quiz: quiz
+  });
 }
 
 export function setVideoToCourse(courseId, videoFile) {
@@ -86,22 +88,14 @@ export function setVideoToCourse(courseId, videoFile) {
   });
 }
 
-export function sendUserCompletion(courseId, userId, score) {
-  return wait(1)
-    .then(() =>
-      axios.put('/courses/' + courseId + '/user/' + userId + '/complete', {
-        score: score
-      })
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        return response.data;
-      }
-      return null;
-    })
-    .catch((error) => {
-      throw error;
-    });
+export async function sendUserCompletion(courseId, userId, score) {
+  const response = await axios.put('/courses/' + courseId + '/user/' + userId + '/complete', {
+    score: score
+  })
+  if (response.status === 200) {
+    return response.data;
+  }
+  return null
 }
 export function getCourseTypes() {
   return wait(1)
