@@ -42,7 +42,7 @@ const CoursesCards = ({ history, courses, handleCardClick, showAddNewCourseButto
 
 CoursesCards.propTypes = {
   history: PropTypes.object.isRequired,
-  courses: PropTypes.array.isRequired,
+  courses: PropTypes.array,
   handleCardClick: PropTypes.func.isRequired,
   showAddNewCourseButton: PropTypes.bool.isRequired,
 }

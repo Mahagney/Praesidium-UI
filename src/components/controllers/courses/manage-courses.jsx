@@ -18,7 +18,6 @@ function ManageCourses({ history, courses, loggedUser, loadCourses, isAdmin }) {
       loadCourses(loggedUser).catch(() => {})
     }
   }, [])
-  console.log('===>is admin COURSES',isAdmin)
   function handleCardClick(courseId) {
     history.push('/courses/' + courseId)
   }
@@ -45,7 +44,7 @@ function ManageCourses({ history, courses, loggedUser, loadCourses, isAdmin }) {
 
 ManageCourses.propTypes = {
   history: PropTypes.object.isRequired,
-  courses: PropTypes.array.isRequired,
+  courses: PropTypes.array,
   loggedUser: PropTypes.object.isRequired,
   loadCourses: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,

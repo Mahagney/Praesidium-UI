@@ -125,7 +125,7 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
         }
       }
     }
-    
+
     return (
       <Course
         redirectToAssignCourse={redirectToAssignCourse}
@@ -144,17 +144,14 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
 }
 
 ManageCourse.propTypes = {
-  loggedUser: PropTypes.object.isRequired,
-  courses: PropTypes.array.isRequired,
-  loadCourses: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired,
-  currCourseName: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  loggedUser: PropTypes.object.isRequired,
   completeCourse: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     loggedUser: state.user,
   }
