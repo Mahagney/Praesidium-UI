@@ -1,6 +1,7 @@
+/* eslint react/prop-types: 0 */
+
 //#region 'NPM DEP'
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -9,6 +10,7 @@ import { SnackbarProvider } from 'notistack'
 
 //#region 'LOCAL DEP'
 import theme from './app-style'
+import {role} from '../constants'
 import AppBar from '../components/common/app-bar'
 import AppBarAdmin from '../components/common/app-bar-admin'
 import ManageLogIn from '../components/controllers/log-in'
@@ -22,7 +24,7 @@ import AddCourse from '../components/views/add-course'
 import ManageUpdatePassword from '../components/controllers/update-password'
 //#endregion
 
-function App({ isAuth, userId, oneTimeAuth }) {
+function App({ isAuth, loggedUser, oneTimeAuth }) {
   let routes = (
     <Switch>
       <Route exact path='/' component={ManageLogIn} />
@@ -69,7 +71,7 @@ function App({ isAuth, userId, oneTimeAuth }) {
   )
 
   if (isAuth) {
-    if (userId === '3') {
+    if (loggedUser.role === role.ADMIN) {
       routes = oneTimeAuth ? routesAdmin : routesOneTimeAuth
     } else
     {
@@ -83,15 +85,10 @@ function App({ isAuth, userId, oneTimeAuth }) {
   )
 }
 
-App.propTypes = {
-  isAuth: PropTypes.bool.isRequired,
-  userId: PropTypes.string.isRequired,
-}
-
 function mapStateToProps(state) {
   return {
     isAuth: state.user.id ? true : false,
-    userId: state.user.id,
+    loggedUser: state.user,
     oneTimeAuth: state.user.one_time_auth,
   }
 }

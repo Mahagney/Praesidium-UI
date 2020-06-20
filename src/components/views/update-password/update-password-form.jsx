@@ -90,6 +90,7 @@ UpdatePasswordForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  updating: PropTypes.bool
 };
 
 export default UpdatePasswordForm;

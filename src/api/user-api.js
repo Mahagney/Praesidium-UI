@@ -1,17 +1,20 @@
 import axios from './axios';
 import setAuthorizationToken from './apiUtils';
 import jwt from 'jsonwebtoken';
-import {setError} from '../helpers/errorHelper';
+import {
+  setError
+} from '../helpers/errorHelper';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+//#region 'USER specific data'
 export function getUsers() {
   return axios.get('/users').then((response) => {
-    if (response.status === 200) {
-      return response.data;
-    }
-    return null;
-  })
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
     .catch((error) => {
       throw error;
     });
@@ -22,30 +25,36 @@ export function deleteUser(userId) {
 }
 
 export function logIn(user) {
-    return wait(2000)
-        .then(() => axios.post('/auth/login', user))
-        .then((res) => {
-            if (res.status === 200) {
-                const token = res.data.token;
-                localStorage.setItem('token', token);
-                setAuthorizationToken(token);
-                return jwt.decode(token);
-            }
-            return null;
-        })
-        .catch((error) => {
-            let err = new Error(error);
-            if (error.response && error.response.status === 401) {
-                err.customMessage = 'Credentiale gresite.';
-            } else {
-                console.log(error);
-                err.customMessage = 'Eroare la retea';
-            }
-            throw err;
-        });
+  return wait(2000)
+    .then(() => axios.post('/auth/login', user))
+    .then((res) => {
+      if (res.status === 200) {
+        const token = res.data.token;
+        localStorage.setItem('token', token);
+        setAuthorizationToken(token);
+        return jwt.decode(token);
+      }
+      return null;
+    })
+    .catch((error) => {
+      let err = new Error(error);
+      if (error.response && error.response.status === 401) {
+        err.customMessage = 'Credentiale gresite.';
+      } else {
+        console.log(error);
+        err.customMessage = 'Eroare la retea';
+      }
+      throw err;
+    });
 }
 
-export function updateUser({ ID, FIRST_NAME, LAST_NAME, EMAIL, CNP }) {
+export function updateUser({
+  ID,
+  FIRST_NAME,
+  LAST_NAME,
+  EMAIL,
+  CNP
+}) {
   const form = new FormData();
 
   form.append("FIRST_NAME", FIRST_NAME);
@@ -61,13 +70,34 @@ export function updateUser({ ID, FIRST_NAME, LAST_NAME, EMAIL, CNP }) {
 }
 
 export function updatePassword(formData) {
-    return axios.put('/auth/update-password', formData).then((res) => {
-        if (res.status === 200) {
-            console.log(res)
-            return true
-        }
-        return null
-    }).catch((err) => {
-        throw setError(err)
+  return axios.put('/auth/update-password', formData).then((res) => {
+    if (res.status === 200) {
+      return true
+    }
+    return null
+  }).catch((err) => {
+    throw setError(err)
+  });
+}
+//#endregion
+
+//#region 'USER course data'
+export function APIgetCoursesForUser(loggedUser) {
+  return wait(1)
+    .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
     });
 }
+
+export async function APIgetCourseByIdForUser(courseId, loggedUser) {
+  const course = await axios.get('/users/' + loggedUser.id + '/course/' + courseId)
+  return course.data
+}
+//#endregion

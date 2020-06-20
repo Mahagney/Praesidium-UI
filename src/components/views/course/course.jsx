@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 
 //#region 'LOCAL DEP'
 import useStylesCourse from './course-style';
-import CenteredTabs from '../../common/tab';
+import {CenteredTabs} from '../../common/tab';
 import Fab from '@material-ui/core/Fab';
 import SettingsIcon from '@material-ui/icons/Settings';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -22,7 +22,8 @@ function Course({
   onTabChange,
   tabValue,
   showQuiz,
-  showVideo
+  showVideo,
+  showAdminButtons
 }) {
   const classes = useStylesCourse();
 
@@ -46,6 +47,9 @@ function Course({
         </Grid>
       </Grid>
       {section}
+      {/* SHOW the configure & delete buttons for this course if user is ADMIN */}
+      {showAdminButtons && (
+      <>
       <Fab
         color='primary'
         aria-label='Assign'
@@ -62,6 +66,7 @@ function Course({
       >
         <DeleteIcon />
       </Fab>
+      </>)} 
     </Container>
   );
 }
@@ -73,7 +78,8 @@ Course.propTypes = {
   showQuiz: PropTypes.bool.isRequired,
   showVideo: PropTypes.bool.isRequired,
   section: PropTypes.object.isRequired,
-  redirectToAssignCourse: PropTypes.func.isRequired
+  redirectToAssignCourse: PropTypes.func.isRequired,
+  showAdminButtons: PropTypes.bool.isRequired
 };
 
 export default Course;

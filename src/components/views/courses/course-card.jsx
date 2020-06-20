@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 //#endregion
 
 //#region 'LOCAL DEP'
-import useStylesCourseCard from './course-card-style';
+import {useStylesCourseCard} from './courses-style';
 import book from '../../../assets/images/book.jpg';
 //#endregion
 

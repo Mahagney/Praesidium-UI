@@ -1,1 +1,1 @@
-export { default } from './tab';
+export { CenteredTabs, tabIndex } from './tab';

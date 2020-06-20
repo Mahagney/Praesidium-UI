@@ -1,21 +1,22 @@
-import * as actionTypes from './action-types';
-import * as courseApi from '../../api/course-api';
-import { beginApiCall, apiCallError } from './api-status-action';
-import { logOutUser } from './user-action';
+import * as actionTypes from './action-types'
+import * as courseApi from '../../api/course-api'
+import * as userApi from '../../api/user-api'
+import {
+  beginApiCall,
+  apiCallError
+} from './api-status-action'
+import {
+  logOutUser
+} from './user-action'
+
+import {
+  role
+} from './../../constants'
 
 function completeCourseSuccess(courseId) {
   return {
     type: actionTypes.COMPLETE_COURSE,
     courseId
-  };
-}
-
-export function completeCourse(courseId, userId, score) {
-  return function(dispatch) {
-    dispatch(beginApiCall());
-    return courseApi.sendUserCompletion(courseId, userId, score).then(() => {
-      dispatch(completeCourseSuccess(courseId));
-    });
   };
 }
 
@@ -26,47 +27,36 @@ function loadCoursesSuccess(courses) {
   };
 }
 
+export function completeCourse(courseId, loggedUser, score) {
+  return async function (dispatch) {
+    dispatch(beginApiCall())
+    if (loggedUser.role !== role.ADMIN) {
+      const response = await courseApi.sendUserCompletion(courseId, loggedUser.id, score)
+      if (response === 'done') {
+        dispatch(completeCourseSuccess(courseId))
+      }
+    }
+  };
+}
+
 export function loadCourses(loggedUser) {
-  return function(dispatch) {
-    dispatch(beginApiCall());
-    return courseApi
-      .getCourses(loggedUser)
-      .then((courses) => {
-        dispatch(loadCoursesSuccess(courses));
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          dispatch(logOutUser());
-          localStorage.removeItem('token');
-        }
-        dispatch(apiCallError());
-        throw error;
-      });
-  };
-}
-
-function loadCourseByIdSuccess(currentCourse) {
-  return {
-    type: actionTypes.LOAD_COURSE_BY_ID_SUCCESS,
-    currentCourse: currentCourse
-  };
-}
-
-export function loadCourseById(courseId) {
-  return function(dispatch) {
-    dispatch(beginApiCall());
-    return courseApi
-      .getCourseById(courseId)
-      .then((currentCourse) => {
-        dispatch(loadCourseByIdSuccess(currentCourse));
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          dispatch(logOutUser());
-          localStorage.removeItem('token');
-        }
-        dispatch(apiCallError());
-        throw error;
-      });
-  };
+  return async function (dispatch) {
+    dispatch(beginApiCall())
+    try {
+      let courses
+      if (loggedUser.role === role.ADMIN) {
+        courses = await courseApi.getCoursesForAdmin()
+      } else {
+        courses = await userApi.APIgetCoursesForUser(loggedUser)
+      }
+      dispatch(loadCoursesSuccess(courses))
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        dispatch(logOutUser())
+      }
+      dispatch(apiCallError())
+      throw error
+    }
+    return 'done'
+  }
 }

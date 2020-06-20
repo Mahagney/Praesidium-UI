@@ -2,9 +2,37 @@ import axios from './axios';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function getCourses(loggedUser) {
+// export function getCoursesForUser(loggedUser) {
+//   return wait(1)
+//     .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
+//     .then((response) => {
+//       if (response.status === 200) {
+//         return response.data;
+//       }
+//       return null;
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// }
+
+export function getCoursesForAdmin() {
   return wait(1)
-    .then(() => axios.get('/users/' + loggedUser.id + '/courses/uncompleted'))
+    .then(() => axios.get('/courses/'))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function APIgetCourseByIdForAdmin(courseId) {
+  return wait(1)
+    .then(() => axios.get('/courses/' + courseId))
     .then((response) => {
       if (response.status === 200) {
         return response.data;
@@ -29,20 +57,6 @@ export function addCourse(courseName, idCourseType, pdfFile) {
   });
 }
 
-export function getCourseById(courseId) {
-  return wait(1)
-    .then(() => axios.get('/courses/' + courseId))
-    .then((response) => {
-      if (response.status === 200) {
-        return response.data;
-      }
-      return null;
-    })
-    .catch((error) => {
-      throw error;
-    });
-}
-
 export function getQuizByCourseId(courseId) {
   return wait(1)
     .then(() => axios.get('/courses/' + courseId + '/quiz'))
@@ -58,7 +72,9 @@ export function getQuizByCourseId(courseId) {
 }
 
 export function setQuizToCourse(courseId, quiz) {
-  return axios.post('/courses/' + courseId + '/quiz', { quiz: quiz });
+  return axios.post('/courses/' + courseId + '/quiz', {
+    quiz: quiz
+  });
 }
 
 export function setVideoToCourse(courseId, videoFile) {
@@ -72,28 +88,20 @@ export function setVideoToCourse(courseId, videoFile) {
   });
 }
 
-export function sendUserCompletion(courseId, userId, score) {
-  return wait(1)
-    .then(() =>
-      axios.put('/courses/' + courseId + '/user/' + userId + '/complete', {
-        score: score
-      })
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        return response.data;
-      }
-      return null;
-    })
-    .catch((error) => {
-      throw error;
-    });
+export async function sendUserCompletion(courseId, userId, score) {
+  const response = await axios.put('/courses/' + courseId + '/user/' + userId + '/complete', {
+    score: score
+  })
+  if (response.status === 200) {
+    return response.data;
+  }
+  return null
 }
 export function getCourseTypes() {
   return wait(1)
     .then(() => axios.get('/courses/types'))
     .then((response) => {
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 304) {
         return response.data.courseTypes;
       }
       return null;

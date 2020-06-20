@@ -1,41 +1,41 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 //#endregion
 
 //#region 'LOCAL DEP'
-import Quiz from '../../views/quiz';
-import Results from '../../views/quiz/results';
+import Quiz from '../../views/quiz'
+import Results from '../../views/quiz/results'
 //#endregion
 
 function ManageQuiz({ quizData, onCompletion }) {
-  const [counter, setCounter] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [quizResult, setQuizResult] = useState(0);
+  const [counter, setCounter] = useState(0)
+  const [correctCount, setCorrectCount] = useState(0)
+  const [quizResult, setQuizResult] = useState(0)
 
   const answerQuestion = (isCorrect) => {
-    let correct = correctCount;
+    let correct = correctCount
     if (isCorrect) {
-      setCorrectCount(correctCount + 1);
-      correct++;
+      setCorrectCount(correctCount + 1)
+      correct++
     }
 
     if (counter + 1 >= quizData.length) {
-      const result = Math.round((correct / quizData.length) * 100);
+      const result = Math.round((correct / quizData.length) * 100)
       if (result >= 50) {
-        onCompletion(result);
+        onCompletion(result)
       }
-      setQuizResult(result);
+      setQuizResult(result)
     }
-    if (counter == quizData.length) setCounter(0);
-    else setCounter(counter + 1);
-  };
+    if (counter == quizData.length) setCounter(0)
+    else setCounter(counter + 1)
+  }
 
   const retryQuiz = () => {
-    setCounter(0);
-    setCorrectCount(0);
-  };
-  let quizContent;
+    setCounter(0)
+    setCorrectCount(0)
+  }
+  let quizContent
 
   if (counter < quizData.length) {
     quizContent = (
@@ -46,16 +46,27 @@ function ManageQuiz({ quizData, onCompletion }) {
         response={quizData[counter].answer}
         quizQuestions={quizData}
       />
-    );
+    )
   } else {
-    quizContent = <Results retryQuiz={retryQuiz} results={quizResult} />;
+    quizContent = <Results retryQuiz={retryQuiz} results={quizResult} />
   }
 
-  return quizContent;
+  return quizContent
 }
 
 Quiz.propTypes = {
-  quizData: PropTypes.object.isRequired
-};
-
-export default ManageQuiz;
+  quizData: PropTypes.arrayOf(
+    PropTypes.shape({
+      ID: PropTypes.number.isRequired,
+      TEXT: PropTypes.string.isRequired,
+      ANSWERs: PropTypes.arrayOf(
+        PropTypes.shape({
+          ID: PropTypes.number.isRequired,
+          TEXT: PropTypes.string.isRequired,
+          IS_CORRECT: PropTypes.bool.isRequired,
+        })
+      ),
+    })
+  ),
+}
+export default ManageQuiz
