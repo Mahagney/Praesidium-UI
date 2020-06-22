@@ -28,14 +28,14 @@ function Course({
   const classes = useStylesCourse();
 
   return (
-    <Container component='div' maxWidth='lg' className={classes.bigContainer}>
+    <Container component='div'  className={classes.bigContainer}>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={12} md={6} >
           <Paper className={classes.paper}>
             <Typography variant='h6'>{courseName ? courseName : ''}</Typography>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}  sm={12} md={6}>
           <Paper className={classes.paper}>
             <CenteredTabs
               onTabChange={onTabChange}
