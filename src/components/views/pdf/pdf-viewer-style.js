@@ -6,8 +6,8 @@ const useStylesPdfViewer = makeStyles((theme) => ({
   },
   pdfFileContainer: {
     boxShadow: '0px 0px 4px 4px rgba(0,0,0,.2)',
-    minHeight: '700px',
-    width: '1000px',
+    
+    maxWidth: '1000px',
     marginTop: theme.spacing(3),
     margin: '0 auto',
     borderStyle: 'solid',

@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 //#region 'LOCAL DEP'
 import useStylesPdfViewer from './pdf-viewer-style';
-//import pdfFile from './sample1.pdf';
+import  useWindowWidth  from '../../hoc/useWindowWidth';
 //#endregion
 
 function PdfViewer({
@@ -17,9 +17,15 @@ function PdfViewer({
   goToNextPage,
   pageNumber,
   numPages,
-  url
+  url,
+  width
 }) {
   const classes = useStylesPdfViewer();
+  let windowWidth = width * 0.9;
+
+  if(windowWidth && windowWidth>800)
+     windowWidth = 1000;
+
   return (
     <div className={classes.pdfContainer}>
       <nav>
@@ -49,7 +55,7 @@ function PdfViewer({
         onLoadSuccess={onDocumentLoadSuccess}
         className={classes.pdfFileContainer}
       >
-        <Page pageNumber={pageNumber} width={1000} />
+        <Page pageNumber={pageNumber} width={windowWidth} />
       </Document>
     </div>
   );
@@ -64,4 +70,4 @@ PdfViewer.propTypes = {
   url: PropTypes.string.isRequired
 };
 
-export default PdfViewer;
+export default useWindowWidth(PdfViewer);
