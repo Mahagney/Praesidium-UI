@@ -21,10 +21,10 @@ function PdfViewer({
   width
 }) {
   const classes = useStylesPdfViewer();
-  let windowWidth = width * 0.9;
-
-  if(windowWidth && windowWidth>800)
-     windowWidth = 1000;
+  let windowWidth = 0;
+  
+  if(width)
+     windowWidth = Math.min(width * 0.9, 1000) 
 
   return (
     <div className={classes.pdfContainer}>
@@ -67,7 +67,8 @@ PdfViewer.propTypes = {
   goToNextPage: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,
   numPages: PropTypes.number.isRequired,
-  url: PropTypes.string.isRequired
+  url: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired
 };
 
 export default useWindowWidth(PdfViewer);
