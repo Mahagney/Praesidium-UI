@@ -22,6 +22,7 @@ import ManageCourse from '../components/controllers/course'
 import ManageAssignCourse from '../components/controllers/assign-course'
 import AddCourse from '../components/views/add-course'
 import ManageUpdatePassword from '../components/controllers/update-password'
+import ManageReports from '../components/controllers/reports'
 //#endregion
 
 function App({ isAuth, loggedUser, oneTimeAuth }) {
@@ -43,6 +44,7 @@ function App({ isAuth, loggedUser, oneTimeAuth }) {
         <Route path='/courses' component={ManageCourses} />
         <Route path='/employees' component={ManageUsers} />
         <Route path='/companies' component={ManageCompanies} />
+        <Route path='/reports' component={ManageReports} />
         <Route component={PageNotFound} />
       </Switch>
     </>

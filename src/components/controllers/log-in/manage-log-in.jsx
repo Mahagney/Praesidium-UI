@@ -23,24 +23,24 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value,
-    }));
+    }))
   }
 
   function handleSubmit(event) {
     event.preventDefault()
     if (!formIsValid()) return
 
-    setLogging(true);
+    setLogging(true)
     logIn(user).catch((error) => {
-      setLogging(false);
+      setLogging(false)
       enqueueSnackbar(error.customMessage, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
           horizontal: 'center',
         },
-      });
-    });
+      })
+    })
   }
 
   function formIsValid() {
@@ -55,7 +55,6 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
     return Object.keys(validations).length === 0
   }
 
-
   if (isAuth && loggedUser.one_time_auth) {
     return <Redirect to='/courses' />
   } else if (isAuth && !loggedUser.one_time_auth) {
@@ -63,13 +62,13 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
   } else {
     return (
       <LogInForm
-    onChange={handleChange}
-    onSubmit={handleSubmit}
-    emailValue={user.email}
-    passwordValue={user.password}
-    logging={logging}
-    errors={validations}
-    />
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        emailValue={user.email}
+        passwordValue={user.password}
+        logging={logging}
+        errors={validations}
+      />
     )
   }
 }
@@ -77,18 +76,18 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
 ManageLogIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   loggedUser: PropTypes.object.isRequired,
-  logIn: PropTypes.func.isRequired
-};
+  logIn: PropTypes.func.isRequired,
+}
 
 function mapStateToProps(state) {
   return {
     loggedUser: state.user,
-    isAuth: state.user.id ? true : false
-  };
+    isAuth: state.user.id ? true : false,
+  }
 }
 
 const mapDispatchToProps = {
-  logIn: userActions.logIn
-};
+  logIn: userActions.logIn,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageLogIn)

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const useWindowWidth = (WrappedComponent) => (props) => {
-    const [width, setWidth] = useState(window.innerWidth);
+    const [width, setWidth] = useState(screen.width);
   
     useEffect(() => {
-      const handleResize = () => setWidth(window.innerWidth);
+      const handleResize = () => {console.log(screen.width);setWidth(screen.width);}
   
-      window.addEventListener('resize', handleResize);
+      window.addEventListener('orientationchange', handleResize);
   
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('orientationchange', handleResize);
       };
     }, []);
   
