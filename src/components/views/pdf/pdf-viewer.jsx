@@ -21,8 +21,8 @@ function PdfViewer({
   width
 }) {
   const classes = useStylesPdfViewer();
-  let windowWidth = width * 0.9;
-
+  let windowWidth =Math.round( width * 0.9);
+  console.log("width" + windowWidth);
   if(windowWidth && windowWidth>800)
      windowWidth = 1000;
 

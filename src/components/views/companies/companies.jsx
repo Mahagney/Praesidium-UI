@@ -42,7 +42,6 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             const onError = (fieldKey, callback) =>{
                 if(!newData[fieldKey]){
                     errors[fieldKey]= true;
-                    reject()
                     return false;
                 }
                 return ok;
@@ -51,12 +50,10 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             if(!newData[constants.EMAIL] || !validator.isEmail(newData[constants.EMAIL])){
                 errors[constants.EMAIL]= true;
                 ok=false;
-                reject()
             }
             if(!newData[constants.PHONE_NUMBER] || !validator.isMobilePhone(newData[constants.PHONE_NUMBER])){
                 errors[constants.PHONE_NUMBER]= true;
                 ok=false;
-                reject()
             }
 
             ok = onError(constants.NAME);
@@ -68,7 +65,9 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             if(ok){
                 resolve();
                 callback(newData);
+                setInputErrors(constants.INPUT_ERRORS);
             }
+            reject();
         }, 600);
     })
 
@@ -98,10 +97,9 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             data={companies}
             editable={{
                 onRowAdd: (newData) => actionFunction(addCompany, newData),
-                onRowUpdate: (newData/*, oldData*/) => {
-                    setInputErrors(constants.INPUT_ERRORS);
-                    return actionFunction(updateCompany, newData)
-                },
+                onRowAddCancelled: () => setInputErrors(constants.INPUT_ERRORS),
+                onRowUpdateCancelled: () => setInputErrors(constants.INPUT_ERRORS),
+                onRowUpdate: (newData/*, oldData*/) =>  actionFunction(updateCompany, newData),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
