@@ -4,15 +4,15 @@ import PropTypes from 'prop-types'
 //#endregion
 
 //#region 'LOCAL DEP'
-import Raports from '../../views/raports'
+import Reports from '../../views/reports'
 import * as userActions from '../../../redux/actions/user-action'
 //#endregion
 
-function ManageRaports() {
+function ManageReports() {
 
     return (
-        <Raports/>
+        <Reports/>
     );
 }
 
-export default ManageRaports
+export default ManageReports

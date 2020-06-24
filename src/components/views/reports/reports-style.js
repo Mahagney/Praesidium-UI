@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStylesRaports = makeStyles((theme) => ({
+const useStylesReports = makeStyles((theme) => ({
   bigContainer: {
     boxShadow: '4px 4px 8px 0px rgba(0,0,0,.2)',
     borderRadius: '.5rem',
@@ -28,4 +28,4 @@ const useStylesRaports = makeStyles((theme) => ({
   },
 }));
 
-export default useStylesRaports;
+export default useStylesReports;

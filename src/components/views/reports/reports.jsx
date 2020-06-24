@@ -11,11 +11,11 @@ import Button from '@material-ui/core/Button'
 //#endregion
 
 //#region 'LOCAL DEP'
-import useStylesRaports from './raports-style'
+import useStylesReports from './reports-style'
 //#endregion
 
-function Raports() {
-  const classes = useStylesRaports()
+function Reports() {
+  const classes = useStylesReports()
   const [year, setYear] = useState(2020)
   const [trimester, setTrimester] = useState(1)
 
@@ -70,6 +70,6 @@ function Raports() {
   );
 }
 
-Raports.propTypes = {}
+Reports.propTypes = {}
 
-export default Raports
+export default Reports
