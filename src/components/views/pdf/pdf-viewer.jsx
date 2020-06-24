@@ -67,6 +67,7 @@ PdfViewer.propTypes = {
   goToNextPage: PropTypes.func.isRequired,
   pageNumber: PropTypes.number.isRequired,
   numPages: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
 };
 
