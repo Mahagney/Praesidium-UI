@@ -4,4 +4,7 @@ export default {
   course: {},
   currentCourse: {},
   apiCallsInProgress: 0,
+  api: {
+    apiError: '',
+  },
 };

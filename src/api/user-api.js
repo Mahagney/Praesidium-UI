@@ -1,7 +1,12 @@
+//#region 'NPM DEP'
 import jwt from 'jsonwebtoken';
+//#endregion
+
+//#region 'LOCAL DEP'
 import axios from './axios';
 import setAuthorizationToken from './apiUtils';
-import setError from '../helpers/errorHelper';
+import apiErrorHandler from './api-error-handler';
+//#endregion
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -24,28 +29,12 @@ export function deleteUser(userId) {
   return axios.delete('/users/' + userId);
 }
 
-export function logIn(user) {
-  return wait(2000)
-    .then(() => axios.post('/auth/login', user))
-    .then((res) => {
-      if (res.status === 200) {
-        const { token } = res.data;
-        localStorage.setItem('token', token);
-        setAuthorizationToken(token);
-        return jwt.decode(token);
-      }
-      return null;
-    })
-    .catch((error) => {
-      const err = new Error(error);
-      if (error.response && error.response.status === 401) {
-        err.customMessage = 'Credentiale gresite.';
-      } else {
-        console.log(error);
-        err.customMessage = 'Eroare la retea';
-      }
-      throw err;
-    });
+export async function APIlogIn(user) {
+  const response = await axios.post('/auth/login', user);
+  const { token } = response.data;
+  localStorage.setItem('token', token);
+  setAuthorizationToken(token);
+  return jwt.decode(token);
 }
 
 export function createUser({ FIRST_NAME, LAST_NAME, EMAIL, CNP, ID_COMPANY, ID_EMPLOYEE_TYPE }) {
@@ -93,18 +82,16 @@ export function updateUserEmployeeType(ID_USER, ID_EMPLOYEE_TYPE) {
   });
 }
 
-export function updatePassword(formData) {
-  return axios
-    .put('/auth/update-password', formData)
-    .then((res) => {
-      if (res.status === 200) {
-        return true;
-      }
-      return null;
-    })
-    .catch((err) => {
-      throw setError(err);
-    });
+export async function APIupdatePassword(formData) {
+  try {
+    const response = await axios.put('/auth/update-password', formData);
+    if (response.status === 200) {
+      return true;
+    }
+    return null;
+  } catch (error) {
+    apiErrorHandler(error);
+  }
 }
 //#endregion
 

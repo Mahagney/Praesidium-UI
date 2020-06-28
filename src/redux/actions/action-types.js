@@ -1,8 +1,10 @@
 //#region 'API CALLS'
 export const BEGIN_API_CALL = 'BEGIN_API_CALL';
 export const API_CALL_ERROR = 'API_CALL_ERROR';
+export const API_CLEAR_ERROR = 'API_CLEAR_ERROR';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+
 export const LOAD_COURSES_SUCCESS = 'LOAD_COURSES_SUCCESS';
 export const COMPLETE_COURSE = 'COMPLETE_COURSE';
 export const DELETE_COURSE = 'DELETE_COURSE';

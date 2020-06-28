@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 //#region 'LOCAL DEP'
 import UpdatePassForm from '../../views/update-password';
 import { logOutUser } from '../../../redux/actions/user-action';
-import { updatePassword } from '../../../api';
+import { APIupdatePassword } from '../../../api';
 //#endregion
 
-function ManageUpdatePassword({ loggedUser, logOutActon }) {
+function ManageUpdatePassword({ loggedUser, logOut }) {
   const [formData, setFormData] = useState({
     email: loggedUser.email,
     currentPassword: '',
@@ -37,30 +37,19 @@ function ManageUpdatePassword({ loggedUser, logOutActon }) {
 
     setUpdating(true);
 
-    try {
-      const result = await updatePassword(formData);
-      if (result) {
-        setUpdating(false);
-        setTimeout(() => {
-          logOutActon();
-        }, 3000);
-        enqueueSnackbar('Actualizare reusita! Va rugam sa va autentificati cu noua parola.', {
-          variant: 'success',
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'center',
-          },
-          autoHideDuration: 3000,
-        });
-      }
-    } catch (error) {
-      setUpdating(false);
-      enqueueSnackbar(error.customMessage, {
-        variant: 'error',
+    const result = await APIupdatePassword(formData);
+    setUpdating(false);
+    if (result) {
+      setTimeout(() => {
+        logOut();
+      }, 3000);
+      enqueueSnackbar('Actualizare reusita! Va rugam sa va autentificati cu noua parola.', {
+        variant: 'success',
         anchorOrigin: {
           vertical: 'top',
           horizontal: 'center',
         },
+        autoHideDuration: 3000,
       });
     }
   }
@@ -90,12 +79,12 @@ function ManageUpdatePassword({ loggedUser, logOutActon }) {
 
 ManageUpdatePassword.propTypes = {
   loggedUser: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     one_time_auth: PropTypes.bool.isRequired,
     role: PropTypes.string.isRequired,
   }).isRequired,
-  logOutActon: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -105,7 +94,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  logOutActon: logOutUser,
+  logOut: logOutUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageUpdatePassword);
