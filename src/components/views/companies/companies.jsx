@@ -3,7 +3,8 @@ import React, {useState} from 'react';
 import propTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
-import validator from 'validator';
+import * as EmailValidator from 'email-validator';
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 //#endregion
 
 //#region 'LOCAL DEP'
@@ -12,14 +13,15 @@ import * as constants from './constants'
 //#endregion
 
 function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
-
     const [inputErrors,setInputErrors] = useState(constants.INPUT_ERRORS);
-    const setErrorForField = (fieldName, value) =>{
-        if(value != inputErrors[fieldName]){
-        const errors = {...inputErrors}
-        errors[fieldName] = value
-        setInputErrors(errors);}
-    }
+    //Commented until bug is fixed on mui table
+    // const setErrorForField = (fieldName, value) =>{
+    //     if(value != inputErrors[fieldName]){
+    //         const errors = {...inputErrors}
+    //         errors[fieldName] = value
+    //         setInputErrors(errors);
+    //     }
+    // }
 
     const generateTextField = (label, type, props, field) => {
         return <TextField 
@@ -27,19 +29,19 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
                 error={inputErrors[field]}
                 label={label}
                 onChange={(e) => {
-                    setErrorForField(field, false);
+                    //setErrorForField(field, false);
                     props.onChange(e.target.value);
                 }}
                 value={props.value === undefined ? '' : props.value}
             />
     }
 
-    const actionFunction = (callback, newData) => new Promise((resolve,reject) => {
+    const actionFunction = (callback, newData, isUpdate) => new Promise((resolve,reject) => {
         setTimeout(() => {
             let ok = true;
-            const errors = {...inputErrors}
+            let errors = {...constants.INPUT_ERRORS}
 
-            const onError = (fieldKey, callback) =>{
+            const onError = (fieldKey) =>{
                 if(!newData[fieldKey]){
                     errors[fieldKey]= true;
                     return false;
@@ -47,27 +49,38 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
                 return ok;
             }
 
-            if(!newData[constants.EMAIL] || !validator.isEmail(newData[constants.EMAIL])){
+            if(!newData[constants.EMAIL] || !EmailValidator.validate(newData[constants.EMAIL])){
                 errors[constants.EMAIL]= true;
                 ok=false;
             }
-            if(!newData[constants.PHONE_NUMBER] || !validator.isMobilePhone(newData[constants.PHONE_NUMBER])){
+
+            let phoneNumber = null;
+            if(newData[constants.PHONE_NUMBER])
+                phoneNumber=parsePhoneNumberFromString(newData[constants.PHONE_NUMBER], 'RO');
+            
+            if(!newData[constants.PHONE_NUMBER] || !phoneNumber || !phoneNumber.isValid() ){
                 errors[constants.PHONE_NUMBER]= true;
                 ok=false;
+            }else{
+                newData[constants.PHONE_NUMBER] = phoneNumber.formatInternational();
             }
 
             ok = onError(constants.NAME);
             ok = onError(constants.CUI);
-            ok = onError(constants.DOMAIN);
-
-            setInputErrors(errors);
+            ok = onError(constants.DOMAIN);                        
 
             if(ok){
                 resolve();
                 callback(newData);
-                setInputErrors(constants.INPUT_ERRORS);
+                errors = {...constants.INPUT_ERRORS};
             }
-            reject();
+            else{
+                reject();
+            }
+
+            if(!isUpdate){
+                setInputErrors(errors);
+            }
         }, 600);
     })
 
@@ -89,6 +102,7 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             editComponent: (props) => generateTextField("Domain", "",props,constants.DOMAIN)
         }
     ]
+
     return (
         <MaterialTable
             icons={tableIcons}
@@ -99,7 +113,7 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
                 onRowAdd: (newData) => actionFunction(addCompany, newData),
                 onRowAddCancelled: () => setInputErrors(constants.INPUT_ERRORS),
                 onRowUpdateCancelled: () => setInputErrors(constants.INPUT_ERRORS),
-                onRowUpdate: (newData/*, oldData*/) =>  actionFunction(updateCompany, newData),
+                onRowUpdate: (newData/*, oldData*/) =>  actionFunction(updateCompany, newData, true),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
