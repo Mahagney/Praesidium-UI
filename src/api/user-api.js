@@ -95,6 +95,21 @@ export function updateUser({
   });
 }
 
+export function updateUserEmployeeType(
+  ID_USER,
+  ID_EMPLOYEE_TYPE
+) {
+  const form = new FormData();
+
+  form.append("employeeTypeId", ID_EMPLOYEE_TYPE);
+
+  return axios.put('/users/' + ID_USER + '/employeeType', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
 export function updatePassword(formData) {
   return axios.put('/auth/update-password', formData).then((res) => {
     if (res.status === 200) {

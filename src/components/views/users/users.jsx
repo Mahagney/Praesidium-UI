@@ -59,10 +59,11 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
 
   const generateEmployeeTypeField = ( employeeTypes, initialEmployeeType ) => {
     let initialValue = null;
-    if(initialEmployeeType && initialEmployeeType[0])
+    if(initialEmployeeType && initialEmployeeType[0]){
       initialValue = initialEmployeeType[0]
-    initialValue = { "ID":  initialValue.ID, "CODE": initialValue.CODE }
-    
+      initialValue = { "ID":  initialValue.ID, "CODE": initialValue.CODE }
+    }
+
     return <Autocomplete
         id="autocompleteEmployeeType"
         onChange={(event, newValue) => {
@@ -97,9 +98,9 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
           return new Promise((resolve, reject) => {
             setTimeout(() => {
               reject();
-              newData.ID_COMPANY = selectedCompany.ID;
-              newData.COMPANY = selectedCompany;
-              updateUser(newData);
+              newData.ID_COMPANY = selectedCompany?selectedCompany.ID:newData.ID_COMPANY;
+              newData.COMPANY = selectedCompany?selectedCompany:newData.COMPANY;
+              updateUser(newData, selectedEmployeeType);
             }, 600);
           })},
         onRowDelete: (oldData) =>
