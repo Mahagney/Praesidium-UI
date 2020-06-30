@@ -1,9 +1,10 @@
 //#region 'NPM DEP'
-import React from 'react';
+import React, {useState} from 'react';
 import propTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import * as EmailValidator from 'email-validator';
 //#endregion
 
 //#region 'LOCAL DEP'
@@ -19,10 +20,10 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
   }
 
   const columns = [
-    { title: 'Nume', field: 'LAST_NAME' },
-    { title: 'Prenume', field: 'FIRST_NAME' },
-    { title: 'Email', field: 'EMAIL' },
-    { title: 'CNP', field: 'CNP' },
+    { title: 'Nume', field: 'LAST_NAME', editComponent: (props) => generateTextField("Nume", "text", props, "name") },
+    { title: 'Prenume', field: 'FIRST_NAME', editComponent: (props) => generateTextField("Prenume", "text", props, "name") },
+    { title: 'Email', field: 'EMAIL', editComponent: (props) => generateTextField("Email", "email", props, "email")},
+    { title: 'CNP', field: 'CNP', editComponent: (props) => generateTextField("CNP", "number", props, 'CNP') },
     { title: 'Tip Angajat', field: 'employeeTypes[0].CODE',
       editComponent: (props) =>{
         return generateEmployeeTypeField(employeeTypes, props.rowData?props.rowData.employeeTypes:selectedEmployeeType)
@@ -38,7 +39,47 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
   let selectedCompany = null;
   let selectedEmployeeType = null;
 
+  const validateData = (user, selectedCompany, selectedEmployeeType) =>{
+    if(!selectedCompany || !selectedEmployeeType)
+      return false
+    if(!user.FIRST_NAME || validate["name"](user.FIRST_NAME))
+      return false
+    if(!user.LAST_NAME || validate["name"](user.LAST_NAME))
+      return false
+    if(!user.EMAIL || validate["email"](user.EMAIL))
+      return false
+    if(!user.CNP || validate["CNP"](user.CNP))
+      return false
+
+    return true
+  }
+
+  const validate = {
+    name: s => (s.length > 3 ? false : true),
+    email: s => ((!s || !EmailValidator.validate(s)) ? true : false),
+    CNP: s => (s.length != 13 ? true : false)
+  };
+
+  const generateTextField = (label, type, props, field) => {
+    const [error, setError] = useState(false);
+
+    return <TextField 
+            type={type}
+            error={error}
+            //helperText={error}
+            label={label}
+            onChange={(e) => {
+                //setErrorForField(field, false);
+                if(field)
+                  setError(validate[field](e.target.value))
+                props.onChange(e.target.value);
+            }}
+            value={props.value === undefined ? '' : props.value}
+        />
+}
+
   const generateCompanyField = ( companies, initialCompany ) => {
+
     if(initialCompany)
       initialCompany = {ID: initialCompany.ID, NAME: initialCompany.NAME}
     return <Autocomplete
@@ -88,16 +129,23 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
       data={users}
       editable={{
         onRowAdd: (newData) =>
-            new Promise((resolve) => {
+            new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    resolve();
-                    addUser(newData, selectedCompany, selectedEmployeeType);
+                  if(!validateData(newData, selectedCompany, selectedEmployeeType)){
+                    reject()
+                    return
+                  }
+                  resolve();
+                  addUser(newData, selectedCompany, selectedEmployeeType);
                 }, 600);
             }),
         onRowUpdate: (newData /*, oldData*/) =>{
           return new Promise((resolve, reject) => {
             setTimeout(() => {
-              reject();
+              if(!validateData(newData)){
+                reject()
+                return
+              }
               newData.ID_COMPANY = selectedCompany?selectedCompany.ID:newData.ID_COMPANY;
               newData.COMPANY = selectedCompany?selectedCompany:newData.COMPANY;
               updateUser(newData, selectedEmployeeType);

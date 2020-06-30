@@ -13,74 +13,57 @@ import * as constants from './constants'
 //#endregion
 
 function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
-    const [inputErrors,setInputErrors] = useState(constants.INPUT_ERRORS);
-    //Commented until bug is fixed on mui table
-    // const setErrorForField = (fieldName, value) =>{
-    //     if(value != inputErrors[fieldName]){
-    //         const errors = {...inputErrors}
-    //         errors[fieldName] = value
-    //         setInputErrors(errors);
-    //     }
-    // }
+
+    const validate = {
+        [constants.NAME]: s => ((!s||s.length > 3) ? false : true),
+        [constants.EMAIL]: s => ((!s || !EmailValidator.validate(s)) ? true : false),
+        [constants.CUI]: s => ((!s||s.length <8) ? true : false),
+        [constants.PHONE_NUMBER]: (number) => {
+            let phoneNumber = null;
+            if(number)
+                phoneNumber=parsePhoneNumberFromString(number, 'RO');
+            
+            if(!phoneNumber || !phoneNumber.isValid() ){
+               return true;
+            }
+            return false
+        },
+        [constants.DOMAIN]: s => ((!s||s.length <2) ? true : false),
+      };
 
     const generateTextField = (label, type, props, field) => {
+        const [error, setError] = useState(false)
+
         return <TextField 
                 type={type}
-                error={inputErrors[field]}
+                error={error}
                 label={label}
                 onChange={(e) => {
-                    //setErrorForField(field, false);
+                    if(field)
+                        setError(validate[field](e.target.value))
                     props.onChange(e.target.value);
                 }}
                 value={props.value === undefined ? '' : props.value}
             />
     }
 
-    const actionFunction = (callback, newData, isUpdate) => new Promise((resolve,reject) => {
+    const actionFunction = (callback, newData) => new Promise((resolve,reject) => {
         setTimeout(() => {
-            let ok = true;
-            let errors = {...constants.INPUT_ERRORS}
+            if(validate[constants.NAME](newData[constants.NAME])
+                || validate[constants.PHONE_NUMBER](newData[constants.PHONE_NUMBER])
+                || validate[constants.EMAIL](newData[constants.EMAIL])
+                || validate[constants.CUI](newData[constants.CUI])
+                || validate[constants.DOMAIN](newData[constants.DOMAIN])) {
 
-            const onError = (fieldKey) =>{
-                if(!newData[fieldKey]){
-                    errors[fieldKey]= true;
-                    return false;
-                }
-                return ok;
-            }
+                reject()
+                return
+            }                    
 
-            if(!newData[constants.EMAIL] || !EmailValidator.validate(newData[constants.EMAIL])){
-                errors[constants.EMAIL]= true;
-                ok=false;
-            }
+            const phoneNumber=parsePhoneNumberFromString(newData[constants.PHONE_NUMBER], 'RO');
+            newData[constants.PHONE_NUMBER] = phoneNumber.formatInternational();
 
-            let phoneNumber = null;
-            if(newData[constants.PHONE_NUMBER])
-                phoneNumber=parsePhoneNumberFromString(newData[constants.PHONE_NUMBER], 'RO');
-            
-            if(!newData[constants.PHONE_NUMBER] || !phoneNumber || !phoneNumber.isValid() ){
-                errors[constants.PHONE_NUMBER]= true;
-                ok=false;
-            }else{
-                newData[constants.PHONE_NUMBER] = phoneNumber.formatInternational();
-            }
-
-            ok = onError(constants.NAME);
-            ok = onError(constants.CUI);
-            ok = onError(constants.DOMAIN);                        
-
-            if(ok){
-                resolve();
-                callback(newData);
-                errors = {...constants.INPUT_ERRORS};
-            }
-            else{
-                reject();
-            }
-
-            if(!isUpdate){
-                setInputErrors(errors);
-            }
+            resolve();
+            callback(newData);
         }, 600);
     })
 
@@ -111,8 +94,6 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             data={companies}
             editable={{
                 onRowAdd: (newData) => actionFunction(addCompany, newData),
-                onRowAddCancelled: () => setInputErrors(constants.INPUT_ERRORS),
-                onRowUpdateCancelled: () => setInputErrors(constants.INPUT_ERRORS),
                 onRowUpdate: (newData/*, oldData*/) =>  actionFunction(updateCompany, newData, true),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
