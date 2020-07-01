@@ -15,7 +15,7 @@ import * as constants from './constants'
 function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
 
     const validate = {
-        [constants.NAME]: s => ((!s||s.length > 3) ? false : true),
+        [constants.NAME]: s => ((!s||s.length < 3) ? true : false),
         [constants.EMAIL]: s => ((!s || !EmailValidator.validate(s)) ? true : false),
         [constants.CUI]: s => ((!s||s.length <8) ? true : false),
         [constants.PHONE_NUMBER]: (number) => {

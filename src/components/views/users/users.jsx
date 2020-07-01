@@ -31,7 +31,7 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
     },
     { title: 'Firma', field: 'COMPANY.NAME',
     editComponent: (props) =>{
-      return generateCompanyField(companiesList, props.rowData?props.rowData.COMPANY:selectedCompany)
+      return generateCompanyField(companiesList, props.rowData?props.rowData.COMPANY:null)
     }
     },
   ];
@@ -39,8 +39,8 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
   let selectedCompany = null;
   let selectedEmployeeType = null;
 
-  const validateData = (user, selectedCompany, selectedEmployeeType) =>{
-    if(!selectedCompany || !selectedEmployeeType)
+  const validateData = (user, selectedCompany, selectedEmployeeType, idAddAction) =>{
+    if(idAddAction && (!selectedCompany || !selectedEmployeeType))
       return false
     if(!user.FIRST_NAME || validate["name"](user.FIRST_NAME))
       return false
@@ -79,13 +79,16 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
 }
 
   const generateCompanyField = ( companies, initialCompany ) => {
+    const [error, setError] = useState(false);
 
     if(initialCompany)
       initialCompany = {ID: initialCompany.ID, NAME: initialCompany.NAME}
     return <Autocomplete
         id="autocompleteCompany"
+        disableClearable={true}
         onChange={(event, newValue) => {
-           selectedCompany=newValue;
+          newValue?setError(false):setError(true)
+          selectedCompany=newValue;
          }}
         options={companies}
         getOptionLabel={(option) => {
@@ -94,11 +97,13 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
         getOptionSelected={(option, value) => option.ID === value.ID}
         defaultValue={initialCompany}
         style={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Firma" />}
+        renderInput={(params) => <TextField {...params} label="Firma" error={error}/>}
       />
   }
 
   const generateEmployeeTypeField = ( employeeTypes, initialEmployeeType ) => {
+    const [error, setError] = useState(false);
+
     let initialValue = null;
     if(initialEmployeeType && initialEmployeeType[0]){
       initialValue = initialEmployeeType[0]
@@ -107,7 +112,9 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
 
     return <Autocomplete
         id="autocompleteEmployeeType"
+        disableClearable={true}
         onChange={(event, newValue) => {
+          newValue?setError(false):setError(true)
           selectedEmployeeType = newValue;
          }}
         getOptionSelected={(option, value) => option.ID === value.ID}
@@ -117,7 +124,7 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
         }}
         defaultValue={initialValue}
         style={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Tip Angajat" />}
+        renderInput={(params) => <TextField {...params} label="Tip Angajat" error={error}/>}
       />
   }
 
@@ -131,7 +138,7 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
         onRowAdd: (newData) =>
             new Promise((resolve, reject) => {
                 setTimeout(() => {
-                  if(!validateData(newData, selectedCompany, selectedEmployeeType)){
+                  if(!validateData(newData, selectedCompany, selectedEmployeeType, true)){
                     reject()
                     return
                   }
@@ -149,6 +156,7 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
               newData.ID_COMPANY = selectedCompany?selectedCompany.ID:newData.ID_COMPANY;
               newData.COMPANY = selectedCompany?selectedCompany:newData.COMPANY;
               updateUser(newData, selectedEmployeeType);
+              resolve()
             }, 600);
           })},
         onRowDelete: (oldData) =>
