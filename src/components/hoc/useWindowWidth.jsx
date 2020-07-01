@@ -4,7 +4,7 @@ const useWindowWidth = (WrappedComponent) => (props) => {
     const [width, setWidth] = useState(screen.width);
   
     useEffect(() => {
-      const handleResize = () => {console.log(screen.width);setWidth(screen.width);}
+      const handleResize = () => {setWidth(screen.width);}
   
       window.addEventListener('orientationchange', handleResize);
   

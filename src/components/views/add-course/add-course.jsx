@@ -77,7 +77,6 @@ function AddCourse({ history, loadCourses }) {
     setErrors(err)
 
     const qErrors = validateQuiz()
-    console.log(qErrors)
     if (Object.keys(err).length === 0 && Object.keys(qErrors).length === 0) {
       addCourse(course.title, course.type, course.pdfCourse[0]).then(({ data }) => {
         let promises = []

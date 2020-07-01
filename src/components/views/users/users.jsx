@@ -26,12 +26,16 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
     { title: 'CNP', field: 'CNP', editComponent: (props) => generateTextField("CNP", "number", props, 'CNP') },
     { title: 'Tip Angajat', field: 'employeeTypes[0].CODE',
       editComponent: (props) =>{
-        return generateEmployeeTypeField(employeeTypes, props.rowData?props.rowData.employeeTypes:selectedEmployeeType)
+        selectedEmployeeType = null
+        const initialEmployeeType = props.rowData?props.rowData.employeeTypes:null
+        return generateEmployeeTypeField(employeeTypes, initialEmployeeType)
       }
     },
     { title: 'Firma', field: 'COMPANY.NAME',
     editComponent: (props) =>{
-      return generateCompanyField(companiesList, props.rowData?props.rowData.COMPANY:null)
+      selectedCompany = null
+      const initialCompany = (props.rowData && props.rowData.COMPANY)?props.rowData.COMPANY:null
+      return generateCompanyField(companiesList, initialCompany)
     }
     },
   ];
@@ -80,7 +84,6 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
 
   const generateCompanyField = ( companies, initialCompany ) => {
     const [error, setError] = useState(false);
-
     if(initialCompany)
       initialCompany = {ID: initialCompany.ID, NAME: initialCompany.NAME}
     return <Autocomplete
