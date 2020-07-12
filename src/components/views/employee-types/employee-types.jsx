@@ -14,11 +14,13 @@ function EmployeeTypes({
   addEmployeeType,
   deleteEmployeeType,
 }) {
+  
   const columns = [
     { title: 'Denumire', field: 'NAME' },
     { title: 'Cod', field: 'CODE' },
     { title: 'Ultima Trimitere', field: 'LAST_SENT', editable: 'never' },
   ];
+
   return (
     <MaterialTable
       icons={tableIcons}

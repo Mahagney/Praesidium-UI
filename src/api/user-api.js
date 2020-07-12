@@ -48,12 +48,13 @@ export function logIn(user) {
     });
 }
 
-export function updateUser({
-  ID,
+export function createUser({
   FIRST_NAME,
   LAST_NAME,
   EMAIL,
-  CNP
+  CNP,
+  ID_COMPANY,
+  ID_EMPLOYEE_TYPE
 }) {
   const form = new FormData();
 
@@ -61,8 +62,48 @@ export function updateUser({
   form.append("LAST_NAME", LAST_NAME);
   form.append("EMAIL", EMAIL);
   form.append("CNP", CNP);
+  form.append("ID_COMPANY", ID_COMPANY);
+  form.append("ID_EMPLOYEE_TYPE", ID_EMPLOYEE_TYPE);
+
+  return axios.post('/users', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
+export function updateUser({
+  ID,
+  FIRST_NAME,
+  LAST_NAME,
+  EMAIL,
+  CNP,
+  ID_COMPANY
+}) {
+  const form = new FormData();
+
+  form.append("FIRST_NAME", FIRST_NAME);
+  form.append("LAST_NAME", LAST_NAME);
+  form.append("EMAIL", EMAIL);
+  form.append("CNP", CNP);
+  form.append("ID_COMPANY", ID_COMPANY);
 
   return axios.put('/users/' + ID, form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
+export function updateUserEmployeeType(
+  ID_USER,
+  ID_EMPLOYEE_TYPE
+) {
+  const form = new FormData();
+
+  form.append("employeeTypeId", ID_EMPLOYEE_TYPE);
+
+  return axios.put('/users/' + ID_USER + '/employeeType', form, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

@@ -17,7 +17,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} displayName={"AddBox"} />),
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
@@ -35,23 +35,5 @@ const tableIcons = {
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
-
-tableIcons.Add.displayName = "Add";
-tableIcons.Check.displayName = "Check";
-tableIcons.Clear.displayName = "Clear";
-tableIcons.Delete.displayName = "Delete";
-tableIcons.DetailPanel.displayName = "DetailPanel";
-tableIcons.Edit.displayName = "Edit";
-tableIcons.Export.displayName = "Export";
-tableIcons.Filter.displayName = "Filter";
-tableIcons.FirstPage.displayName = "FirstPage";
-tableIcons.LastPage.displayName = "LastPage";
-tableIcons.NextPage.displayName = "NextPage";
-tableIcons.PreviousPage.displayName = "PreviousPage";
-tableIcons.ResetSearch.displayName = "ResetSearch";
-tableIcons.Search.displayName = "Search";
-tableIcons.SortArrow.displayName = "SortArrow";
-tableIcons.ThirdStateCheck.displayName = "ThirdStateCheck";
-tableIcons.ViewColumn.displayName = "ViewColumn";
 
 export default tableIcons;

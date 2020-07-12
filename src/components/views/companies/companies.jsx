@@ -3,7 +3,8 @@ import React, {useState} from 'react';
 import propTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
-import validator from 'validator';
+import * as EmailValidator from 'email-validator';
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 //#endregion
 
 //#region 'LOCAL DEP'
@@ -13,21 +14,33 @@ import * as constants from './constants'
 
 function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
 
-    const [inputErrors,setInputErrors] = useState(constants.INPUT_ERRORS);
-    const setErrorForField = (fieldName, value) =>{
-        if(value != inputErrors[fieldName]){
-        const errors = {...inputErrors}
-        errors[fieldName] = value
-        setInputErrors(errors);}
-    }
+    const validate = {
+        [constants.NAME]: s => ((!s||s.length < 3) ? true : false),
+        [constants.EMAIL]: s => ((!s || !EmailValidator.validate(s)) ? true : false),
+        [constants.CUI]: s => ((!s||s.length <8) ? true : false),
+        [constants.PHONE_NUMBER]: (number) => {
+            let phoneNumber = null;
+            if(number)
+                phoneNumber=parsePhoneNumberFromString(number, 'RO');
+            
+            if(!phoneNumber || !phoneNumber.isValid() ){
+               return true;
+            }
+            return false
+        },
+        [constants.DOMAIN]: s => ((!s||s.length <2) ? true : false),
+      };
 
     const generateTextField = (label, type, props, field) => {
+        const [error, setError] = useState(false)
+
         return <TextField 
                 type={type}
-                error={inputErrors[field]}
+                error={error}
                 label={label}
                 onChange={(e) => {
-                    setErrorForField(field, false);
+                    if(field)
+                        setError(validate[field](e.target.value))
                     props.onChange(e.target.value);
                 }}
                 value={props.value === undefined ? '' : props.value}
@@ -36,38 +49,21 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
 
     const actionFunction = (callback, newData) => new Promise((resolve,reject) => {
         setTimeout(() => {
-            let ok = true;
-            const errors = {...inputErrors}
+            if(validate[constants.NAME](newData[constants.NAME])
+                || validate[constants.PHONE_NUMBER](newData[constants.PHONE_NUMBER])
+                || validate[constants.EMAIL](newData[constants.EMAIL])
+                || validate[constants.CUI](newData[constants.CUI])
+                || validate[constants.DOMAIN](newData[constants.DOMAIN])) {
 
-            const onError = (fieldKey, callback) =>{
-                if(!newData[fieldKey]){
-                    errors[fieldKey]= true;
-                    return false;
-                }
-                return ok;
-            }
+                reject()
+                return
+            }                    
 
-            if(!newData[constants.EMAIL] || !validator.isEmail(newData[constants.EMAIL])){
-                errors[constants.EMAIL]= true;
-                ok=false;
-            }
-            if(!newData[constants.PHONE_NUMBER] || !validator.isMobilePhone(newData[constants.PHONE_NUMBER])){
-                errors[constants.PHONE_NUMBER]= true;
-                ok=false;
-            }
+            const phoneNumber=parsePhoneNumberFromString(newData[constants.PHONE_NUMBER], 'RO');
+            newData[constants.PHONE_NUMBER] = phoneNumber.formatInternational();
 
-            ok = onError(constants.NAME);
-            ok = onError(constants.CUI);
-            ok = onError(constants.DOMAIN);
-
-            setInputErrors(errors);
-
-            if(ok){
-                resolve();
-                callback(newData);
-                setInputErrors(constants.INPUT_ERRORS);
-            }
-            reject();
+            resolve();
+            callback(newData);
         }, 600);
     })
 
@@ -89,6 +85,7 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             editComponent: (props) => generateTextField("Domain", "",props,constants.DOMAIN)
         }
     ]
+
     return (
         <MaterialTable
             icons={tableIcons}
@@ -97,9 +94,7 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
             data={companies}
             editable={{
                 onRowAdd: (newData) => actionFunction(addCompany, newData),
-                onRowAddCancelled: () => setInputErrors(constants.INPUT_ERRORS),
-                onRowUpdateCancelled: () => setInputErrors(constants.INPUT_ERRORS),
-                onRowUpdate: (newData/*, oldData*/) =>  actionFunction(updateCompany, newData),
+                onRowUpdate: (newData/*, oldData*/) =>  actionFunction(updateCompany, newData, true),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
