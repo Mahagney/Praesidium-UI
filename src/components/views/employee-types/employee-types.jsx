@@ -23,6 +23,22 @@ function EmployeeTypes({
 
   return (
     <MaterialTable
+      localization={{
+        header: {
+          actions: '',
+        },
+        toolbar: {
+          searchTooltip: 'Cauta',
+          searchPlaceholder: 'Cauta',
+        },
+        body:{
+          addTooltip: 'Adauga',
+          deleteTooltip: 'Sterge',
+        },
+        pagination: {
+          labelRowsSelect:'randuri'
+      }
+      }}
       icons={tableIcons}
       title='Asigneaza curs la tipul de angajat'
       columns={columns}
@@ -32,7 +48,7 @@ function EmployeeTypes({
           icon: tableIcons.Unchecked,
           tooltip: 'Retrimite',
           onClick: (event, rowData) => {
-            assignCourse(rowData.ID);
+            assignCourse(rowData.ID)
           },
           hidden: !rowData.LAST_SENT,
         }),
@@ -40,7 +56,7 @@ function EmployeeTypes({
           icon: tableIcons.Checked,
           tooltip: 'Trimite',
           onClick: (event, rowData) => {
-            assignCourse(rowData.ID);
+            assignCourse(rowData.ID)
           },
           hidden: rowData.LAST_SENT,
         }),
@@ -49,20 +65,20 @@ function EmployeeTypes({
         onRowAdd: (newData) =>
           new Promise((resolve) => {
             setTimeout(() => {
-              resolve();
-              addEmployeeType(newData);
-            }, 600);
+              resolve()
+              addEmployeeType(newData)
+            }, 600)
           }),
         onRowDelete: (oldData) =>
           new Promise((resolve) => {
             setTimeout(() => {
-              resolve();
-              deleteEmployeeType(oldData.ID);
-            }, 600);
+              resolve()
+              deleteEmployeeType(oldData.ID)
+            }, 600)
           }),
       }}
     />
-  );
+  )
 }
 
 EmployeeTypes.propTypes = {

@@ -9,6 +9,7 @@ import * as EmailValidator from 'email-validator';
 
 //#region 'LOCAL DEP'
 import tableIcons from './icons';
+import {localizationMaterialTable} from '../common'
 //#endregion
 
 function Users({ users, deleteUser, updateUser, createUser, companiesList, employeeTypes }) {
@@ -20,18 +21,18 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
   }
 
   const columns = [
-    { title: 'Nume', field: 'LAST_NAME', editComponent: (props) => generateTextField("Nume", "text", props, "name") },
-    { title: 'Prenume', field: 'FIRST_NAME', editComponent: (props) => generateTextField("Prenume", "text", props, "name") },
-    { title: 'Email', field: 'EMAIL', editComponent: (props) => generateTextField("Email", "email", props, "email")},
+    { title: 'NUME', field: 'LAST_NAME', editComponent: (props) => generateTextField("Nume", "text", props, "name") },
+    { title: 'PRENUME', field: 'FIRST_NAME', editComponent: (props) => generateTextField("Prenume", "text", props, "name") },
+    { title: 'EMAIL', field: 'EMAIL', editComponent: (props) => generateTextField("Email", "email", props, "email")},
     { title: 'CNP', field: 'CNP', editComponent: (props) => generateTextField("CNP", "number", props, 'CNP') },
-    { title: 'Tip Angajat', field: 'employeeTypes[0].CODE',
+    { title: 'TIP ANGAJAT', field: 'employeeTypes[0].CODE',
       editComponent: (props) =>{
         selectedEmployeeType = null
         const initialEmployeeType = props.rowData?props.rowData.employeeTypes:null
         return generateEmployeeTypeField(employeeTypes, initialEmployeeType)
       }
     },
-    { title: 'Firma', field: 'COMPANY.NAME',
+    { title: 'FIRMA', field: 'COMPANY.NAME',
     editComponent: (props) =>{
       selectedCompany = null
       const initialCompany = (props.rowData && props.rowData.COMPANY)?props.rowData.COMPANY:null
@@ -133,6 +134,7 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
 
   return (
     <MaterialTable
+      localization={localizationMaterialTable}
       icons={tableIcons}
       title='Vizualizare angajati'
       columns={columns}

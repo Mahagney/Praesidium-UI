@@ -10,6 +10,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 //#region 'LOCAL DEP'
 import tableIcons from './icons'
 import * as constants from './constants'
+import {localizationMaterialTable} from '../common'
 //#endregion
 
 function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
@@ -68,26 +69,27 @@ function Companies({ companies, addCompany, deleteCompany, updateCompany }) {
     })
 
     const columns = [
-        { title: 'Name', field: constants.NAME,
+        { title: 'NUME', field: constants.NAME,
         editComponent: (props) => generateTextField("Name", "Name",props, constants.NAME)},
         { title: 'CUI', field: constants.CUI,
         editComponent: (props) => generateTextField("CUI", "",props,constants.CUI)},
-        { title: 'Email', field: constants.EMAIL,
+        { title: 'EMAIL', field: constants.EMAIL,
         editComponent: (props) => generateTextField("Email", "email",props,constants.EMAIL)},
         {
-            title: 'Phone Number',
+            title: 'TELEFON',
             field: constants.PHONE_NUMBER,
             editComponent: (props) => generateTextField("Phone Number", "tel",props,constants.PHONE_NUMBER)
         },
         { 
-            title: 'Domain', 
+            title: 'DOMENIU', 
             field: constants.DOMAIN,            
             editComponent: (props) => generateTextField("Domain", "",props,constants.DOMAIN)
         }
     ]
-
+    
     return (
         <MaterialTable
+            localization={localizationMaterialTable}
             icons={tableIcons}
             title="Vizualizare firme"
             columns={columns}

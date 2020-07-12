@@ -25,7 +25,7 @@ import useStylesCourse from './add-course-style'
 import { loadCourses } from '../../../redux/actions/course-action'
 //#endregion
 
-function AddCourse({ history, loadCourses }) {
+function AddCourse({ history, loadCourses, loggedUser }) {
   const requiredFields = ['title', 'type', 'pdfCourse']
   const classes = useStylesCourse()
   const [quiz, setQuiz] = useState([])
@@ -34,6 +34,7 @@ function AddCourse({ history, loadCourses }) {
   const [videoCourse, setVideoCourse] = useState()
   const [errors, setErrors] = useState({})
   const [questionErrors, setQuestionErrors] = useState({})
+  const [saving, setSaving] = useState(false)
   useEffect(() => {
     getCourseTypes().then((types) => {
       setCourseTypes(types)
@@ -78,6 +79,7 @@ function AddCourse({ history, loadCourses }) {
 
     const qErrors = validateQuiz()
     if (Object.keys(err).length === 0 && Object.keys(qErrors).length === 0) {
+      setSaving(true)
       addCourse(course.title, course.type, course.pdfCourse[0]).then(({ data }) => {
         let promises = []
 
@@ -85,9 +87,11 @@ function AddCourse({ history, loadCourses }) {
         if (videoCourse && videoCourse[0]) promises.push(setVideoToCourse(data.ID, videoCourse[0]))
 
         Promise.all(promises).then(() => {
-          loadCourses.then(history.push('/courses'))
+            loadCourses(loggedUser).then((result)=>{
+              history.push('/courses')
+            })
+          })
         })
-      })
     }
   }
 
@@ -152,7 +156,7 @@ function AddCourse({ history, loadCourses }) {
               acceptedFiles={['video/*']}
               fullWidth={true}
               dropzoneText={'Adauga document video !'}
-              maxFileSize={20000000}
+              maxFileSize={40000000}
               filesLimit={1}
             />
           </div>
@@ -166,13 +170,19 @@ function AddCourse({ history, loadCourses }) {
         className={classes.button}
         onClick={submitForm}
         startIcon={<SaveIcon />}
+        disabled={saving}
       >
-        Salveaza
+        {saving ? 'Salveaza...' : 'Salveaza'}
       </Button>
     </Container>
   )
 }
 
+function mapStateToProps(state) {
+  return {
+    loggedUser: state.user,
+  }
+}
 const mapDispatchToProps = {
   loadCourses: loadCourses,
 }
@@ -182,4 +192,4 @@ AddCourse.propTypes = {
   history: PropTypes.object.isRequired,
 }
 
-export default connect(null, mapDispatchToProps)(AddCourse)
+export default connect(mapStateToProps, mapDispatchToProps)(AddCourse)
