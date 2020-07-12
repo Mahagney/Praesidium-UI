@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 //#region 'LOCAL DEP'
 import {useStylesCourseCard} from './courses-style';
-import book from '../../../assets/images/book.jpg';
+import book from '../../../assets/images/bookLogo.png';
 //#endregion
 
 const CourseCard = ({ name, description, onCardClick }) => {
@@ -26,7 +26,6 @@ const CourseCard = ({ name, description, onCardClick }) => {
           // image='https://png.pngtree.com/png-vector/20190530/ourlarge/pngtree-book-logo-icon-vector-png-image_1127352.jpg'
           image={book}
           title='Course'
-          height='400'
         />
         <CardContent>
           <Typography gutterBottom variant='h5' component='h2'>
@@ -48,7 +47,7 @@ CourseCard.propTypes = {
 };
 
 CourseCard.defaultProps = {
-  description: 'dummy description'
+  description: 'Descriere...'
 };
 
 export default CourseCard;

@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 //#endregion
 
 //#region 'LOCAL DEP'
-import book from '../../../assets/images/book.jpg'
+import book from '../../../assets/images/noCourses.png'
 import { useStylesNoCourses } from './courses-style'
 //#endregion
 
@@ -14,8 +14,8 @@ const NoCourses = () => {
   return (
     <div className={classes.noCoursesContainer}>
       <div>
-        <img src={book} width='300' height='300'></img>
-        <Typography variant='h6'>Nu aveti cursuri asociate</Typography>
+        <img src={book} width='200' height='130'></img>
+        <Typography variant='h2'>Nu aveti cursuri asociate</Typography>
       </div>
     </div>
   )

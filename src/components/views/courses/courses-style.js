@@ -31,11 +31,19 @@ const useStylesNoCourses = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        color: 'gray',
+        marginTop: '10%',
 
         '& div': {
             height: 'auto',
             margin: '0 auto',
-            position: 'relative'
+            position: 'relative',
+
+            '& img': {
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                display: 'block'
+            }
         }
     },
 })
