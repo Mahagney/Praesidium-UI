@@ -14,9 +14,9 @@ import {localizationMaterialTable} from '../common'
 
 function Users({ users, deleteUser, updateUser, createUser, companiesList, employeeTypes }) {
 
-  const addUser = (userData, company, employeeType) =>{
-    userData.ID_COMPANY = company.ID;
-    userData.ID_EMPLOYEE_TYPE = employeeType.ID;
+  const addUser = (userData) =>{
+    userData.ID_COMPANY = userData.COMPANY.ID;
+    userData.ID_EMPLOYEE_TYPE = userData.employeeTypes[0].ID;
     createUser(userData);
   }
 
@@ -25,27 +25,28 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
     { title: 'PRENUME', field: 'FIRST_NAME', editComponent: (props) => generateTextField("Prenume", "text", props, "name") },
     { title: 'EMAIL', field: 'EMAIL', editComponent: (props) => generateTextField("Email", "email", props, "email")},
     { title: 'CNP', field: 'CNP', editComponent: (props) => generateTextField("CNP", "number", props, 'CNP') },
-    { title: 'TIP ANGAJAT', field: 'employeeTypes[0].CODE',
+
+    { title: 'TIP ANGAJAT', field: 'employeeTypes[0]',
+      render: rowData => rowData.employeeTypes[0].CODE,
       editComponent: (props) =>{
-        selectedEmployeeType = null
-        const initialEmployeeType = props.rowData?props.rowData.employeeTypes:null
-        return generateEmployeeTypeField(employeeTypes, initialEmployeeType)
+        const initialEmployeeType = props.value?props.value:null
+        return generateEmployeeTypeField(employeeTypes, initialEmployeeType, props)
       }
     },
-    { title: 'FIRMA', field: 'COMPANY.NAME',
+    { title: 'FIRMA', field: 'COMPANY',
+    render: rowData => rowData.COMPANY.NAME,
     editComponent: (props) =>{
-      selectedCompany = null
-      const initialCompany = (props.rowData && props.rowData.COMPANY)?props.rowData.COMPANY:null
-      return generateCompanyField(companiesList, initialCompany)
+      const initialCompany = props.value?
+        companiesList.find(currentCompany => currentCompany.ID == props.value.ID):null
+      return generateCompanyField(companiesList, initialCompany, props)
     }
     },
   ];
 
-  let selectedCompany = null;
-  let selectedEmployeeType = null;
-
-  const validateData = (user, selectedCompany, selectedEmployeeType, idAddAction) =>{
-    if(idAddAction && (!selectedCompany || !selectedEmployeeType))
+  const validateData = (user, idAddAction) =>{
+    if(!user.employeeTypes || !user.employeeTypes[0])
+      return false
+    if(!user.COMPANY)
       return false
     if(!user.FIRST_NAME || validate["name"](user.FIRST_NAME))
       return false
@@ -83,16 +84,15 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
         />
 }
 
-  const generateCompanyField = ( companies, initialCompany ) => {
+  const generateCompanyField = ( companies, initialCompany, props ) => {
     const [error, setError] = useState(false);
-    if(initialCompany)
-      initialCompany = {ID: initialCompany.ID, NAME: initialCompany.NAME}
+
     return <Autocomplete
         id="autocompleteCompany"
         disableClearable={true}
         onChange={(event, newValue) => {
+          props.onChange(newValue)
           newValue?setError(false):setError(true)
-          selectedCompany=newValue;
          }}
         options={companies}
         getOptionLabel={(option) => {
@@ -105,28 +105,23 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
       />
   }
 
-  const generateEmployeeTypeField = ( employeeTypes, initialEmployeeType ) => {
+  const generateEmployeeTypeField = ( employeeTypes, initialEmployeeType, props ) => {
     const [error, setError] = useState(false);
-
-    let initialValue = null;
-    if(initialEmployeeType && initialEmployeeType[0]){
-      initialValue = initialEmployeeType[0]
-      initialValue = { "ID":  initialValue.ID, "CODE": initialValue.CODE }
-    }
 
     return <Autocomplete
         id="autocompleteEmployeeType"
         disableClearable={true}
         onChange={(event, newValue) => {
+          newValue.edited = true;
+          props.onChange(newValue)
           newValue?setError(false):setError(true)
-          selectedEmployeeType = newValue;
          }}
         getOptionSelected={(option, value) => option.ID === value.ID}
         options={employeeTypes}
         getOptionLabel={(option) => {
           return option.CODE
         }}
-        defaultValue={initialValue}
+        defaultValue={initialEmployeeType}
         style={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label="Tip Angajat" error={error}/>}
       />
@@ -143,12 +138,12 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
         onRowAdd: (newData) =>
             new Promise((resolve, reject) => {
                 setTimeout(() => {
-                  if(!validateData(newData, selectedCompany, selectedEmployeeType, true)){
+                  if(!validateData(newData, true)){
                     reject()
                     return
                   }
                   resolve();
-                  addUser(newData, selectedCompany, selectedEmployeeType);
+                  addUser(newData);
                 }, 600);
             }),
         onRowUpdate: (newData /*, oldData*/) =>{
@@ -158,9 +153,9 @@ function Users({ users, deleteUser, updateUser, createUser, companiesList, emplo
                 reject()
                 return
               }
-              newData.ID_COMPANY = selectedCompany?selectedCompany.ID:newData.ID_COMPANY;
-              newData.COMPANY = selectedCompany?selectedCompany:newData.COMPANY;
-              updateUser(newData, selectedEmployeeType);
+              newData.ID_COMPANY = newData.COMPANY.ID
+              const newEmployeeType = newData.employeeTypes[0].edited? newData.employeeTypes[0]:null
+              updateUser(newData, newEmployeeType)
               resolve()
             }, 600);
           })},
