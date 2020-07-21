@@ -23,7 +23,8 @@ function Course({
   tabValue,
   showQuiz,
   showVideo,
-  showAdminButtons
+  showAdminButtons,
+  deleteCourse
 }) {
   const classes = useStylesCourse();
 
@@ -61,7 +62,7 @@ function Course({
       <Fab
         //color='secondary'
         aria-label='Delete'
-        onClick={() => history.push('courses/new')}
+        onClick={deleteCourse}
         className={classes.fabDelete}
       >
         <DeleteIcon />

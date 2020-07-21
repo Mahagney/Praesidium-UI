@@ -54,6 +54,15 @@ function ManageUsers() {
     })
   }
 
+  const addUser = (newUser) => {
+    createUser(newUser).then(user =>{
+      user = user.data
+      user.employeeTypes = newUser.employeeTypes
+      user.COMPANY = newUser.COMPANY
+      setUsers([user, ...users])
+    });
+  }
+
   const editUser = (user, employeeType) => {
     updateUser(user).then((result) => {
       if (result.status == 200) {
@@ -87,7 +96,7 @@ function ManageUsers() {
         updateUser={editUser}
         companiesList={companies}
         employeeTypes={employeeTypes}
-        createUser={createUser}
+        createUser={addUser}
       />
     </Container>
   )

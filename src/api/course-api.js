@@ -110,3 +110,7 @@ export function getCourseTypes() {
       throw error;
     });
 }
+
+export function deleteCourse(courseId) {
+  return axios.delete('/courses/' + courseId);
+}

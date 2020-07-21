@@ -27,6 +27,13 @@ function loadCoursesSuccess(courses) {
   };
 }
 
+function deleteCourseSuccess(courseId) {
+  return {
+    type: actionTypes.DELETE_COURSE,
+    courseId: courseId
+  };
+}
+
 export function completeCourse(courseId, loggedUser, score) {
   return async function (dispatch) {
     dispatch(beginApiCall())
@@ -58,5 +65,19 @@ export function loadCourses(loggedUser) {
       throw error
     }
     return 'done'
+  }
+}
+
+export function deleteCourse(courseId) {
+  return async function (dispatch) {
+    dispatch(beginApiCall())
+    try {
+      const result = await courseApi.deleteCourse(courseId)
+      if(result.status == 200 )
+        dispatch(deleteCourseSuccess(courseId))
+    } catch (error) {
+      dispatch(apiCallError())
+      throw error
+    }
   }
 }

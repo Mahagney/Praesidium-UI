@@ -11,14 +11,14 @@ import PdfViewer from '../../views/pdf'
 import VideoPlayer from '../../views/video'
 import ManageQuiz from '../quiz/manage-quiz'
 import CourseEnd from '../../views/quiz/courseEnd'
-import { completeCourse } from '../../../redux/actions/course-action'
+import { completeCourse, deleteCourse } from '../../../redux/actions/course-action'
 import { getQuizByCourseId, APIgetCourseByIdForAdmin } from '../../../api/course-api'
 import { APIgetCourseByIdForUser } from '../../../api/user-api'
 import { tabIndex } from '../../common/tab'
 import { role } from '../../../constants'
 import withAdmin from '../../hoc/with-Admin'
 //#endregion
-function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
+function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin, deleteCourse }) {
   const [currentCourse, setCurrentCourse] = useState(null)
   const [pdfNumPages, setPdfNumPages] = useState(1)
   const [pdfPageNumber, setPdfPageNumber] = useState(1)
@@ -128,6 +128,8 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
       }
     }
 
+    const removeCourse = ()=> deleteCourse(currentCourse.ID).then(result => history.push('/courses'))
+
     return (
       <Course
         redirectToAssignCourse={redirectToAssignCourse}
@@ -138,6 +140,7 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin }) {
         showVideo={currentCourse.VIDEO_URL ? true : false}
         tabValue={selectedTab}
         showAdminButtons={isAdmin}
+        deleteCourse= {removeCourse}
       />
     )
   } else {
@@ -150,6 +153,7 @@ ManageCourse.propTypes = {
   match: PropTypes.object.isRequired,
   loggedUser: PropTypes.object.isRequired,
   completeCourse: PropTypes.func.isRequired,
+  deleteCourse: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
 }
 
@@ -161,6 +165,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   completeCourse: completeCourse,
+  deleteCourse: deleteCourse
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withAdmin(ManageCourse))
