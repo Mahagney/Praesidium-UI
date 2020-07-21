@@ -128,6 +128,8 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin, del
       }
     }
 
+    const removeCourse = ()=> deleteCourse(currentCourse.ID).then(result => history.push('/courses'))
+
     return (
       <Course
         redirectToAssignCourse={redirectToAssignCourse}
@@ -138,7 +140,7 @@ function ManageCourse({ history, match, loggedUser, completeCourse, isAdmin, del
         showVideo={currentCourse.VIDEO_URL ? true : false}
         tabValue={selectedTab}
         showAdminButtons={isAdmin}
-        deleteCourse= {()=> deleteCourse(currentCourse.ID).then(result => history.push('/courses'))}
+        deleteCourse= {removeCourse}
       />
     )
   } else {
