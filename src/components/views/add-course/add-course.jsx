@@ -14,18 +14,13 @@ import { connect } from 'react-redux'
 //#endregion
 
 //#region 'LOCAL DEP'
-import {
-  getCourseTypes,
-  addCourse,
-  setQuizToCourse,
-  setVideoToCourse,
-} from '../../../api/course-api'
+import { getCourseTypes } from '../../../api/course-api'
 import Question from './question'
 import useStylesCourse from './add-course-style'
-import { loadCourses } from '../../../redux/actions/course-action'
+import { addCourse } from '../../../redux/actions/course-action'
 //#endregion
 
-function AddCourse({ history, loadCourses, loggedUser }) {
+function AddCourse({ history, addCourse }) {
   const requiredFields = ['title', 'type', 'pdfCourse']
   const classes = useStylesCourse()
   const [quiz, setQuiz] = useState([])
@@ -50,7 +45,8 @@ function AddCourse({ history, loadCourses, loggedUser }) {
       })
       if (answered == false) err[index] = 'Selecteaza cel putin un raspuns'
 
-      if (currentQuestion.ANSWERS.length <= 1) err[index] = 'Adauga cel putin doua raspunsuri'
+      if (currentQuestion.ANSWERS.length <= 1)
+        err[index] = 'Adauga cel putin doua raspunsuri'
     })
     setQuestionErrors(err)
     return err
@@ -67,31 +63,27 @@ function AddCourse({ history, loadCourses, loggedUser }) {
     }))
   }
 
-  const submitForm = () => {
+  const submitForm = async () => {
     let err = { ...errors }
     requiredFields.forEach((key) => {
       if (!course[key]) {
         err[key] = 'Trebuie completat'
       }
     })
-
     setErrors(err)
 
     const qErrors = validateQuiz()
     if (Object.keys(err).length === 0 && Object.keys(qErrors).length === 0) {
       setSaving(true)
-      addCourse(course.title, course.type, course.pdfCourse[0]).then(({ data }) => {
-        let promises = []
 
-        if (quiz && quiz.length > 0) promises.push(setQuizToCourse(data.ID, quiz))
-        if (videoCourse && videoCourse[0]) promises.push(setVideoToCourse(data.ID, videoCourse[0]))
-
-        Promise.all(promises).then(() => {
-            loadCourses(loggedUser).then((result)=>{
-              history.push('/courses')
-            })
-          })
-        })
+      await addCourse({
+        courseName: course.title,
+        idCourseType: course.type,
+        pdfFile: course.pdfCourse[0],
+        quiz: quiz,
+        videoCourse: videoCourse,
+      })
+      history.push('/courses')
     }
   }
 
@@ -108,8 +100,16 @@ function AddCourse({ history, loadCourses, loggedUser }) {
   return (
     <Container component='div' maxWidth='lg' className={classes.bigContainer}>
       {<h1>Curs Nou</h1>}
-      <Container component='div' maxWidth='lg' className={classes.flexRowContainer}>
-        <Container component='div' maxWidth='sm' className={classes.smallContainer}>
+      <Container
+        component='div'
+        maxWidth='lg'
+        className={classes.flexRowContainer}
+      >
+        <Container
+          component='div'
+          maxWidth='sm'
+          className={classes.smallContainer}
+        >
           <TextField
             //variant='outlined'
             margin='normal'
@@ -123,8 +123,14 @@ function AddCourse({ history, loadCourses, loggedUser }) {
             error={errors.title ? true : false}
             helperText={errors.title}
           />
-          <FormControl required error={errors.type ? true : false} className={classes.formControl}>
-            <InputLabel id='demo-simple-select-label'>Tipul cursului</InputLabel>
+          <FormControl
+            required
+            error={errors.type ? true : false}
+            className={classes.formControl}
+          >
+            <InputLabel id='demo-simple-select-label'>
+              Tipul cursului
+            </InputLabel>
             <Select
               labelId='demo-simple-select-label'
               id='demo-simple-select'
@@ -135,15 +141,25 @@ function AddCourse({ history, loadCourses, loggedUser }) {
               {createSelectItems()}
             </Select>
           </FormControl>
-          <Question questions={quiz} setQuestions={setQuiz} questionErrors={questionErrors} />
+          <Question
+            questions={quiz}
+            setQuestions={setQuiz}
+            questionErrors={questionErrors}
+          />
         </Container>
-        <Container component='div' maxWidth='sm' className={classes.smallContainer}>
+        <Container
+          component='div'
+          maxWidth='sm'
+          className={classes.smallContainer}
+        >
           <div
             className={classes.dropZone}
             style={errors['pdfCourse'] ? { borderBottom: '3px solid red' } : {}}
           >
             <DropzoneArea
-              onChange={(value) => handleChange({ value: value, name: 'pdfCourse' })}
+              onChange={(value) =>
+                handleChange({ value: value, name: 'pdfCourse' })
+              }
               acceptedFiles={['application/pdf']}
               fullWidth={true}
               dropzoneText={'Adauga document PDF !'}
@@ -177,19 +193,13 @@ function AddCourse({ history, loadCourses, loggedUser }) {
     </Container>
   )
 }
-
-function mapStateToProps(state) {
-  return {
-    loggedUser: state.user,
-  }
-}
 const mapDispatchToProps = {
-  loadCourses: loadCourses,
+  addCourse: addCourse
 }
 
 AddCourse.propTypes = {
-  loadCourses: PropTypes.func.isRequired,
+  addCourse: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCourse)
+export default connect( null, mapDispatchToProps)(AddCourse)

@@ -8,13 +8,13 @@ export default function coursesReducer(state = initialState.courses, action) {
     case actionTypes.COMPLETE_COURSE:
       return state.filter(
         (currentCourse) => currentCourse.ID != action.courseId
-      );
+      )
+    case actionTypes.ADD_COURSE:
+      return [action.course, ...state]
     case actionTypes.DELETE_COURSE:
-      return state.filter(
-        (currentCourse) =>{
-          return currentCourse.ID != action.courseId
-        }
-      );
+      return state.filter((currentCourse) => {
+        return currentCourse.ID != action.courseId
+      });
     default:
       return state;
   }
