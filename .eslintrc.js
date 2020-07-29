@@ -1,20 +1,38 @@
 module.exports = {
   extends: [
+    'plugin:react/recommended',
     'airbnb-base',
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
   ],
+  parser: 'babel-eslint',
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   env: {
     browser: true,
     es6: true,
+    jest: true,
   },
-  parserOptions: {
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx'],
+      },
+    },
   },
   rules: {
-    'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
-    'prefer-promise-reject-errors': ['off'],
-    'react/jsx-filename-extension': ['off'],
-    'react/prop-types': ['warn'],
-    'no-return-assign': ['off'],
+    'spaced-comment': 'off',
+    'no-debugger': 'off',
+    'no-console': 'off',
+    'no-unused-vars': 'warn',
+    'react/prop-types': 'warn',
+    'react/display-name': 'off',
   },
-}
+};
