@@ -1,18 +1,18 @@
 //#region 'NPM DEP'
-import React from 'react'
-import PropTypes from 'prop-types'
-import Typography from '@material-ui/core/Typography'
-import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 //#endregion
 
 //#region 'LOCAL DEP'
-import useStylesCourse from './course-style'
-import { CenteredTabs } from '../../common/tab'
-import Fab from '@material-ui/core/Fab'
-import SettingsIcon from '@material-ui/icons/Settings'
-import DeleteIcon from '@material-ui/icons/Delete'
+import Fab from '@material-ui/core/Fab';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { CenteredTabs } from '../../common/tab';
+import useStylesCourse from './course-style';
 //#endregion
 
 function Course({
@@ -26,24 +26,19 @@ function Course({
   showAdminButtons,
   deleteCourse,
 }) {
-  const classes = useStylesCourse()
+  const classes = useStylesCourse();
 
   return (
-    <Container component='div' className={classes.bigContainer}>
+    <Container component="div" className={classes.bigContainer}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={6}>
           <Paper className={classes.paper}>
-            <Typography variant='h6'>{courseName ? courseName : ''}</Typography>
+            <Typography variant="h6">{courseName || ''}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Paper className={classes.paper}>
-            <CenteredTabs
-              onTabChange={onTabChange}
-              showQuiz={showQuiz}
-              showVideo={showVideo}
-              tabValue={tabValue}
-            />
+            <CenteredTabs onTabChange={onTabChange} showQuiz={showQuiz} showVideo={showVideo} tabValue={tabValue} />
           </Paper>
         </Grid>
       </Grid>
@@ -51,17 +46,12 @@ function Course({
       {/* SHOW the configure & delete buttons for this course if user is ADMIN */}
       {showAdminButtons && (
         <>
-          <Fab
-            color='primary'
-            aria-label='Assign'
-            onClick={redirectToAssignCourse}
-            className={classes.fab}
-          >
+          <Fab color="primary" aria-label="Assign" onClick={redirectToAssignCourse} className={classes.fab}>
             <SettingsIcon />
           </Fab>
           <Fab
             //color='secondary'
-            aria-label='Delete'
+            aria-label="Delete"
             onClick={deleteCourse}
             className={classes.fabDelete}
           >
@@ -70,7 +60,7 @@ function Course({
         </>
       )}
     </Container>
-  )
+  );
 }
 
 Course.propTypes = {
@@ -83,6 +73,6 @@ Course.propTypes = {
   redirectToAssignCourse: PropTypes.func.isRequired,
   showAdminButtons: PropTypes.bool.isRequired,
   deleteCourse: PropTypes.func.isRequired,
-}
+};
 
-export default Course
+export default Course;

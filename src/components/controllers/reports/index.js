@@ -1,1 +1,1 @@
-export {default} from './manage-reports'
+export { default } from './manage-reports';

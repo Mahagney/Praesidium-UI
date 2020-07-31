@@ -7,9 +7,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     '& > * + *': {
-      marginLeft: theme.spacing(2)
-    }
-  }
+      marginLeft: theme.spacing(2),
+    },
+  },
 }));
 
 export default function CircularStatic({ quizResult }) {
@@ -18,9 +18,7 @@ export default function CircularStatic({ quizResult }) {
 
   React.useEffect(() => {
     function progress() {
-      setCompleted((prevCompleted) =>
-        prevCompleted >= quizResult ? quizResult : prevCompleted + 5
-      );
+      setCompleted((prevCompleted) => (prevCompleted >= quizResult ? quizResult : prevCompleted + 5));
     }
 
     const timer = setInterval(progress, 70);
@@ -31,16 +29,11 @@ export default function CircularStatic({ quizResult }) {
 
   return (
     <div className={classes.root}>
-      <CircularProgress
-        variant='static'
-        value={completed}
-        color='primary'
-        size='250px'
-      />
+      <CircularProgress variant="static" value={completed} color="primary" size="250px" />
     </div>
   );
 }
 
 CircularStatic.propTypes = {
-  quizResult: PropTypes.number.isRequired
+  quizResult: PropTypes.number.isRequired,
 };

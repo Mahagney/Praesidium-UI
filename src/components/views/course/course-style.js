@@ -8,22 +8,22 @@ const useStylesCourse = makeStyles((theme) => ({
     background: '#FFFFFF',
     marginTop: theme.spacing(4),
     position: 'relative',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   paper: {
     padding: theme.spacing(1.5),
-    textAlign: 'center'
+    textAlign: 'center',
   },
   fab: {
     position: 'fixed',
     bottom: '40px',
-    right: '40px'
+    right: '40px',
   },
   fabDelete: {
     position: 'fixed',
     bottom: '40px',
-    right: '120px'
-  }
+    right: '120px',
+  },
 }));
 
 export default useStylesCourse;

@@ -12,38 +12,38 @@ const useStylesCourse = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(4),
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   flexRowContainer: {
     paddingBottom: theme.spacing(6),
     display: 'flex',
     padding: '0',
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   smallContainer: {
     marginTop: '40px',
     display: 'flex',
     margin: '5%',
     flexDirection: 'column',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   paper: {
     padding: theme.spacing(1.5),
-    textAlign: 'center'
+    textAlign: 'center',
   },
   formControl: {
     marginTop: theme.spacing(2),
     textAlign: 'left',
-    minWidth: 140
+    minWidth: 140,
   },
   dropZone: {
     marginTop: theme.spacing(2),
-    width: '100%'
+    width: '100%',
   },
   removePadding: {
-    paddingLeft: '0'
-  }
+    paddingLeft: '0',
+  },
 }));
 
 export default useStylesCourse;

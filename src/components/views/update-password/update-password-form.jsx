@@ -16,64 +16,64 @@ import LogOut from '../../common/log-out';
 function UpdatePasswordForm({ onSubmit, onChange, formData, errors, updating }) {
   const classes = useStylesUpdatePasswordForm();
   return (
-    <Container component='div' maxWidth='lg' className={classes.bigContainer}>
-        <div className={classes.logOutContainer}>
-          <span className={classes.logOut}>
-            <LogOut size='large'color='primary'/>
-          </span>
-         </div>
-      <Container component='div' maxWidth='xs' className={classes.smallContainer}>
-        <Typography component='h1' variant='h5' className={classes.title}>
+    <Container component="div" maxWidth="lg" className={classes.bigContainer}>
+      <div className={classes.logOutContainer}>
+        <span className={classes.logOut}>
+          <LogOut size="large" color="primary" />
+        </span>
+      </div>
+      <Container component="div" maxWidth="xs" className={classes.smallContainer}>
+        <Typography component="h1" variant="h5" className={classes.title}>
           Actualizare parola
         </Typography>
         <form className={classes.form} onSubmit={onSubmit}>
           <TextField
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             fullWidth
-            name='currentPassword'
-            label='Parola curenta'
-            type='password'
-            id='currentPassword'
-            autoComplete='new-password'
+            name="currentPassword"
+            label="Parola curenta"
+            type="password"
+            id="currentPassword"
+            autoComplete="new-password"
             value={formData.currentPassword || ''}
             onChange={onChange}
-            error={errors.currentPassword ? true : false}
+            error={!!errors.currentPassword}
             helperText={errors.currentPassword}
           />
           <TextField
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             fullWidth
-            name='newPassword'
-            label='Parola noua'
-            type='password'
-            id='newPassword'
-            autoComplete='new-password'
+            name="newPassword"
+            label="Parola noua"
+            type="password"
+            id="newPassword"
+            autoComplete="new-password"
             value={formData.newPassword || ''}
             onChange={onChange}
-            error={errors.newPassword ? true : false}
+            error={!!errors.newPassword}
             helperText={errors.newPassword}
           />
           <TextField
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             fullWidth
-            name='confirmNewPassword'
-            label='Confirmati parola noua'
-            type='password'
-            id='confirmNewPassword'
-            autoComplete='new-password'
+            name="confirmNewPassword"
+            label="Confirmati parola noua"
+            type="password"
+            id="confirmNewPassword"
+            autoComplete="new-password"
             value={formData.confirmNewPassword || ''}
             onChange={onChange}
-            error={errors.confirmNewPassword ? true : false}
+            error={!!errors.confirmNewPassword}
             helperText={errors.confirmNewPassword}
           />
           <Button
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submitBtn}
             disabled={updating}
           >
@@ -90,7 +90,7 @@ UpdatePasswordForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  updating: PropTypes.bool
+  updating: PropTypes.bool,
 };
 
 export default UpdatePasswordForm;

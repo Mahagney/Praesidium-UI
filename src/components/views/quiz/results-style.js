@@ -4,39 +4,39 @@ const useStylesResults = makeStyles((theme) => ({
   root: {
     display: 'flex',
     '& > * + *': {
-      marginLeft: theme.spacing(2)
+      marginLeft: theme.spacing(2),
     },
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
     flexDirection: 'column',
-    position: 'relative'
+    position: 'relative',
   },
   result: {
     position: 'relative',
     fontSize: '80px',
     fontWeight: 'bold',
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
   },
   backButton: {
     position: 'absolute',
     left: '0px',
-    top: '20px'
+    top: '20px',
   },
   linkToCourses: {
     display: 'flex',
     flexDirection: 'row',
     color: 'black',
     fontSize: '20px',
-    textDecoration: 'none'
+    textDecoration: 'none',
   },
   retry: {
     display: 'flex',
     flexDirection: 'row',
     color: 'black',
     fontSize: '20px',
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 }));
 
 export default useStylesResults;

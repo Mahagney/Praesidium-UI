@@ -20,11 +20,7 @@ function Answers({ answers, setAnswers, error }) {
 
   const selectCorrectAnswer = (index) => {
     setAnswers(
-      answers.map((v, i) =>
-        i != index
-          ? { TEXT: v.TEXT, IS_CORRECT: false }
-          : { TEXT: v.TEXT, IS_CORRECT: true }
-      )
+      answers.map((v, i) => (i != index ? { TEXT: v.TEXT, IS_CORRECT: false } : { TEXT: v.TEXT, IS_CORRECT: true })),
     );
   };
 
@@ -33,24 +29,21 @@ function Answers({ answers, setAnswers, error }) {
       <div className={classes.answerDiv}>
         <TextField
           //variant='outlined'
-          margin='normal'
+          margin="normal"
           fullWidth
-          label='Text Raspuns'
-          name='answer'
+          label="Text Raspuns"
+          name="answer"
           autoFocus
           value={answerText}
           onChange={(event) => setAnswerText(event.target.value)}
-          error={error ? true : false}
+          error={!!error}
           helperText={error}
         />
-        <IconButton aria-label='Add' onClick={() => addAnswer(answerText)}>
-          <AddCircleIcon color='primary' />
+        <IconButton aria-label="Add" onClick={() => addAnswer(answerText)}>
+          <AddCircleIcon color="primary" />
         </IconButton>{' '}
       </div>
-      <AnswersList
-        answers={answers}
-        selectCorrectAnswer={selectCorrectAnswer}
-      />
+      <AnswersList answers={answers} selectCorrectAnswer={selectCorrectAnswer} />
     </Container>
   );
 }
@@ -58,7 +51,7 @@ function Answers({ answers, setAnswers, error }) {
 Answers.propTypes = {
   answers: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
-  setAnswers: PropTypes.func.isRequired
+  setAnswers: PropTypes.func.isRequired,
 };
 
 export default Answers;

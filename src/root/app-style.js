@@ -7,15 +7,15 @@ const theme = createMuiTheme({
   palette: {
     primary: teal,
     secondary: {
-      main: '#baa524'
+      main: '#baa524',
     },
     background: {
-      default: '#D3D3D3'
-    }
+      default: '#D3D3D3',
+    },
   },
   typography: {
-    fontFamily: 'Comfortaa, cursive'
-  }
+    fontFamily: 'Comfortaa, cursive',
+  },
 });
 
 export default theme;

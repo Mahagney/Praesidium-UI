@@ -8,7 +8,7 @@ const appReducer = combineReducers({
   user,
   courses,
   apiCallsInProgress,
-  currentCourse
+  currentCourse,
 });
 
 export default appReducer;

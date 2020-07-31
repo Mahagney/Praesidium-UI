@@ -24,13 +24,13 @@ const useStylesUpdatePasswordForm = makeStyles((theme) => ({
   submitBtn: {
     margin: theme.spacing(3, 0, 2),
   },
-  logOutContainer:{
-    display:'flex',
-    width:'100%'
+  logOutContainer: {
+    display: 'flex',
+    width: '100%',
   },
   logOut: {
-    marginLeft:'auto'
-  }
+    marginLeft: 'auto',
+  },
 }));
 
 export default useStylesUpdatePasswordForm;

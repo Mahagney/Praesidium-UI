@@ -19,14 +19,10 @@ function Quiz({ counter, answerQuestion, quizQuestions }) {
   });
 
   return (
-    <Container component='div' maxWidth='md' className={classes.quizContainer}>
+    <Container component="div" maxWidth="md" className={classes.quizContainer}>
       <QuestionCount counter={counter} total={quizQuestions.length} />
       <Question content={quizQuestions[counter - 1].TEXT} />
-      <Answers
-        answerQuestion={answerQuestion}
-        answers={quizQuestions[counter - 1].ANSWERs}
-        response={resultId}
-      />
+      <Answers answerQuestion={answerQuestion} answers={quizQuestions[counter - 1].ANSWERs} response={resultId} />
     </Container>
   );
 }
@@ -34,7 +30,7 @@ function Quiz({ counter, answerQuestion, quizQuestions }) {
 Quiz.propTypes = {
   counter: PropTypes.number.isRequired,
   quizQuestions: PropTypes.array.isRequired,
-  answerQuestion: PropTypes.func.isRequired
+  answerQuestion: PropTypes.func.isRequired,
 };
 
 export default Quiz;

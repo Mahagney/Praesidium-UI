@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useStylesQuestion from './question-style.js';
+import useStylesQuestion from './question-style';
 
 function Question({ content }) {
   const classes = useStylesQuestion();
@@ -9,7 +9,7 @@ function Question({ content }) {
 }
 
 Question.propTypes = {
-  content: PropTypes.string.isRequired
+  content: PropTypes.string.isRequired,
 };
 
 export default Question;

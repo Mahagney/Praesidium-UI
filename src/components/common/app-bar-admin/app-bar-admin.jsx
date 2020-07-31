@@ -19,13 +19,13 @@ import { logOutUser } from '../../../redux/actions/user-action';
 import AlfaLogo from '../logo';
 //#endregion
 
-function AppBar({ history, location, logOutUser }) {
+function AppBar({ history, location, logOut }) {
   const classes = useStylesAppBar();
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    let currentTabName = location.pathname.split('/')[1];
-    const tabNumber = adminTabs.indexOf("/" + currentTabName);
+    const currentTabName = location.pathname.split('/')[1];
+    const tabNumber = adminTabs.indexOf('/' + currentTabName);
     if (tabNumber != value && tabNumber > -1) {
       setValue(tabNumber);
     }
@@ -33,13 +33,13 @@ function AppBar({ history, location, logOutUser }) {
 
   function handleLogOut() {
     localStorage.removeItem('token');
-    logOutUser();
+    logOut();
   }
 
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`
+      'aria-controls': `simple-tabpanel-${index}`,
     };
   }
 
@@ -51,32 +51,32 @@ function AppBar({ history, location, logOutUser }) {
 
   return (
     <span className={classes.root}>
-      <AppBarMui color='primary'>
+      <AppBarMui color="primary">
         <Toolbar>
-          <div className={classes.logo} onClick={() => handleChange(null, 0)} style={{
-            cursor: "pointer"
-          }}>
-            <AlfaLogo
-              width={'45px'}
-              height={'45px'}
-              style={{ marginTop: '10px' }}
-            />
+          <div
+            className={classes.logo}
+            onClick={() => handleChange(null, 0)}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <AlfaLogo width={'45px'} height={'45px'} style={{ marginTop: '10px' }} />
           </div>
           <Tabs
             TabIndicatorProps={{ style: { background: 'white' } }}
             value={value}
             onChange={handleChange}
-            aria-label='simple tabs example'
+            aria-label="simple tabs example"
           >
-            <Tab label='Cursuri' onChange={handleChange} {...a11yProps(0)} />
-            <Tab label='Firme' onChange={handleChange} {...a11yProps(1)} />
-            <Tab label='Angajati' onChange={handleChange} {...a11yProps(2)} />
-            <Tab label='Rapoarte' onChange={handleChange} {...a11yProps(2)} />
+            <Tab label="Cursuri" onChange={handleChange} {...a11yProps(0)} />
+            <Tab label="Firme" onChange={handleChange} {...a11yProps(1)} />
+            <Tab label="Angajati" onChange={handleChange} {...a11yProps(2)} />
+            <Tab label="Rapoarte" onChange={handleChange} {...a11yProps(2)} />
           </Tabs>
 
           <span className={classes.logOut}>
-            <Tooltip title='Deconectare'>
-              <IconButton color='inherit' onClick={handleLogOut}>
+            <Tooltip title="Deconectare">
+              <IconButton color="inherit" onClick={handleLogOut}>
                 <LockOpenIcon />
               </IconButton>
             </Tooltip>
@@ -90,19 +90,19 @@ function AppBar({ history, location, logOutUser }) {
 
 AppBar.propTypes = {
   loggedUser: PropTypes.object.isRequired,
-  logOutUser: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    loggedUser: state.user
+    loggedUser: state.user,
   };
 }
 
 const mapDispatchToProps = {
-  logOutUser
+  logOut: logOutUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppBar));

@@ -14,10 +14,7 @@ export default function Result({ retryQuiz, results }) {
   const containerClass = useStylesQuiz();
   const quizResult = Math.round(results);
 
-  const message =
-    quizResult > 50
-      ? 'Felicitari, ai trecut testul!'
-      : 'Punctaj insuficient, te rugam sa reincerci!';
+  const message = quizResult > 50 ? 'Felicitari, ai trecut testul!' : 'Punctaj insuficient, te rugam sa reincerci!';
   let left = quizResult === 100 ? '12%' : '20%';
   left = quizResult < 10 ? '30%' : left;
 
@@ -42,24 +39,20 @@ export default function Result({ retryQuiz, results }) {
   }
 
   return (
-    <Container
-      component='div'
-      maxWidth='md'
-      className={containerClass.quizContainer}
-    >
+    <Container component="div" maxWidth="md" className={containerClass.quizContainer}>
       <div className={classes.root}>
         <div className={classes.backButton}>{linkButton}</div>
         <h1>{message}</h1>
         <div
           style={{
             paddingBottom: '40px',
-            display: 'flex'
+            display: 'flex',
           }}
         ></div>
 
         <div className={classes.result} style={{ color: redColor }}>
           <Progress quizResult={quizResult} />
-          <div style={{ position: 'absolute', top: '28%', left: left }}>
+          <div style={{ position: 'absolute', top: '28%', left }}>
             <p>{quizResult + '%'}</p>
           </div>
         </div>
@@ -70,5 +63,5 @@ export default function Result({ retryQuiz, results }) {
 
 Result.propTypes = {
   retryQuiz: PropTypes.func.isRequired,
-  results: PropTypes.number.isRequired
+  results: PropTypes.number.isRequired,
 };

@@ -18,8 +18,8 @@ function Answers({ answers, selectCorrectAnswer }) {
   const classes = useStylesAnswer();
 
   const handleChange = (event) => {
-    setCurrentResponse(parseInt(event.target.value));
-    selectCorrectAnswer(parseInt(event.target.value));
+    setCurrentResponse(parseInt(event.target.value, 10));
+    selectCorrectAnswer(parseInt(event.target.value, 10));
   };
 
   function generateAnswerOption(answer) {
@@ -28,29 +28,23 @@ function Answers({ answers, selectCorrectAnswer }) {
         className={classes.formControlLabel}
         key={answer.ID}
         value={answer.ID}
-        control={<Radio color='primary' />}
+        control={<Radio color="primary" />}
         label={answer.TEXT}
-        labelPlacement='end'
+        labelPlacement="end"
       />
     );
   }
 
   return (
-    <Container
-      component='div'
-      maxWidth='md'
-      style={{ align: 'left', textAlign: 'left' }}
-    >
-      <FormControl component='fieldset' className={classes.formControl}>
+    <Container component="div" maxWidth="md" style={{ align: 'left', textAlign: 'left' }}>
+      <FormControl component="fieldset" className={classes.formControl}>
         <RadioGroup
-          aria-label='gender'
-          name='gender2'
+          aria-label="gender"
+          name="gender2"
           value={currentResponse}
           onChange={(event) => handleChange(event)}
         >
-          {answers.map((current, index) =>
-            generateAnswerOption({ ID: index, TEXT: current.TEXT })
-          )}
+          {answers.map((current, index) => generateAnswerOption({ ID: index, TEXT: current.TEXT }))}
         </RadioGroup>
       </FormControl>
     </Container>
@@ -59,7 +53,7 @@ function Answers({ answers, selectCorrectAnswer }) {
 
 Answers.propTypes = {
   answers: PropTypes.array.isRequired,
-  selectCorrectAnswer: PropTypes.func.isRequired
+  selectCorrectAnswer: PropTypes.func.isRequired,
 };
 
 export default Answers;

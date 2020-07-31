@@ -17,9 +17,9 @@ function VideoPlayer({ videoUrl }) {
   return (
     <>
       <ReactPlayer
-        className= {classes.videoPlayer}
-        width= {1000}
-        height= {isSmall?380:500}
+        className={classes.videoPlayer}
+        width={1000}
+        height={isSmall ? 380 : 500}
         url={videoUrl}
         controls
       ></ReactPlayer>
@@ -28,7 +28,7 @@ function VideoPlayer({ videoUrl }) {
 }
 
 VideoPlayer.propTypes = {
-  videoUrl: PropTypes.string.isRequired
+  videoUrl: PropTypes.string.isRequired,
   //   onDocumentLoadSuccess: PropTypes.func.isRequired,
   //   goToPrevPage: PropTypes.func.isRequired,
   //   goToNextPage: PropTypes.func.isRequired,
