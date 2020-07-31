@@ -12,7 +12,7 @@ function Question({ questions, setQuestions, questionErrors }) {
   const [questionText, setQuestionText] = useState('');
 
   const removeQuestion = (index) => {
-    var tempQuestions = [...questions];
+    const tempQuestions = [...questions];
     tempQuestions.splice(index, 1);
     setQuestions(tempQuestions);
   };
@@ -21,10 +21,8 @@ function Question({ questions, setQuestions, questionErrors }) {
     return (
       <div key={index}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <h3 style={{ textAlign: 'left', marginTop: '0.8rem' }}>
-            {index + 1 + '.' + question.TEXT}
-          </h3>
-          <IconButton aria-label='Add' onClick={() => removeQuestion(index)}>
+          <h3 style={{ textAlign: 'left', marginTop: '0.8rem' }}>{index + 1 + '.' + question.TEXT}</h3>
+          <IconButton aria-label="Add" onClick={() => removeQuestion(index)}>
             <RemoveCircleIcon />
           </IconButton>{' '}
         </div>
@@ -33,11 +31,9 @@ function Question({ questions, setQuestions, questionErrors }) {
           answers={question.ANSWERS}
           setAnswers={(answers) => {
             setQuestions(
-              questions.map((question, currentIndex) =>
-                currentIndex != index
-                  ? question
-                  : { ...question, ANSWERS: answers }
-              )
+              questions.map((currentQuestion, currentIndex) =>
+                currentIndex != index ? question : { ...currentQuestion, ANSWERS: answers },
+              ),
             );
           }}
         />
@@ -51,10 +47,10 @@ function Question({ questions, setQuestions, questionErrors }) {
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <TextField
           //variant='outlined'
-          margin='normal'
+          margin="normal"
           fullWidth
-          label='Text intrebare'
-          name='title'
+          label="Text intrebare"
+          name="title"
           autoFocus
           value={questionText || ''}
           onChange={(event) => setQuestionText(event.target.value)}
@@ -62,7 +58,7 @@ function Question({ questions, setQuestions, questionErrors }) {
           //helperText={errors.email}
         />
         <IconButton
-          aria-label='Add'
+          aria-label="Add"
           onClick={() => {
             if (questionText) {
               setQuestions([...questions, { TEXT: questionText, ANSWERS: [] }]);
@@ -70,7 +66,7 @@ function Question({ questions, setQuestions, questionErrors }) {
             }
           }}
         >
-          <AddCircleIcon color='primary' />
+          <AddCircleIcon color="primary" />
         </IconButton>{' '}
       </div>
       {questions.map((question, index) => generateQuestion(question, index))}
@@ -81,7 +77,7 @@ function Question({ questions, setQuestions, questionErrors }) {
 Question.propTypes = {
   questions: PropTypes.array.isRequired,
   questionErrors: PropTypes.object.isRequired,
-  setQuestions: PropTypes.func.isRequired
+  setQuestions: PropTypes.func.isRequired,
 };
 
 export default Question;

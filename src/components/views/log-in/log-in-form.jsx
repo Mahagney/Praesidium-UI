@@ -16,73 +16,55 @@ import useStylesLogInForm from './log-in-form-style';
 import AlfaLogo from '../../common/logo-with-name';
 //#endregion
 
-function LogInForm({
-  onSubmit,
-  onChange,
-  emailValue,
-  passwordValue,
-  logging,
-  errors
-}) {
+function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging, errors }) {
   const classes = useStylesLogInForm();
   return (
-    <Container component='div' maxWidth='lg' className={classes.bigContainer}>
-      <Container
-        component='div'
-        maxWidth='xs'
-        className={classes.smallContainer}
-      >
+    <Container component="div" maxWidth="lg" className={classes.bigContainer}>
+      <Container component="div" maxWidth="xs" className={classes.smallContainer}>
         {/* <LockIcon className={classes.logo} color='secondary' /> */}
-        <AlfaLogo
-          width={'120px'}
-          height={'120px'}
-          style={{ marginTop: '50px', marginBottom: '15px' }}
-        />
-        <Typography component='h1' variant='h5'>
+        <AlfaLogo width={'120px'} height={'120px'} style={{ marginTop: '50px', marginBottom: '15px' }} />
+        <Typography component="h1" variant="h5">
           Autentificare
         </Typography>
         <form className={classes.form} onSubmit={onSubmit}>
           <TextField
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             fullWidth
-            label='Email'
-            name='email'
+            label="Email"
+            name="email"
             autoFocus
             value={emailValue || ''}
             onChange={onChange}
-            error={errors.email ? true : false}
+            error={!!errors.email}
             helperText={errors.email}
           />
           <TextField
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             fullWidth
-            name='password'
-            label='Parola'
-            type='password'
-            id='password'
-            autoComplete='new-password'
+            name="password"
+            label="Parola"
+            type="password"
+            id="password"
+            autoComplete="new-password"
             value={passwordValue || ''}
             onChange={onChange}
-            error={errors.password ? true : false}
+            error={!!errors.password}
             helperText={errors.password}
           />
-          <FormControlLabel
-            control={<Checkbox value='remember' color='secondary' />}
-            label='Tine-ma minte'
-          />
+          <FormControlLabel control={<Checkbox value="remember" color="secondary" />} label="Tine-ma minte" />
           <Button
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submitBtn}
             disabled={logging}
           >
             {logging ? 'Autentificare...' : 'Autentificare'}
           </Button>
-          <LinkMaterial href='#' variant='body2'>
+          <LinkMaterial href="#" variant="body2">
             {'Ati uitat parola?'}
           </LinkMaterial>
         </form>
@@ -97,11 +79,11 @@ LogInForm.propTypes = {
   emailValue: PropTypes.string.isRequired,
   passwordValue: PropTypes.string.isRequired,
   logging: PropTypes.bool.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
 };
 
 LogInForm.defaultProps = {
   emailValue: '',
-  passwordValue: ''
+  passwordValue: '',
 };
 export default LogInForm;

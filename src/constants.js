@@ -1,8 +1,7 @@
 const role = Object.freeze({
-    ADMIN: 'admin',
-    USER: 'user'
-})
+  ADMIN: 'admin',
+  USER: 'user',
+});
 
-export {
-    role
-}
+// eslint-disable-next-line import/prefer-default-export
+export { role };

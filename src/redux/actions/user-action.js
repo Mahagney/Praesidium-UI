@@ -5,25 +5,26 @@ import { beginApiCall, apiCallError } from './api-status-action';
 function logInSuccess(user) {
   return {
     type: actionTypes.LOGIN_SUCCESS,
-    user
+    user,
   };
 }
 
 export function setCurrentUser(user) {
   return {
     type: actionTypes.SET_CURRENT_USER,
-    user
+    user,
   };
 }
 
 export function logOutUser() {
   return {
-    type: actionTypes.LOG_OUT_USER
+    type: actionTypes.LOG_OUT_USER,
   };
 }
 
 export function logIn(user) {
-  return function(dispatch) {
+  // eslint-disable-next-line func-names
+  return function (dispatch) {
     dispatch(beginApiCall());
     return userApi
       .logIn(user)
@@ -36,4 +37,3 @@ export function logIn(user) {
       });
   };
 }
-

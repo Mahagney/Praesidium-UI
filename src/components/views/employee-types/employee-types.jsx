@@ -8,13 +8,7 @@ import MaterialTable from 'material-table';
 import tableIcons from './icons';
 //#endregion
 
-function EmployeeTypes({
-  assignCourse,
-  employeeTypes,
-  addEmployeeType,
-  deleteEmployeeType,
-}) {
-  
+function EmployeeTypes({ assignCourse, employeeTypes, addEmployeeType, deleteEmployeeType }) {
   const columns = [
     { title: 'Denumire', field: 'NAME' },
     { title: 'Cod', field: 'CODE' },
@@ -31,32 +25,32 @@ function EmployeeTypes({
           searchTooltip: 'Cauta',
           searchPlaceholder: 'Cauta',
         },
-        body:{
+        body: {
           addTooltip: 'Adauga',
           deleteTooltip: 'Sterge',
         },
         pagination: {
-          labelRowsSelect:'randuri'
-      }
+          labelRowsSelect: 'randuri',
+        },
       }}
       icons={tableIcons}
-      title='Asigneaza curs la tipul de angajat'
+      title="Asigneaza curs la tipul de angajat"
       columns={columns}
       data={employeeTypes}
       actions={[
         (rowData) => ({
           icon: tableIcons.Unchecked,
           tooltip: 'Retrimite',
-          onClick: (event, rowData) => {
-            assignCourse(rowData.ID)
+          onClick: (event, currentRowData) => {
+            assignCourse(currentRowData.ID);
           },
           hidden: !rowData.LAST_SENT,
         }),
         (rowData) => ({
           icon: tableIcons.Checked,
           tooltip: 'Trimite',
-          onClick: (event, rowData) => {
-            assignCourse(rowData.ID)
+          onClick: (event, currentRowData) => {
+            assignCourse(currentRowData.ID);
           },
           hidden: rowData.LAST_SENT,
         }),
@@ -65,20 +59,20 @@ function EmployeeTypes({
         onRowAdd: (newData) =>
           new Promise((resolve) => {
             setTimeout(() => {
-              resolve()
-              addEmployeeType(newData)
-            }, 600)
+              resolve();
+              addEmployeeType(newData);
+            }, 600);
           }),
         onRowDelete: (oldData) =>
           new Promise((resolve) => {
             setTimeout(() => {
-              resolve()
-              deleteEmployeeType(oldData.ID)
-            }, 600)
+              resolve();
+              deleteEmployeeType(oldData.ID);
+            }, 600);
           }),
       }}
     />
-  )
+  );
 }
 
 EmployeeTypes.propTypes = {

@@ -5,8 +5,8 @@ const useSpinnerStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(14),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 }));
 
 export default useSpinnerStyles;

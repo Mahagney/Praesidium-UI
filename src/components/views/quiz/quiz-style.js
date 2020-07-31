@@ -8,8 +8,8 @@ const useStylesQuiz = makeStyles((theme) => ({
     borderRadius: '.5rem',
     height: '500px',
     background: '#FFFFFF',
-    marginTop: theme.spacing(4)
-  }
+    marginTop: theme.spacing(4),
+  },
 }));
 
 export default useStylesQuiz;

@@ -1,93 +1,93 @@
 //#region 'NPM DEP'
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { Redirect } from 'react-router-dom'
-import { useSnackbar } from 'notistack'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 // redux
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 //#endregion
 
 //#region 'LOCAL DEP'
-import LogInForm from '../../views/log-in'
-import * as userActions from '../../../redux/actions/user-action'
+import LogInForm from '../../views/log-in';
+import * as userActions from '../../../redux/actions/user-action';
 //#endregion
 
 function ManageLogIn({ isAuth, loggedUser, logIn }) {
-  const [user, setUser] = useState({})
-  const [logging, setLogging] = useState(false)
-  const [validations, setValidations] = useState({})
-  const { enqueueSnackbar } = useSnackbar()
+  const [user, setUser] = useState({});
+  const [logging, setLogging] = useState(false);
+  const [validations, setValidations] = useState({});
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleChange(event) {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setUser((prevUser) => ({
       ...prevUser,
       [name]: value,
-    }))
+    }));
   }
 
   function handleSubmit(event) {
-    event.preventDefault()
-    if (!formIsValid()) return
+    event.preventDefault();
+    if (!formIsValid()) return;
 
-    setLogging(true)
+    setLogging(true);
     logIn(user).catch((error) => {
-      setLogging(false)
+      setLogging(false);
       enqueueSnackbar(error.customMessage, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
           horizontal: 'center',
         },
-      })
-    })
+      });
+    });
   }
 
   function formIsValid() {
-    const { email, password } = user
-    const validations = {}
+    const { email, password } = user;
+    const validationResults = {};
 
-    if (!email) validations.email = 'Completati adresa de email.'
-    if (!password) validations.password = 'Completati parola.'
+    if (!email) validationResults.email = 'Completati adresa de email.';
+    if (!password) validationResults.password = 'Completati parola.';
 
-    setValidations(validations)
+    setValidations(validationResults);
     // Form is valid if the errors object still has no properties
-    return Object.keys(validations).length === 0
+    return Object.keys(validationResults).length === 0;
   }
 
   if (isAuth && loggedUser.one_time_auth) {
-    return <Redirect to='/courses' />
-  } else if (isAuth && !loggedUser.one_time_auth) {
-    return <Redirect to='/update-password' />
-  } else {
-    return (
-      <LogInForm
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        emailValue={user.email}
-        passwordValue={user.password}
-        logging={logging}
-        errors={validations}
-      />
-    )
+    return <Redirect to="/courses" />;
   }
+  if (isAuth && !loggedUser.one_time_auth) {
+    return <Redirect to="/update-password" />;
+  }
+  return (
+    <LogInForm
+      onChange={handleChange}
+      onSubmit={handleSubmit}
+      emailValue={user.email}
+      passwordValue={user.password}
+      logging={logging}
+      errors={validations}
+    />
+  );
 }
 
 ManageLogIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   loggedUser: PropTypes.object.isRequired,
   logIn: PropTypes.func.isRequired,
-}
+};
 
 function mapStateToProps(state) {
   return {
     loggedUser: state.user,
-    isAuth: state.user.id ? true : false,
-  }
+    isAuth: !!state.user.id,
+  };
 }
 
 const mapDispatchToProps = {
   logIn: userActions.logIn,
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageLogIn)
+export default connect(mapStateToProps, mapDispatchToProps)(ManageLogIn);

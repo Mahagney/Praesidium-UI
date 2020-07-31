@@ -1,1 +1,1 @@
-export {default} from './update-password-form'
+export { default } from './update-password-form';

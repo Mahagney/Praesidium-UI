@@ -3,5 +3,5 @@ export default {
   courses: null,
   course: {},
   currentCourse: {},
-  apiCallsInProgress: 0
+  apiCallsInProgress: 0,
 };

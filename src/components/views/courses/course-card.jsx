@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 //#endregion
 
 //#region 'LOCAL DEP'
-import {useStylesCourseCard} from './courses-style';
+import { useStylesCourseCard } from './courses-style';
 import book from '../../../assets/images/bookLogo.png';
 //#endregion
 
@@ -21,17 +21,17 @@ const CourseCard = ({ name, description, onCardClick }) => {
     <Card classes={{ root: classes.card }}>
       <CardActionArea onClick={onCardClick}>
         <CardMedia
-          component='img'
+          component="img"
           className={classes.media}
           // image='https://png.pngtree.com/png-vector/20190530/ourlarge/pngtree-book-logo-icon-vector-png-image_1127352.jpg'
           image={book}
-          title='Course'
+          title="Course"
         />
         <CardContent>
-          <Typography gutterBottom variant='h5' component='h2'>
+          <Typography gutterBottom variant="h5" component="h2">
             {name}
           </Typography>
-          <Typography variant='body2' color='textSecondary' component='p'>
+          <Typography variant="body2" color="textSecondary" component="p">
             {description}
           </Typography>
         </CardContent>
@@ -43,11 +43,11 @@ const CourseCard = ({ name, description, onCardClick }) => {
 CourseCard.propTypes = {
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  onCardClick: PropTypes.func.isRequired
+  onCardClick: PropTypes.func.isRequired,
 };
 
 CourseCard.defaultProps = {
-  description: 'Descriere...'
+  description: 'Descriere...',
 };
 
 export default CourseCard;

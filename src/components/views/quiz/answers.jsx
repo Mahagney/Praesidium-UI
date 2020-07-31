@@ -21,7 +21,7 @@ function Answers({ answers, response, answerQuestion }) {
     let res = false;
     if (event.target.value == response) res = true;
     setCurrentResponse(event.target.value);
-    setTimeout(function() {
+    setTimeout(() => {
       answerQuestion(res);
       setCurrentResponse(0);
     }, 500);
@@ -33,23 +33,19 @@ function Answers({ answers, response, answerQuestion }) {
         className={classes.formControlLabel}
         key={answer.ID}
         value={answer.ID}
-        control={<Radio color='primary' />}
+        control={<Radio color="primary" />}
         label={answer.TEXT}
-        labelPlacement='end'
+        labelPlacement="end"
       />
     );
   }
 
   return (
-    <Container
-      component='div'
-      maxWidth='md'
-      style={{ align: 'left', textAlign: 'left' }}
-    >
-      <FormControl component='fieldset' className={classes.formControl}>
+    <Container component="div" maxWidth="md" style={{ align: 'left', textAlign: 'left' }}>
+      <FormControl component="fieldset" className={classes.formControl}>
         <RadioGroup
-          aria-label='gender'
-          name='gender2'
+          aria-label="gender"
+          name="gender2"
           value={currentResponse}
           onChange={(event) => handleChange(event)}
         >
@@ -63,7 +59,7 @@ function Answers({ answers, response, answerQuestion }) {
 Answers.propTypes = {
   answers: PropTypes.array.isRequired,
   response: PropTypes.string.isRequired,
-  answerQuestion: PropTypes.func.isRequired
+  answerQuestion: PropTypes.func.isRequired,
 };
 
 export default Answers;

@@ -25,12 +25,7 @@ function Spinner() {
 
   return (
     <div className={classes.spinnerContainer}>
-      <CircularProgress
-        variant='determinate'
-        value={progress}
-        color='secondary'
-        size={100}
-      />
+      <CircularProgress variant="determinate" value={progress} color="secondary" size={100} />
     </div>
   );
 }

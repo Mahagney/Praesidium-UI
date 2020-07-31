@@ -1,10 +1,11 @@
-import axios from './axios.js';
+import axios from './axios';
 
 export function getEmployeeTypes() {
   return axios.get('/employeeTypes').then((response) => {
     if (response.status == 200) {
       return response.data;
     }
+    return null;
   });
 }
 
@@ -13,6 +14,7 @@ export function getEmployeeTypesByCourseId(courseId) {
     if (response.status == 200) {
       return response.data;
     }
+    return null;
   });
 }
 

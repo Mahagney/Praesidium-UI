@@ -1,25 +1,25 @@
 //#region 'NPM DEP'
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 //#endregion
 
 //#region 'LOCAL DEP'
-import * as courseActions from '../../../redux/actions/course-action'
-import CoursesCards from '../../views/courses/courses-cards'
-import NoCourses from '../../views/courses/no-courses'
-import Spinner from '../../common/spinner'
-import withAdmin from '../../hoc/with-Admin'
+import * as courseActions from '../../../redux/actions/course-action';
+import CoursesCards from '../../views/courses/courses-cards';
+import NoCourses from '../../views/courses/no-courses';
+import Spinner from '../../common/spinner';
+import withAdmin from '../../hoc/with-Admin';
 //#endregion
 
 function ManageCourses({ history, courses, loggedUser, loadCourses, isAdmin }) {
   useEffect(() => {
     if (courses === null) {
-      loadCourses(loggedUser).catch(() => {})
+      loadCourses(loggedUser).catch(() => {});
     }
-  }, [])
+  }, []);
   function handleCardClick(courseId) {
-    history.push('/courses/' + courseId)
+    history.push('/courses/' + courseId);
   }
 
   const component = (
@@ -29,17 +29,15 @@ function ManageCourses({ history, courses, loggedUser, loadCourses, isAdmin }) {
       history={history}
       showAddNewCourseButton={isAdmin}
     />
-  )
+  );
 
   if (courses !== null) {
     if (courses.length) {
-      return component
-    } else {
-      return <NoCourses />
+      return component;
     }
-  } else {
-    return <Spinner />
+    return <NoCourses />;
   }
+  return <Spinner />;
 }
 
 ManageCourses.propTypes = {
@@ -48,17 +46,17 @@ ManageCourses.propTypes = {
   loggedUser: PropTypes.object.isRequired,
   loadCourses: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
-}
+};
 
 function mapStateToProps(state) {
   return {
     loggedUser: state.user,
     courses: state.courses,
-  }
+  };
 }
 
 const mapDispatchToProps = {
   loadCourses: courseActions.loadCourses,
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAdmin(ManageCourses))
+export default connect(mapStateToProps, mapDispatchToProps)(withAdmin(ManageCourses));

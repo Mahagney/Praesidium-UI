@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     publicPath: '/',
-    filename: 'bundlePraesidium.js'
+    filename: 'bundlePraesidium.js',
   },
   devServer: {
     stats: 'minimal',
@@ -17,35 +17,35 @@ module.exports = {
     historyApiFallback: true,
     disableHostCheck: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    https: false
+    https: false,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    })
+      template: 'src/index.html',
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader']
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /(\.css)$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.svg$/,
-        use: ['svg-inline-loader']
+        use: ['svg-inline-loader'],
       },
       {
         test: /\.(pdf|gif|png|jpe?g|svg)$/,
-        use: 'file-loader?name=[path][name].[ext]'
-      }
-    ]
+        use: 'file-loader?name=[path][name].[ext]',
+      },
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
-  }
+    extensions: ['.js', '.jsx'],
+  },
 };
