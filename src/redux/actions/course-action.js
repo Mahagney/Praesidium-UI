@@ -2,7 +2,7 @@
 import * as actionTypes from './action-types';
 import * as courseApi from '../../api/course-api';
 import * as userApi from '../../api/user-api';
-import { beginApiCall, apiCallError } from './api-status-action';
+import { beginApiCall, apiCallError } from './api-action';
 import { logOutUser } from './user-action';
 
 import { role } from '../../constants';

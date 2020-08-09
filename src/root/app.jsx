@@ -4,13 +4,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import { SnackbarProvider } from 'notistack';
 //#endregion
 
 //#region 'LOCAL DEP'
-import theme from './app-style';
 import { role } from '../constants';
+import withNotiError from '../components/hoc/with-NotiError';
 import AppBar from '../components/common/app-bar';
 import AppBarAdmin from '../components/common/app-bar-admin';
 import ManageLogIn from '../components/controllers/log-in';
@@ -79,11 +77,7 @@ function App({ isAuth, loggedUser, oneTimeAuth }) {
       routes = oneTimeAuth ? routesUser : routesOneTimeAuth;
     }
   }
-  return (
-    <MuiThemeProvider theme={theme}>
-      <SnackbarProvider>{routes}</SnackbarProvider>
-    </MuiThemeProvider>
-  );
+  return routes;
 }
 
 function mapStateToProps(state) {
@@ -94,4 +88,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, null)(App);
+export default withNotiError(connect(mapStateToProps, null)(App));

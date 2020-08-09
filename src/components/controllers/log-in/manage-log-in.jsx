@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
-// redux
 import { connect } from 'react-redux';
 //#endregion
 
@@ -16,7 +14,6 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
   const [user, setUser] = useState({});
   const [logging, setLogging] = useState(false);
   const [validations, setValidations] = useState({});
-  const { enqueueSnackbar } = useSnackbar();
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -26,21 +23,17 @@ function ManageLogIn({ isAuth, loggedUser, logIn }) {
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     if (!formIsValid()) return;
 
     setLogging(true);
-    logIn(user).catch((error) => {
+
+    try {
+      await logIn(user);
+    } catch (error) {
       setLogging(false);
-      enqueueSnackbar(error.customMessage, {
-        variant: 'error',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
-        },
-      });
-    });
+    }
   }
 
   function formIsValid() {

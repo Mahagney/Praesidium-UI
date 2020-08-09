@@ -4,17 +4,19 @@ import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import jwt from 'jsonwebtoken';
-import setAuthorizationToken from './api/apiUtils';
+import { SnackbarProvider } from 'notistack';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 //#endregion
 
 //#region 'LOCAL DEP'
+import setAuthorizationToken from './api/apiUtils';
+import theme from './root/app-style';
 import App from './root/app';
 import './index.css';
-import configureStore from './redux/configure-store';
+import store from './redux/store';
 import { setCurrentUser } from './redux/actions/user-action';
 //#endregion
 
-const store = configureStore();
 const token = localStorage.getItem('token');
 if (token) {
   setAuthorizationToken(token);
@@ -24,7 +26,11 @@ if (token) {
 render(
   <ReduxProvider store={store}>
     <Router>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <SnackbarProvider>
+          <App />
+        </SnackbarProvider>
+      </MuiThemeProvider>
     </Router>
   </ReduxProvider>,
   document.getElementById('app'),

@@ -1,6 +1,9 @@
+//#region 'LOCAL DEP'
 import * as actionTypes from './action-types';
+import { beginApiCall } from './api-action';
 import * as userApi from '../../api/user-api';
-import { beginApiCall, apiCallError } from './api-status-action';
+import apiErrorHandler from '../../api/api-error-handler';
+//#region
 
 function logInSuccess(user) {
   return {
@@ -24,16 +27,15 @@ export function logOutUser() {
 
 export function logIn(user) {
   // eslint-disable-next-line func-names
-  return function (dispatch) {
+  return async function (dispatch) {
     dispatch(beginApiCall());
-    return userApi
-      .logIn(user)
-      .then((loggedUser) => {
-        dispatch(logInSuccess(loggedUser));
-      })
-      .catch((error) => {
-        dispatch(apiCallError());
-        throw error;
-      });
+    try {
+      const loggedUser = await userApi.APIlogIn(user);
+      dispatch(logInSuccess(loggedUser));
+      return loggedUser;
+    } catch (error) {
+      apiErrorHandler(error);
+      throw error;
+    }
   };
 }

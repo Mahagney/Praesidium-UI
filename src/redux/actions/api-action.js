@@ -6,8 +6,15 @@ export function beginApiCall() {
   };
 }
 
-export function apiCallError() {
+export function apiCallError(error) {
   return {
     type: actionTypes.API_CALL_ERROR,
+    error,
+  };
+}
+
+export function apiClearError() {
+  return {
+    type: actionTypes.API_CLEAR_ERROR,
   };
 }
