@@ -1,6 +1,7 @@
 //#region 'NPM DEP'
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 // material-ui
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -18,20 +19,21 @@ import AlfaLogo from '../../common/logo-with-name';
 
 function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging, errors }) {
   const classes = useStylesLogInForm();
+  const { t } = useTranslation();
   return (
     <Container component="div" maxWidth="lg" className={classes.bigContainer}>
       <Container component="div" maxWidth="xs" className={classes.smallContainer}>
         {/* <LockIcon className={classes.logo} color='secondary' /> */}
         <AlfaLogo width={'120px'} height={'120px'} style={{ marginTop: '50px', marginBottom: '15px' }} />
         <Typography component="h1" variant="h5">
-          Autentificare
+          {t('login:title')}
         </Typography>
         <form className={classes.form} onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
             fullWidth
-            label="Email"
+            label={t('login:email')}
             name="email"
             autoFocus
             value={emailValue || ''}
@@ -44,7 +46,7 @@ function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging, err
             margin="normal"
             fullWidth
             name="password"
-            label="Parola"
+            label={t('common:password')}
             type="password"
             id="password"
             autoComplete="new-password"
@@ -53,7 +55,7 @@ function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging, err
             error={!!errors.password}
             helperText={errors.password}
           />
-          <FormControlLabel control={<Checkbox value="remember" color="secondary" />} label="Tine-ma minte" />
+          <FormControlLabel control={<Checkbox value="remember" color="secondary" />} label={t('login:rememberMe')} />
           <Button
             type="submit"
             fullWidth
@@ -62,10 +64,10 @@ function LogInForm({ onSubmit, onChange, emailValue, passwordValue, logging, err
             className={classes.submitBtn}
             disabled={logging}
           >
-            {logging ? 'Autentificare...' : 'Autentificare'}
+            {logging ? `${t('login:login')}...` : t('login:login')}
           </Button>
           <LinkMaterial href="#" variant="body2">
-            {'Ati uitat parola?'}
+            {t('login:forgotPassword')}
           </LinkMaterial>
         </form>
       </Container>
