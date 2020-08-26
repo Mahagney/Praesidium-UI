@@ -15,6 +15,7 @@ import App from './root/app';
 import './index.css';
 import store from './redux/store';
 import { setCurrentUser } from './redux/actions/user-action';
+import initI18n from './i18n/i18n';
 //#endregion
 
 const token = localStorage.getItem('token');
@@ -23,15 +24,19 @@ if (token) {
   store.dispatch(setCurrentUser(jwt.decode(token)));
 }
 
-render(
-  <ReduxProvider store={store}>
-    <Router>
-      <MuiThemeProvider theme={theme}>
-        <SnackbarProvider>
-          <App />
-        </SnackbarProvider>
-      </MuiThemeProvider>
-    </Router>
-  </ReduxProvider>,
-  document.getElementById('app'),
-);
+const cbI18nInit = () => {
+  render(
+    <ReduxProvider store={store}>
+      <Router>
+        <MuiThemeProvider theme={theme}>
+          <SnackbarProvider>
+            <App />
+          </SnackbarProvider>
+        </MuiThemeProvider>
+      </Router>
+    </ReduxProvider>,
+    document.getElementById('app'),
+  );
+};
+
+initI18n(cbI18nInit);
